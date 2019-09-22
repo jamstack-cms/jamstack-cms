@@ -1,0 +1,39 @@
+type Post @model
+  @auth (
+      rules: [
+          { allow: groups, groups: ["Admin"], queries: null },
+          { allow: public }
+      ]
+  ) {
+  id: ID!
+  title: String!
+  description: String
+  content: String!
+  cover_image: String
+  createdAt: String
+  published: Boolean
+  previewLink: String
+  category: String
+}
+
+type Comment @model @auth(
+  rules: [
+    { allow: groups, groups: ["Admin"], queries: null },
+    { allow: owner, queries: null, ownerField: "createdBy" }
+  ]
+) {
+  id: ID!
+  message: String!
+  createdBy: String
+  createdAt: String
+}
+
+type Settings @model @auth(rules: [
+    { allow: groups, groups: ["Admin"] },
+    { allow: groups, groupsField: "adminGroups"}
+  ]) {
+  id: ID!
+  mode: String
+  categories: [String]
+  adminGroups: [String]
+}

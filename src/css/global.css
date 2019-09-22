@@ -1,0 +1,78 @@
+body {
+  border: 14px solid #33b3ba;
+  min-height: 100vh;
+  margin: 0;
+}
+
+* {
+  font-family: EB Garamond, serif;
+}
+
+.blog-post p {
+  font-family: EB Garamond, serif;
+  font-size: 20px;
+  margin: 11px 0px 13px;
+  line-height: 34px;
+}
+
+.blog-post li {
+  font-family: EB Garamond, serif;
+  margin-bottom: 7px;
+  line-height: 28px;
+  font-size: 18px;
+}
+
+.blog-post h1 {
+  font-family: EB Garamond, serif;
+  margin: 25px 0px 0px;;
+  font-weight: 200 !important;
+  font-size: 36px;
+  line-height: 42px;
+}
+
+.blog-post h2 {
+  font-family: EB Garamond, serif;
+  margin: 25px 0px 15px;
+  font-weight: 300;
+  line-height: 30px;
+}
+
+.blog-post h3 {
+  font-family: EB Garamond, serif;
+  margin: 25px 0px 25px;
+}
+
+.blog-post h4 {
+  font-family: EB Garamond, serif;
+  margin: 25px 0px 0px;
+}
+
+.blog-post h5 {
+  font-family: EB Garamond, serif;
+}
+
+.blog-post code {
+  font-size: 16px;
+}
+
+.blog-post pre {
+  background-color: #ededed;
+  padding: 20px;
+  font-weight: 400;
+  font-family: 'Courier New', Courier, monospace;
+  overflow-x: scroll;
+}
+
+.blog-post p code {
+  background-color: #ededed;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 2px 5px;
+}
+
+.blog-post pre code {
+  font-size: 16px;
+}
+
+.CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {
+  background: transparent !important;
+}
