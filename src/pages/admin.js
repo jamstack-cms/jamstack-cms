@@ -3,7 +3,6 @@ import { API, graphqlOperation } from "aws-amplify"
 import styledAuthenticator from '../components/styledAuthenticator'
 import NewPost from '../components/NewPost'
 import { listPosts } from '../graphql/queries'
-import Button from '../components/button'
 import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
 import PostList from '../components/PostList'

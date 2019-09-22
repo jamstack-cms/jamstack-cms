@@ -1,9 +1,10 @@
 import React from "react"
+import TitleComponent from '../components/titleComponent'
 
 class About extends React.Component {
   render() {
     return (
-        <h1>About Me</h1>
+        <TitleComponent title='About Me' />
     )
   }
 }

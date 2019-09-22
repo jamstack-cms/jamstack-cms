@@ -1,10 +1,11 @@
 import React from "react"
 import { graphql } from "gatsby"
+import TitleComponent from '../components/titleComponent'
 
 class Settings extends React.Component {
   render() {
     return (
-        <h1>Settings</h1>
+        <TitleComponent title="Settings" />
     )
   }
 }

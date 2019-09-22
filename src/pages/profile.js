@@ -4,6 +4,7 @@ import { Link, graphql } from "gatsby"
 import { css } from "@emotion/core"
 import styledAuthenticator from '../components/styledAuthenticator'
 import { ContextProviderComponent, BlogContext } from '../components/context'
+import TitleComponent from '../components/titleComponent'
 
 class Admin extends React.Component {
   state = {
@@ -35,7 +36,7 @@ class Admin extends React.Component {
     return (
       <ContextProviderComponent>
         <div>
-          <h1>Profile</h1>
+          <TitleComponent title="Profile" />
           <h4>Username: {username}</h4>
           <p>Email: {email}</p>
           <div>
