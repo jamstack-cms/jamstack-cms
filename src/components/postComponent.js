@@ -38,7 +38,7 @@ export default function PostComponent({
 }) {
   let date
   if (createdAt) {
-    const date = format(createdAt, "MMMM dd yyyy")
+    date = format(createdAt, "MMMM dd yyyy")
   }
   return (
     <div css={postContainer}>

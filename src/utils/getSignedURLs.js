@@ -6,7 +6,7 @@ const {
   aws_user_files_s3_bucket: bucket
 } = config
 
-async function getSignedURLs(content) {
+async function getSignedUrls(content) {
   const images = []
   const contentUrls = content.match(urlRegex());
   if (contentUrls) {
@@ -39,4 +39,4 @@ async function getSignedURLs(content) {
   return updatedContent
 }
 
-export default getSignedURLs
+export default getSignedUrls

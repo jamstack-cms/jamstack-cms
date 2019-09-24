@@ -8,6 +8,10 @@ body {
   font-family: Raleway, serif;
 }
 
+h4 {
+  font-family: Raleway, serif !important;
+}
+
 .blog-post p {
   font-family: Raleway, serif;
   font-size: 20px;

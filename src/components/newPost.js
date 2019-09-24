@@ -10,7 +10,9 @@ import {  API, graphqlOperation } from 'aws-amplify'
 import format from 'date-fns/format'
 import { highlight, fontFamily } from '../theme'
 import saveFile from '../utils/saveFile'
+import { getTrimmedKey, copyToClipboard } from '../utils/helpers'
 import { toast } from 'react-toastify'
+import ImageLinkOverlay from './imageLinkOverlay'
 
 const postState = {
   content: '',
@@ -42,7 +44,7 @@ class NewPost extends React.Component {
     if (!title || !content) return
     this.setState({ isPublishing: true })
     if (file.name) {
-      const fileForUpload = await saveFile(file)
+      const { url: fileForUpload } = await saveFile(file)
       post['cover_image'] = fileForUpload
     }
     if (isPublished) {
@@ -72,7 +74,7 @@ class NewPost extends React.Component {
     var rawMarkup = marked(markdown, {sanitize: true});
     return { __html: rawMarkup };
   }
-  uploadImage = (event) => {
+  setCoverImage = (event) => {
     const { target: { files } } = event
     const fileForUpload = files[0]
     this.setState({
@@ -80,8 +82,32 @@ class NewPost extends React.Component {
       file: fileForUpload
     })
   }
+  uploadImage = async event => {
+    const { target: { files } } = event
+    const fileForUpload = files[0]
+    this.setState({
+      file: fileForUpload
+    }, async () => {
+      try {
+        const { url } = await saveFile(this.state.file)
+        this.setState({
+          uploadedImageUrl: url,
+          showOverlay: true,
+          trimmedKey: getTrimmedKey(url, 20)
+        })
+      } catch (err) {
+        console.log('error: ', err)
+      }
+    }) 
+  }
+  copyUploadedImageLink = () => {
+    copyToClipboard(this.state.uploadedImageUrl)
+    setTimeout(() => {
+      this.setState({ showOverlay: false })
+    }, 500)
+  }
   render() {
-    const { isEditing, cover_image, post: { title, description, content } } = this.state
+    const { trimmedKey, showOverlay, isEditing, cover_image, post: { title, description, content } } = this.state
     const { window } = this.props.context
     const saveButton = css`
       background-color: ${highlight};
@@ -122,7 +148,7 @@ class NewPost extends React.Component {
           ) : (
             <div>
               {
-                cover_image && <img alt="cover" css={coverImage} src={cover_image} />
+                cover_image && <img object-fit="contain" alt="cover" css={coverImage} src={cover_image} />
               }
               <div css={postPreview} className="blog-post">
                 <h1 css={previewTitleStyle}>{this.state.post.title}</h1>
@@ -131,7 +157,7 @@ class NewPost extends React.Component {
                 <section
                   css={blogPost}
                   dangerouslySetInnerHTML={this.getMarkdownText(this.state.post.content)}
-                />  
+                />
               </div>
             </div>
           )
@@ -154,14 +180,29 @@ class NewPost extends React.Component {
           />
           {
             isEditing && (
-              <FileInput
-                placeholder="Add Cover Image"
-                customCss={[imageButton]}
-                onChange={this.uploadImage}
-              />
+              <>
+                <FileInput
+                  placeholder={`${cover_image ? "Update Cover Image" : "Add Cover Image" }`}
+                  customCss={[imageButton]}
+                  onChange={this.setCoverImage}
+                />
+                <FileInput
+                  placeholder="Upload Image"
+                  customCss={[imageButton]}
+                  onChange={this.uploadImage}
+                />
+              </>
             )
           }
         </div>
+        {
+          showOverlay && (
+            <ImageLinkOverlay
+              key={trimmedKey}
+              copyUploadedImageLink={this.copyUploadedImageLink}
+            />
+          )
+        }
       </div>
     )
   }

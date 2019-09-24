@@ -40,7 +40,7 @@ class MediaView extends React.Component {
       image: URL.createObjectURL(event.target.files[0]),
       file: fileForUpload
     }, async () => {
-      const url = await saveFile(fileForUpload)
+      const { url } = await saveFile(fileForUpload)
       const keyWithPath = getKeyWithPath(url)
       const uploadedImage = await Storage.get(keyWithPath)
       const images = [uploadedImage, ...this.props.images]

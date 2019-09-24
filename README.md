@@ -20,3 +20,11 @@ Built with Gatsby & AWS Amplify.
 - Analytics dashboard
 - Post categories
 - WYSWYG
+
+### Tools
+
+Here are some of the tools used to build JAMstack CMS:
+- Gatsby -
+- Emotion - 
+- Date FNS - 
+- Marked - 

@@ -41,6 +41,8 @@ exports.createPages = async ({ graphql, actions }) => {
   `)
 
   const blogPosts = postData.data.appsync.listPosts.items.filter(post => post.published)
+  const images = await Storage.list('')
+  const imageKeys = images.map(i => i.key)
   await Promise.all(
     blogPosts.map(async(post, index) => {
       if (!post) return
@@ -56,13 +58,21 @@ exports.createPages = async ({ graphql, actions }) => {
             const key = getImageKey(url)
             const cleanedKey = key.replace(/[{()}]/g, '');
             const keyWithPath = `images/${cleanedKey}`
-            const image = Storage.get(keyWithPath)
-            images.push(image)
+            if (imageKeys.indexOf(keyWithPath) !== -1) {
+              const image = Storage.get(keyWithPath)
+              images.push(image)
+            }
           }
         })
       }
-
-      const signedUrls = await Promise.all(images)
+      let signedUrls = []
+      if (images.length) {
+        try {
+          signedUrls = await Promise.all(images)
+        } catch (err) {
+          console.log('error getting signed urls::::', err)
+        }
+      }
       let urlIndex = 0
       const pathsToDownload = []
       const rawPaths = []
@@ -76,14 +86,23 @@ exports.createPages = async ({ graphql, actions }) => {
       // download cover image
       let coverImage
       if (post.cover_image) {
-        pathsToDownload.push(downloadImage(post.cover_image))
-        coverImage = getImageKey(post.cover_image)
-        coverImage = `../downloads/${coverImage}`
+        const key = getImageKey(post.cover_image)
+        const keyWithPath = `images/${key}`
+        if (imageKeys.indexOf(keyWithPath) !== -1) {
+          const signedImage = await Storage.get(keyWithPath)
+          pathsToDownload.push(downloadImage(signedImage))
+          coverImage = getImageKey(post.cover_image)
+          coverImage = `../downloads/${coverImage}`
+        }
       }
 
       if (pathsToDownload.length) {
         // if there are any images, we download them to the local file system
-        await Promise.all(pathsToDownload)
+        try {
+          await Promise.all(pathsToDownload)
+        } catch (err) {
+          console.log('error downloading images to file system...', err)
+        }
       }
   
       let updatedContent = content.replace(urlRegex({strict: false}), (url) => {
@@ -101,7 +120,6 @@ exports.createPages = async ({ graphql, actions }) => {
       
       const previous = index === blogPosts.length - 1 ? null : blogPosts[index + 1].node
       const next = index === 0 ? null : blogPosts[index - 1]
-  
       createPage({
         path: slugify(post.title),
         component: blogPost,
@@ -136,7 +154,7 @@ exports.onCreatePage = async ({ page, actions }) => {
   }
 }
 
-exports.sourceNodes = async ({ graphql, actions, createNodeId, createContentDigest }) => {
+exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
   const { createNode } = actions
   const imageKeys = []
 

@@ -4,7 +4,7 @@ import { getPost } from '../graphql/queries'
 import { fontFamily } from '../theme'
 import PostComponent from '../components/postComponent'
 import { API, graphqlOperation } from 'aws-amplify'
-import getSignedURLs from '../utils/getSignedURLs'
+import getSignedUrls from '../utils/getSignedUrls'
 
 class Preview extends React.Component {
   state = {
@@ -16,7 +16,7 @@ class Preview extends React.Component {
     try {
       const postData = await API.graphql(graphqlOperation(getPost, { id }))
       const { getPost: post } = postData.data
-      const updatedContent = await getSignedURLs(post.content)
+      const updatedContent = await getSignedUrls(post.content)
       post['content'] = updatedContent
       this.setState({ post, isLoading: false })
     } catch (err) { console.log({ err })}

@@ -1,29 +1,23 @@
 import React from 'react'
-import marked from 'marked';
+import uuid from 'uuid/v4'
 import { Storage, API, graphqlOperation } from 'aws-amplify'
 import { css } from "@emotion/core"
-import { updatePost } from '../graphql/mutations'
-import { getPost } from '../graphql/queries'
-import Button from '../components/button'
-import { BlogContext } from '../components/context'
-import FileInput from './input'
-import uuid from 'uuid/v4'
-import config from '../aws-exports'
-import { highlight, fontFamily } from '../theme'
-import getSignedURLs from '../utils/getSignedURLs'
-import getUnsignedUrls from '../utils/getUnsignedUrls'
+import { toast } from 'react-toastify'
+
+import Button from './button'
 import PostComponent from './postComponent'
 import FormComponent from './formComponent'
-import { toast } from 'react-toastify'
-import { copyToClipboard, getTrimmedKey } from '../utils/helpers'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLink } from '@fortawesome/free-solid-svg-icons'
-import { generatePreviewLink as generateLink } from '../utils/helpers'
-
-const {
-  aws_user_files_s3_bucket_region: region,
-  aws_user_files_s3_bucket: bucket
-} = config
+import ImageLinkOverlay from './imageLinkOverlay'
+import FileInput from './input'
+import { updatePost } from '../graphql/mutations'
+import { getPost } from '../graphql/queries'
+import { BlogContext } from './context'
+import { highlight, fontFamily } from '../theme'
+import getSignedUrls from '../utils/getSignedUrls'
+import getUnsignedUrls from '../utils/getUnsignedUrls'
+import getKeyWithPath from '../utils/getKeyWithPath'
+import saveFile from '../utils/saveFile'
+import { generatePreviewLink as generateLink, copyToClipboard, getTrimmedKey } from '../utils/helpers'
 
 const initialPostState = {
   post: {
@@ -33,8 +27,6 @@ const initialPostState = {
     description: '',
     createdAt: '',
     previewEnabled: false,
-    uploadedImageUrl: '',
-    trimmedKey: ''
   }
 }
 
@@ -46,6 +38,8 @@ class PostRoute extends React.Component {
     isEditing: false,
     post: initialPostState,
     showOverlay: false,
+    trimmedKey: '',
+    uploadedImageUrl: ''
   }
   static contextType = BlogContext
   async componentDidMount() {
@@ -56,10 +50,12 @@ class PostRoute extends React.Component {
     try {
       const postData = await API.graphql(graphqlOperation(getPost, { id }))
       const { getPost: post } = postData.data
-  
-      const updatedContent = await getSignedURLs(post.content)
+      if (post['cover_image']) {
+        const coverImage = await Storage.get(getKeyWithPath(post['cover_image']))
+        post['cover_image'] = coverImage
+      }
+      const updatedContent = await getSignedUrls(post.content)
       post['content'] = updatedContent
-      
       this.setState({ post, isLoading: false })
     } catch (err) { console.log({ err })}
   }
@@ -90,7 +86,7 @@ class PostRoute extends React.Component {
       file: fileForUpload
     }, async () => {
       try {
-        const { url } = await this.uploadFile()
+        const { url } = await saveFile(this.state.file)
         this.setState({
           uploadedImageUrl: url,
           showOverlay: true,
@@ -104,7 +100,7 @@ class PostRoute extends React.Component {
   editPost = async() => {
     const { isEditing, post: { content } } = this.state
     if (isEditing) {
-      const updatedContent = await getSignedURLs(content)
+      const updatedContent = await getSignedUrls(content)
       this.setState({
         isEditing: false,
         post: {
@@ -133,7 +129,7 @@ class PostRoute extends React.Component {
   updatePost = async () => {
     const input = {...this.state.post}
     if (this.state.file && this.state.file.name) {
-      const { url: fileForUpload } = await this.uploadFile()
+      const { url: fileForUpload } = await saveFile(this.state.file)
       input['cover_image'] = fileForUpload
     }
     await API.graphql(graphqlOperation(updatePost, {input}))
@@ -166,22 +162,6 @@ class PostRoute extends React.Component {
       }
     })
     toast(`Success! Link copied to clipboard.`)
-  }
-  uploadFile = () => {
-    return new Promise(async(resolve) => {
-      const { file } = this.state
-      const { name: fileName, type: mimeType } = file
-      const key = `images/${uuid()}${fileName}`      
-      const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
-      try {
-        await Storage.put(key, file, {
-          contentType: mimeType
-        })
-        resolve({ url, key }) 
-      } catch (err) {
-        console.log('error: ', err)
-      }
-    })
   }
   render() {
     const { window } = this.context
@@ -340,54 +320,16 @@ class PostRoute extends React.Component {
         }
         {
           showOverlay && (
-            <div css={overlay}>
-              <div css={imageUrlContainer} onClick={() => this.copyUploadedImageLink()}>
-                <FontAwesomeIcon css={faIcon} icon={faLink} />
-                <p>{this.state.trimmedKey}</p>
-              </div>
-            </div>
+            <ImageLinkOverlay
+              imageKey={this.state.trimmedKey}
+              copyUploadedImageLink={this.copyUploadedImageLink}
+            />
           )
         }
       </div>
     )
   }
 }
-
-const faIcon = css`
-  font-size: 12px;
-  margin-top: 7px;
-  margin-right: 8px;
-`
-
-const imageUrlContainer = css`
-  background-color: fafafa;
-  padding: 9px 23px;
-  display: flex;
-  cursor: pointer;
-  border-radius: 12px;
-  &:hover {
-    background-color: rgba(0, 0, 0, .075);
-  }
-`
-
-const overlay = css`
-  background-color: white;
-  border: 6px solid ${highlight};
-  width: 400px;
-  z-index: 1000;
-  height: 100px;
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  margin-left: calc(50vw - 200px);
-  margin-top: calc(50vh - 50px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  p {
-    margin: 0px;
-  }
-`
 
 const loading = css`
   font-family: ${fontFamily} !important;

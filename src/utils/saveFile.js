@@ -16,7 +16,7 @@ function saveFile(file) {
       await Storage.put(key, file, {
         contentType: mimeType
       })
-      resolve(url) 
+      resolve({ key, url }) 
     } catch (err) {
       console.log('error: ', err)
     }

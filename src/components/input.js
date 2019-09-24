@@ -1,9 +1,11 @@
 import React from 'react'
 import { css } from '@emotion/core'
 import { fontFamily } from '../theme'
+import uuid from 'uuid/v4'
 
 export default function FileInput(props) {
   const { onChange, customCss = [], placeholder, labelStyle = [] } = props
+  const id = `file-upload-${uuid()}`
   return (
     <>
       <input
@@ -12,10 +14,10 @@ export default function FileInput(props) {
         css={[buttonStyle, ...customCss]}
         onChange={onChange}
         name="file"
-        id="file-upload"
+        id={id}
       />
       <label
-        htmlFor="file-upload"
+        htmlFor={id}
         css={[label, ...labelStyle]}
       >{placeholder}</label>
     </>

@@ -1,3 +1,4 @@
+/* Gets base key of image */
 function getImageKey(url) {
   const split = url.split('/')
   const key = split[split.length - 1]
