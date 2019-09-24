@@ -8,7 +8,7 @@ import { highlight } from '../theme'
 import PostList from '../components/PostList'
 
 import Amplify, { Auth } from 'aws-amplify'
-import config from '../aws-exports'
+import config from '../../jamstack-config.js'
 Amplify.configure(config)
 
 class BlogIndex extends React.Component {

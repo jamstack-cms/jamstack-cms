@@ -1,4 +1,4 @@
-import config from '../aws-exports'
+import config from '../../jamstack-config.js'
 import getImageKey from './getImageKey'
 
 const {

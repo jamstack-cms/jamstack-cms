@@ -2,10 +2,18 @@ const { slugify } = require('./src/utils/helpers')
 import fs from 'fs'
 import urlRegex from 'url-regex'
 import Amplify, { Storage } from 'aws-amplify'
-import config from './src/aws-exports.js'
 import getImageKey from './src/utils/getImageKey'
 import getRawPath from './src/utils/getRawPath'
 import downloadImage from './src/utils/downloadImage'
+import config from './jamstack-config'
+
+let APPSYNC_KEY
+if(process.env.APPSYNC_KEY) { 
+  APPSYNC_KEY = process.env.APPSYNC_KEY
+} else { 
+  const JSConfig = require('./jamstack-api-key.js')
+  APPSYNC_KEY = JSConfig['aws_appsync_apiKey']
+}
 
 const axios = require('axios')
 const graphqltag = require('graphql-tag')
@@ -179,7 +187,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       url: config.aws_appsync_graphqlEndpoint,
       method: 'post',
       headers: {
-        'x-api-key': config.aws_appsync_apiKey
+        'x-api-key': APPSYNC_KEY
       },
       data: {
         query: print(query)

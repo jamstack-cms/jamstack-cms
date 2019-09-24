@@ -1,5 +1,5 @@
 import urlRegex from 'url-regex'
-import config from '../aws-exports'
+import config from '../../jamstack-config.js'
 import { Storage } from 'aws-amplify'
 
 const {

@@ -49,10 +49,12 @@
     "react-simplemde-editor": "^4.1.0",
     "react-toastify": "^5.4.0",
     "react-typography": "^0.16.19",
+    "strip-json-comments": "^3.0.1",
     "typeface-merriweather": "0.0.72",
     "typeface-montserrat": "0.0.75",
     "typography": "^0.16.19",
     "typography-theme-wordpress-2016": "^0.16.19",
+    "uglify-js": "1",
     "url-regex": "^5.0.0",
     "uuid": "^3.3.3"
   },
@@ -70,6 +72,7 @@
     "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
   },
   "scripts": {
+    "jamstack-develop": "node createConfig.js && gatsby develop",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",

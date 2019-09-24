@@ -1,5 +1,5 @@
 import urlRegex from 'url-regex'
-import config from '../aws-exports'
+import config from '../../jamstack-config.js'
 
 const {
   aws_user_files_s3_bucket: bucket,

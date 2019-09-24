@@ -1,5 +1,5 @@
 import { Storage } from 'aws-amplify'
-import config from '../aws-exports'
+import config from '../../jamstack-config.js'
 import uuid from 'uuid/v4'
 
 const {
