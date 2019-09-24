@@ -1,8 +1,9 @@
 type Post @model
   @auth (
       rules: [
-          { allow: groups, groups: ["Admin"], queries: null },
-          { allow: public }
+          { allow: groups, groups: ["Admin"], operations: [create, update, delete] },
+          { allow: public, operations: [read] },
+          { allow: private, operations: [read] }
       ]
   ) {
   id: ID!
@@ -12,14 +13,14 @@ type Post @model
   cover_image: String
   createdAt: String
   published: Boolean
-  previewLink: String
-  category: String
+  previewEnabled: Boolean
+  categories: [String]
 }
 
 type Comment @model @auth(
   rules: [
-    { allow: groups, groups: ["Admin"], queries: null },
-    { allow: owner, queries: null, ownerField: "createdBy" }
+    { allow: groups, groups: ["Admin"], operations: [create, update, delete] },
+    { allow: owner, ownerField: "createdBy", operations: [create, update, delete] }
   ]
 ) {
   id: ID!
@@ -36,4 +37,20 @@ type Settings @model @auth(rules: [
   mode: String
   categories: [String]
   adminGroups: [String]
+}
+
+type Preview @model
+  @auth (
+      rules: [
+        { allow: groups, groups: ["Admin"] },
+        { allow: private, operations: [read] }
+      ]
+  ) {
+  id: ID!
+  title: String!
+  description: String
+  content: String!
+  cover_image: String
+  createdAt: String
+  categories: [String]
 }

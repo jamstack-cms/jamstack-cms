@@ -1,6 +1,6 @@
 import React from "react"
 import { Auth } from 'aws-amplify'
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
 import { css } from "@emotion/core"
 import styledAuthenticator from '../components/styledAuthenticator'
 import { ContextProviderComponent, BlogContext } from '../components/context'

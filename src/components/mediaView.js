@@ -6,21 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLink } from '@fortawesome/free-solid-svg-icons'
 import getImageKey from '../utils/getImageKey'
 import getKeyWithPath from '../utils/getKeyWithPath'
+import getKeyWithFullPath from '../utils/getKeyWithFullPath'
 import FileInput from '../components/input'
 import saveFile from '../utils/saveFile'
-
-function getTrimmedKey(key) {
-  return key.substr(0, 8) + '...'
-}
-
-const copyToClipboard = (link) => {
-  const textField = document.createElement('textarea');
-  textField.innerText = link;
-  document.body.appendChild(textField);
-  textField.select();
-  document.execCommand('copy');
-  textField.remove();
-};
+import { copyToClipboard, getTrimmedKey } from '../utils/helpers'
+import { toast } from 'react-toastify'
 
 class MediaView extends React.Component {
   state = {
@@ -37,6 +27,7 @@ class MediaView extends React.Component {
     try {
       await Storage.remove(keyWithPath)
       console.log('image deleted')
+      toast("Successfully deleted image.")
     } catch (err) {
       console.log('error deleting image: ', err)
     }
@@ -54,6 +45,7 @@ class MediaView extends React.Component {
       const uploadedImage = await Storage.get(keyWithPath)
       const images = [uploadedImage, ...this.props.images]
       this.props.addImageToState(images)
+      toast("Successfully uploaded new image.")
     })
   }
   
@@ -106,14 +98,14 @@ class MediaView extends React.Component {
               return (
                 <div css={imageWrapper} key={index}>
                   <div css={[imageContainerStyle, imageListType]}>
-                    <img css={imageStyle} src={image}  />
+                    <img alt='media-item' css={imageStyle} src={image}  />
                     <div
-                    onClick={() => copyToClipboard(getImageKey(image))}
+                    onClick={() => copyToClipboard(getKeyWithFullPath(image))}
                     css={[imageOverlay]}>
                       <div css={[overlayLinkContainer]}>
                         <div css={overlayLinkItems}>
                           <FontAwesomeIcon css={faIcon} icon={faLink} />
-                          <p css={[overlayLink]}>{getTrimmedKey(getImageKey(image))}</p>
+                          <p css={[overlayLink]}>{getTrimmedKey(getKeyWithFullPath(image), 15)}</p>
                         </div>
                       </div>
                     </div>
@@ -152,6 +144,8 @@ const selectMenu = css`
 const uploadButton = css`
   color: black;
   margin: 0;
+  opacity: 1;
+  font-size: 16px;
   &:hover {
     color: rgba(0, 0, 0, .8);
   }
@@ -165,11 +159,6 @@ const faIcon = css`
   font-size: 12px;
   margin-top: 7px;
   margin-right: 4px;
-`
-
-const navButton = css`
-  background-color: transparent;
-  color: black;
 `
 
 const viewTypeContainer = css`
@@ -186,15 +175,6 @@ const toggleViewButton = css`
   margin-right: 15px;
   outline: none;
   font-family: ${fontFamily};
-`
-
-const buttonContainer = css`
-  margin-left: 35px;
-  margin-top: 55px;
-`
-
-const titleContainer = css`
-  display: flex;
 `
 
 const imageContainerStyle = css`

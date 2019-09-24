@@ -5,6 +5,14 @@ import { ContextProviderComponent, BlogContext } from './context'
 import logo from '../images/logo.png'
 import "easymde/dist/easymde.min.css"
 import { highlight, fontFamily } from '../theme'
+import 'react-toastify/dist/ReactToastify.css'
+import { toast } from 'react-toastify';
+
+toast.configure( {
+  progressStyle: {
+    background: 'black',
+  }
+})
 
 class Layout extends React.Component {
   render() {
@@ -73,7 +81,7 @@ const LayoutWithContext = props => (
 
 const logoStyle = css`
   width: 200px;
-  margin: 8px 0px 0px;
+  margin: 14px 0px 0px;
 `
 
 const container = css`
@@ -101,7 +109,7 @@ const menu = css`
   display: flex;
   flex: 1;
   justify-content: flex-end;
-  padding-top: 6px;
+  padding-top: 9px;
 `
 
 const mainContent = css`
@@ -109,20 +117,6 @@ const mainContent = css`
   width: 680px;
   padding-top: 35px;
   padding-bottom: 25px;
-`
-
-const heading = css`
-  line-height: 44px;
-  margin: 0px;
-  font-size: 58px;
-  letter-spacing: 3.5px;
-  font-family: 'JosefinSans';
-  text-decoration: none;
-`
-
-const headingLetter = css`
-  ${heading};
-  margin-left: 4px;
 `
 
 const headerStyle = css`

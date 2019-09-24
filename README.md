@@ -16,7 +16,7 @@ Built with Gatsby & AWS Amplify.
 
 - Comments
 - Video support
-- Preview links
 - Dynamic logo from Admin
 - Analytics dashboard
 - Post categories
+- WYSWYG

@@ -30,6 +30,8 @@ export const getSettings = `query GetSettings($id: ID!) {
   getSettings(id: $id) {
     id
     mode
+    categories
+    adminGroups
   }
 }
 `;
@@ -42,6 +44,39 @@ export const listSettingss = `query ListSettingss(
     items {
       id
       mode
+      categories
+      adminGroups
+    }
+    nextToken
+  }
+}
+`;
+export const getPreview = `query GetPreview($id: ID!) {
+  getPreview(id: $id) {
+    id
+    title
+    description
+    content
+    cover_image
+    createdAt
+    categories
+  }
+}
+`;
+export const listPreviews = `query ListPreviews(
+  $filter: ModelPreviewFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listPreviews(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      title
+      description
+      content
+      cover_image
+      createdAt
+      categories
     }
     nextToken
   }
@@ -56,6 +91,8 @@ export const getPost = `query GetPost($id: ID!) {
     cover_image
     createdAt
     published
+    previewEnabled
+    categories
   }
 }
 `;
@@ -73,6 +110,8 @@ export const listPosts = `query ListPosts(
       cover_image
       createdAt
       published
+      previewEnabled
+      categories
     }
     nextToken
   }

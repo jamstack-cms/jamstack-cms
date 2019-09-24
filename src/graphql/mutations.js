@@ -1,13 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createSettings = `mutation CreateSettings($input: CreateSettingsInput!) {
-  createSettings(input: $input) {
-    id
-    mode
-  }
-}
-`;
 export const createPost = `mutation CreatePost($input: CreatePostInput!) {
   createPost(input: $input) {
     id
@@ -17,6 +10,8 @@ export const createPost = `mutation CreatePost($input: CreatePostInput!) {
     cover_image
     createdAt
     published
+    previewEnabled
+    categories
   }
 }
 `;
@@ -29,6 +24,8 @@ export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
     cover_image
     createdAt
     published
+    previewEnabled
+    categories
   }
 }
 `;
@@ -41,6 +38,8 @@ export const deletePost = `mutation DeletePost($input: DeletePostInput!) {
     cover_image
     createdAt
     published
+    previewEnabled
+    categories
   }
 }
 `;
@@ -71,10 +70,21 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
   }
 }
 `;
+export const createSettings = `mutation CreateSettings($input: CreateSettingsInput!) {
+  createSettings(input: $input) {
+    id
+    mode
+    categories
+    adminGroups
+  }
+}
+`;
 export const updateSettings = `mutation UpdateSettings($input: UpdateSettingsInput!) {
   updateSettings(input: $input) {
     id
     mode
+    categories
+    adminGroups
   }
 }
 `;
@@ -82,6 +92,44 @@ export const deleteSettings = `mutation DeleteSettings($input: DeleteSettingsInp
   deleteSettings(input: $input) {
     id
     mode
+    categories
+    adminGroups
+  }
+}
+`;
+export const createPreview = `mutation CreatePreview($input: CreatePreviewInput!) {
+  createPreview(input: $input) {
+    id
+    title
+    description
+    content
+    cover_image
+    createdAt
+    categories
+  }
+}
+`;
+export const updatePreview = `mutation UpdatePreview($input: UpdatePreviewInput!) {
+  updatePreview(input: $input) {
+    id
+    title
+    description
+    content
+    cover_image
+    createdAt
+    categories
+  }
+}
+`;
+export const deletePreview = `mutation DeletePreview($input: DeletePreviewInput!) {
+  deletePreview(input: $input) {
+    id
+    title
+    description
+    content
+    cover_image
+    createdAt
+    categories
   }
 }
 `;

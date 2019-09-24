@@ -2,10 +2,9 @@ import React from "react"
 import { navigate, graphql } from "gatsby"
 import marked from 'marked';
 import { css } from "@emotion/core"
-import format from 'date-fns/format'
 import { ContextProviderComponent, BlogContext } from '../components/context'
-import Button from '../components/button'
 import { fontFamily } from '../theme'
+import PostComponent from '../components/postComponent'
 
 class BlogPostTemplate extends React.Component {
   static contextType = BlogContext
@@ -34,15 +33,13 @@ class BlogPostTemplate extends React.Component {
               >Edit Post</button>
             )
           }
-          <div>
-          { local_cover_image && <img css={coverImageStyle} src={local_cover_image} />}
-            <div css={container} className="blog-post">
-              <h1 css={titleStyle}>{title}</h1>
-              <h2 css={descriptionStyle}>{description}</h2>
-              <p css={dateStyle}>{format(new Date(createdAt), 'MMMM dd yyyy')}</p>
-              <section dangerouslySetInnerHTML={this.getMarkdownText(content)} />
-            </div>
-          </div>
+          <PostComponent
+            title={title}
+            description={description}
+            content={content}
+            cover_image={local_cover_image}
+            createdAt={new Date(createdAt)}
+          />
         </div>
       </ContextProviderComponent>
     )

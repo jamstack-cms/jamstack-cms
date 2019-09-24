@@ -1,10 +1,12 @@
 // colors
-const highlight = '#33b3ba'
+const highlight = '#3bbcbd'
 
 // fonts
-const fontFamily = 'Raleway'
+const fontFamily = 'Nunito'
+const scriptFamily = 'Raleway'
 
 export {
   highlight,
-  fontFamily
+  fontFamily,
+  scriptFamily
 }

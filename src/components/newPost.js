@@ -3,20 +3,14 @@ import { css } from "@emotion/core"
 import marked from 'marked';
 import Button from './button'
 import FileInput from './input'
+import FormComponent from './formComponent'
 import { ContextProviderComponent, BlogContext } from './context'
 import { createPost } from '../graphql/mutations'
-import { Storage, API, graphqlOperation } from 'aws-amplify'
-import config from '../aws-exports'
+import {  API, graphqlOperation } from 'aws-amplify'
 import format from 'date-fns/format'
-import uuid from 'uuid/v4'
 import { highlight, fontFamily } from '../theme'
-import SimpleMDE from "react-simplemde-editor"
 import saveFile from '../utils/saveFile'
-
-const {
-  aws_user_files_s3_bucket_region: region,
-  aws_user_files_s3_bucket: bucket
-} = config
+import { toast } from 'react-toastify'
 
 const postState = {
   content: '',
@@ -66,6 +60,8 @@ class NewPost extends React.Component {
       await API.graphql(graphqlOperation(createPost, { input: post }))
       this.setState({ isPublishing: false, post: postState })
       this.props.toggleViewState('list')
+      toast(`Post successfully ${isPublished ? "published" : "saved"}!`)
+      this.props.fetchPosts()
     } catch (err) {
       this.setState({ isPublishing: false })
       console.log({ err })
@@ -85,10 +81,8 @@ class NewPost extends React.Component {
     })
   }
   render() {
-    const { isEditing, cover_image } = this.state
-    const dynamicTextArea = css`
-      margin-top: 30px;
-    `
+    const { isEditing, cover_image, post: { title, description, content } } = this.state
+    const { window } = this.props.context
     const saveButton = css`
       background-color: ${highlight};
     `
@@ -113,54 +107,22 @@ class NewPost extends React.Component {
         {
           isEditing ? (
             <div css={textareaContainer}>
-              {
-                cover_image && <img css={coverImageEdit} src={cover_image} />
-              }
-              <input
-                value={this.state.post.title}
-                css={[titleStyle, titleInputStyle]}
-                onChange={e => this.setPost('title', e.target.value)}
-                placeholder="Post title"
-              />
-              <input
-                value={this.state.post.description}
-                css={[titleStyle, descriptionInputStyle]}
-                onChange={e => this.setPost('description', e.target.value)}
-                placeholder="Post description"
-              />
-              <SimpleMDE
-                css={dynamicTextArea}
-                placeholder="Your post in markdown."
-                value={this.state.post.content}
-                onChange={value => this.setPost('content', value)}
+              <FormComponent
+                cover_image={cover_image}
+                title={title}
+                content={content}
+                description={description}
+                setPost={this.setPost}
+                window={window}
               />
               <div css={buttonContainer}>
-                <Button
-                  onClick={() => this.toggleInput()}
-                  title="Preview"
-                  customCss={preview}
-                />
-                <Button
-                  onClick={() => this.publish(true)}
-                  title="Publish"
-                  customCss={publish}
-                />
-                <Button
-                  onClick={() => this.publish()}
-                  title="Save"
-                  customCss={[publish, saveButton]}
-                />
-                <FileInput
-                  placeholder="Add Cover Image"
-                  customCss={[imageButton]}
-                  onChange={this.uploadImage}
-                />
+                
               </div>
             </div>
           ) : (
             <div>
               {
-                cover_image && <img css={coverImage} src={cover_image} />
+                cover_image && <img alt="cover" css={coverImage} src={cover_image} />
               }
               <div css={postPreview} className="blog-post">
                 <h1 css={previewTitleStyle}>{this.state.post.title}</h1>
@@ -171,21 +133,35 @@ class NewPost extends React.Component {
                   dangerouslySetInnerHTML={this.getMarkdownText(this.state.post.content)}
                 />  
               </div>
-              <div css={buttonContainer}>
-                <Button
-                  onClick={() => this.toggleInput()}
-                  title="Edit"
-                  customCss={preview}
-                />
-                <Button
-                  onClick={() => this.publish()}
-                  title="Publish"
-                  customCss={publish}
-                />
-              </div>
             </div>
           )
         }
+        <div css={buttonContainer}>
+          <Button
+            onClick={() => this.toggleInput()}
+            title="Edit"
+            customCss={[preview]}
+          />
+          <Button
+            onClick={() => this.publish()}
+            title="Publish"
+            customCss={[publish]}
+          />
+          <Button
+            onClick={() => this.publish()}
+            title="Save"
+            customCss={[publish, saveButton]}
+          />
+          {
+            isEditing && (
+              <FileInput
+                placeholder="Add Cover Image"
+                customCss={[imageButton]}
+                onChange={this.uploadImage}
+              />
+            )
+          }
+        </div>
       </div>
     )
   }
@@ -243,14 +219,6 @@ const titleStyle = css`
   outline: none;
   width: 100%;
   margin: 20px 0px 5px;
-  font-weight: 300;
-`
-
-const descriptionStyle = css`
-  font-size: 25px;
-  border: none;
-  outline: none;
-  width: 100%;
   font-weight: 300;
 `
 

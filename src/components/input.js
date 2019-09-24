@@ -1,9 +1,9 @@
 import React from 'react'
 import { css } from '@emotion/core'
+import { fontFamily } from '../theme'
 
 export default function FileInput(props) {
   const { onChange, customCss = [], placeholder, labelStyle = [] } = props
-  console.log('props from input;::', props)
   return (
     <>
       <input
@@ -32,6 +32,8 @@ const buttonStyle = css`
 `
 
 const label = css`
+  font-family: ${fontFamily};
+  font-size: 14px;
   color: white;
   background-color: black;
   display: inline-block;
@@ -40,4 +42,8 @@ const label = css`
   margin-top: 20px;
   cursor: pointer;
   border-radius: 3px;
+  opacity: .8;
+  &:hover {
+    opacity: 1;
+  }
 `

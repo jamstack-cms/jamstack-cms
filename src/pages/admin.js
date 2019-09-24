@@ -1,18 +1,21 @@
 import React from "react"
-import { API, graphqlOperation } from "aws-amplify"
+import { Storage, API, graphqlOperation } from "aws-amplify"
 import styledAuthenticator from '../components/styledAuthenticator'
 import NewPost from '../components/NewPost'
 import { listPosts } from '../graphql/queries'
+import { deletePost, updatePost } from '../graphql/mutations'
 import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
 import PostList from '../components/PostList'
 import MediaView from '../components/MediaView'
 import { highlight, fontFamily } from '../theme'
-import { Storage } from 'aws-amplify'
 import getImageKey from '../utils/getImageKey'
+import { toast } from 'react-toastify'
+import JakobsLoader from '../components/jakobsLoader'
 
 class Admin extends React.Component {
   state = {
+    isLoading: true,
     viewState: 'list',
     posts: [],
     images: [],
@@ -21,14 +24,7 @@ class Admin extends React.Component {
     imagesNotInUse: []
   }
   async componentDidMount() {    
-    API.graphql(graphqlOperation(listPosts))
-      .then(response => {
-        const { items } = response.data.listPosts
-        this.setState({ posts: items })
-      })
-      .catch(err => {
-        console.log('error fetching posts:', err)
-      })
+    this.fetchPosts()
     try {
       const media = await Storage.list('')
       const images = media.map(k => Storage.get(k.key))
@@ -38,6 +34,15 @@ class Admin extends React.Component {
       })
     } catch(err) {
       console.log('error:' , err)
+    }
+  }
+  fetchPosts = async () => {
+    try {
+      const postData = await API.graphql(graphqlOperation(listPosts))
+      const { items } = postData.data.listPosts
+      this.setState({ posts: items, isLoading: false })
+    } catch (err) {
+      console.log('error fetching posts:', err)
     }
   }
   removeImage = (image) => {
@@ -65,7 +70,6 @@ class Admin extends React.Component {
         imagesNotInUse.push(image)
       }
     })
-
     this.setState({ imagesInUse, imagesNotInUse: [...new Set(imagesNotInUse)] })
   }
   addImageToState = images => {
@@ -74,12 +78,52 @@ class Admin extends React.Component {
     })
   }
   toggleViewState = viewState => this.setState({ viewState })
-  deletePost = async () => {
+  deletePost = async ({ id }) => {
     const shouldDelete = window.confirm("Are you sure you'd like to delete this post?");
-    console.log('shouldDelete: ', shouldDelete)
+    if (shouldDelete) {
+      const posts = [...this.state.posts.filter(post => post.id !== id)]
+      this.setState({ posts })
+      try {
+        await API.graphql(graphqlOperation(deletePost, { input: { id }}))
+        console.log('post successfully deleted!')
+      } catch (err) {
+        console.log('error deleting post..:', err)
+      }
+    }
+  }
+  publishPost = async ({ id }) => {
+    const shouldPublish = window.confirm("Are you sure you'd like to publish this post?");
+    if (shouldPublish) {
+      const posts = [...this.state.posts]
+      const postIndex = posts.findIndex(post => post.id === id)
+      posts[postIndex]['published'] = true
+      console.log('posts:', posts)
+      try {
+        await API.graphql(graphqlOperation(updatePost, { input: { id, published: true }}))
+        toast(`🔥 Post successfully published!`)
+        this.setState({ posts })
+      } catch (err) {
+        console.log('error publishing post..:', err)
+      }
+    }
+  }
+  unPublishPost = async ({ id }) => {
+    const shouldUnPublish = window.confirm("Are you sure you'd like to unpublish this post?");
+    if (shouldUnPublish) {
+      const posts = [...this.state.posts]
+      const postIndex = posts.findIndex(post => post.id === id)
+      posts[postIndex]['published'] = false
+      try {
+        await API.graphql(graphqlOperation(updatePost, { input: { id, published: false }}))
+        toast(`Post successfully unpublished!`)
+        this.setState({ posts })
+      } catch (err) {
+        console.log('error unpublishing post..:', err)
+      }
+    }
   }
   render() {
-    const { viewState } = this.state
+    const { viewState, isLoading } = this.state
     const highlightButton = state => css`
       color: ${state === viewState ? highlight: 'black'};
     `
@@ -102,6 +146,9 @@ class Admin extends React.Component {
             >New Post</button>
           </div>
           {
+            isLoading && <JakobsLoader />
+          }
+          {
             viewState === 'list' && (
               (
                 <div>
@@ -110,6 +157,8 @@ class Admin extends React.Component {
                     highlight={highlight}
                     isAdmin={true}
                     deletePost={this.deletePost}
+                    publishPost={this.publishPost}
+                    unPublishPost={this.unPublishPost}
                   />
                 </div>
               )
@@ -117,7 +166,10 @@ class Admin extends React.Component {
           }
           {
             viewState === 'create' && (
-              <NewPost toggleViewState={this.toggleViewState} />
+              <NewPost
+                toggleViewState={this.toggleViewState}
+                fetchPosts={this.fetchPosts}
+              />
             )
           }
           {

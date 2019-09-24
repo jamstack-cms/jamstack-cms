@@ -1,27 +1,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateSettings = `subscription OnCreateSettings {
-  onCreateSettings {
-    id
-    mode
-  }
-}
-`;
-export const onUpdateSettings = `subscription OnUpdateSettings {
-  onUpdateSettings {
-    id
-    mode
-  }
-}
-`;
-export const onDeleteSettings = `subscription OnDeleteSettings {
-  onDeleteSettings {
-    id
-    mode
-  }
-}
-`;
 export const onCreatePost = `subscription OnCreatePost {
   onCreatePost {
     id
@@ -31,6 +10,8 @@ export const onCreatePost = `subscription OnCreatePost {
     cover_image
     createdAt
     published
+    previewEnabled
+    categories
   }
 }
 `;
@@ -43,6 +24,8 @@ export const onUpdatePost = `subscription OnUpdatePost {
     cover_image
     createdAt
     published
+    previewEnabled
+    categories
   }
 }
 `;
@@ -55,6 +38,8 @@ export const onDeletePost = `subscription OnDeletePost {
     cover_image
     createdAt
     published
+    previewEnabled
+    categories
   }
 }
 `;
@@ -82,6 +67,69 @@ export const onDeleteComment = `subscription OnDeleteComment {
     message
     createdBy
     createdAt
+  }
+}
+`;
+export const onCreateSettings = `subscription OnCreateSettings {
+  onCreateSettings {
+    id
+    mode
+    categories
+    adminGroups
+  }
+}
+`;
+export const onUpdateSettings = `subscription OnUpdateSettings {
+  onUpdateSettings {
+    id
+    mode
+    categories
+    adminGroups
+  }
+}
+`;
+export const onDeleteSettings = `subscription OnDeleteSettings {
+  onDeleteSettings {
+    id
+    mode
+    categories
+    adminGroups
+  }
+}
+`;
+export const onCreatePreview = `subscription OnCreatePreview {
+  onCreatePreview {
+    id
+    title
+    description
+    content
+    cover_image
+    createdAt
+    categories
+  }
+}
+`;
+export const onUpdatePreview = `subscription OnUpdatePreview {
+  onUpdatePreview {
+    id
+    title
+    description
+    content
+    cover_image
+    createdAt
+    categories
+  }
+}
+`;
+export const onDeletePreview = `subscription OnDeletePreview {
+  onDeletePreview {
+    id
+    title
+    description
+    content
+    cover_image
+    createdAt
+    categories
   }
 }
 `;

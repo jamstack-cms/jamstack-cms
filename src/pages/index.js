@@ -1,11 +1,10 @@
 import React from "react"
-import { grapiql } from "gatsby"
 
 import SiteContainer from '../components/site-container'
 import SEO from "../components/seo"
 import { css } from '@emotion/core'
 
-import { highlight, fontFamily} from '../theme'
+import { highlight } from '../theme'
 import PostList from '../components/PostList'
 
 import Amplify, { Auth } from 'aws-amplify'
@@ -28,15 +27,11 @@ class BlogIndex extends React.Component {
   }
   render() {
     const posts = this.props.data.appsync.listPosts.items.filter(post => post.published)
-   
-    const recentPostsWithTheme = css`
-      color: ${highlight};
-    `
+
     return (
       <SiteContainer {...this.props}> 
           <SEO title="All posts" />
           <div css={postContainer}>
-            <p css={[recentPosts, recentPostsWithTheme]}>Recent Posts</p>
             <PostList
               posts={posts}
               highlight={highlight}
@@ -47,21 +42,10 @@ class BlogIndex extends React.Component {
   }
 }
 
-const recentPosts = css`
-  font-family: ${fontFamily};
-  font-size: 34px;
-  color: blue;
-  line-height: 34px;
-  margin-bottom: 30px;
-  font-weight: 300;
-`
-
 const postContainer = css`
-  padding-top: 35px;
   width: 690px;
   margin: 0 auto;
 `
-
 
 export default BlogIndex
 

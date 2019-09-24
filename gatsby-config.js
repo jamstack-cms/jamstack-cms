@@ -23,7 +23,12 @@ module.exports = {
       resolve: 'gatsby-plugin-web-font-loader',
       options: {
         google: {
-          families: ['Raleway:100,200,300,400,500,600,700,800', 'Macbeth', 'EB Garamond:400,500,600,700', 'Josefin Sans:100,300,400,600,700']
+          families: [
+            'Raleway:100,200,300,400,500,600,700,800',
+            'Macbeth',
+            'EB Garamond:400,500,600,700',
+            'Nunito:200,300,400,600,700'
+          ]
         }
       }
     },
@@ -98,7 +103,7 @@ module.exports = {
         background_color: `#ffffff`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `content/assets/gatsby-icon.png`,
+        icon: `content/assets/jamstack-cms.png`,
       },
     },
     `gatsby-plugin-offline`,

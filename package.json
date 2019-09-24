@@ -47,6 +47,7 @@
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.1",
     "react-simplemde-editor": "^4.1.0",
+    "react-toastify": "^5.4.0",
     "react-typography": "^0.16.19",
     "typeface-merriweather": "0.0.72",
     "typeface-montserrat": "0.0.75",

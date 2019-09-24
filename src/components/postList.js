@@ -3,17 +3,16 @@ import { css } from '@emotion/core'
 import { slugify } from '../utils/helpers'
 import format from 'date-fns/format'
 import { Link } from "gatsby"
-import { fontFamily } from '../theme';
+import { fontFamily, scriptFamily } from '../theme';
 
-export default function PostList ({ posts, highlight, isAdmin, deletePost }) {
+export default function PostList ({
+  posts, highlight, isAdmin, deletePost, publishPost, unPublishPost
+}) {
   const postStyleWithTheme = css`
     border-bottom: 3px solid ${highlight};
   `
   const dateStyleWithTheme = css`
     color: ${highlight};
-  `
-
-  const linkStyleWithTheme = css`
   `
   
   const dynamicTitleStyle = css`
@@ -33,8 +32,15 @@ export default function PostList ({ posts, highlight, isAdmin, deletePost }) {
           <div css={[postContainer]} key={post.id}>
             {
               isAdmin && (
-                <div css={deleteButtonContainer}>
-                  <p onClick={() => deletePost(post)} css={deleteButton}>Delete</p>
+                <div css={[sideButtonContainer]}>
+                  <p onClick={() => deletePost(post)} css={[sideButton]}>Delete</p>
+                  {
+                    post.published ? (
+                      <p onClick={() => unPublishPost(post)} css={[sideButton]}>Unpublish</p>
+                    ) : (
+                      <p onClick={() => publishPost(post)} css={[publishButton]}>Publish</p>
+                    )
+                  }
                 </div>
               )
             }
@@ -47,7 +53,19 @@ export default function PostList ({ posts, highlight, isAdmin, deletePost }) {
                         {title}
                       </h3>
                       <p css={postDescription}>{post.description}</p>
-                      <p css={[postDate, dateStyleWithTheme]}>{format(new Date(post.createdAt), 'MMMM dd yyyy')}</p>
+                      {
+                        isAdmin && (
+                          <div>
+                            {
+                              post.published ? (
+                                <p css={[postDate, dateStyleWithTheme]}>Published {format(new Date(post.createdAt), 'MMMM dd yyyy')}</p>
+                              ) : (
+                                <p css={[notPublishedStyle]}>Not Published</p>
+                              )
+                            }
+                          </div>
+                        )
+                      }
                     </header>
                   </div>
                 </div>
@@ -60,18 +78,32 @@ export default function PostList ({ posts, highlight, isAdmin, deletePost }) {
   )
 }
 
-const deleteButton = css`
+const notPublishedStyle = css`
+  font-family: ${fontFamily};
+  margin: 10px 0px 0px;
+  font-weight: 500;
+  font-size: 14px;
+  color: rgba(0, 0, 0, .3);
+`
+
+const sideButton = css`
   font-family: ${fontFamily};
   font-size: 14px;
   opacity: .7;
+  margin-bottom: 5px;
   cursor: pointer;
   &:hover {
     opacity: 1;
   }
 `
 
-const deleteButtonContainer = css`
-  padding: 0px 20px;
+const publishButton = css`
+  ${sideButton};
+  color: green;
+`
+
+const sideButtonContainer = css`
+  min-width: 100px;
 `
 
 const postContainer = css`
@@ -80,10 +112,11 @@ const postContainer = css`
 `
 
 const postDescription = css`
-  font-weight: 700;
+  font-weight: 300;
   margin-top: 8px;
+  font-size: 20px;
   margin-bottom: 6px;
-  font-family: EB Garamond, serif;
+  font-family: ${scriptFamily}, serif;
 `
 
 const postDate = css`
@@ -100,20 +133,20 @@ const postStyle = css`
 const postContentStyle = css`
   margin: 10px auto 0px;
   padding: 10px 0px 20px;
-  font-family: EB Garamond, serif;
+  font-family: ${scriptFamily}, serif;
 `
 
 const titleStyle = css`
   margin: 5px 0px;
   line-height: 50px;
-  font-family: EB Garamond, serif;
+  font-family: ${scriptFamily}, serif;
   font-weight: 300;
   @media(max-width: 1000px) {
     font-size: 30px;
   }
 `
 const linkStyle = css`
-  box-shadow: none;
   color: black;
+  box-shadow: none;
   text-decoration: none;
 `

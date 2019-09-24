@@ -13,7 +13,7 @@ function TitleComponent({ title, customStyles }) {
 const titleStyle = css`
   font-family: ${fontFamily}, sans-serif;
   font-size: 32px;
-  font-weight: 300;
+  font-weight: 200;
   margin-bottom: 10px;
 `
 
