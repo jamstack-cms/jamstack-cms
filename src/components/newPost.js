@@ -13,6 +13,8 @@ import saveFile from '../utils/saveFile'
 import { getTrimmedKey, copyToClipboard } from '../utils/helpers'
 import { toast } from 'react-toastify'
 import ImageLinkOverlay from './imageLinkOverlay'
+import getSignedUrls from '../utils/getSignedUrls'
+import getUnsignedUrls from '../utils/getUnsignedUrls'
 
 const postState = {
   content: '',
@@ -22,11 +24,17 @@ const postState = {
 
 class NewPost extends React.Component {
   state = {
-    isPublishing: false,
     post: postState,
     cover_image: '',
     file: {},
-    isEditing: true
+    isEditing: true,
+    uploadedImageUrl: false,
+    showOverlay: false,
+    trimmedKey: '',
+    // loading state
+    isUploadingImage: false,
+    isPublishing: false,
+    isSaving: false
   }
   setPost = (key, value) => {
     this.setState({
@@ -36,13 +44,36 @@ class NewPost extends React.Component {
       }
     })
   }
-  toggleInput = () => {
-    this.setState({ isEditing: !this.state.isEditing })
+  toggleInput = async () => {
+    const { isEditing, post: { content } } = this.state
+    if (isEditing) {
+      const updatedContent = await getSignedUrls(content)
+      this.setState({
+        isEditing: false,
+        post: {
+          ...this.state.post,
+          content: updatedContent
+        }
+      })
+    } else {
+      const updatedContent = await getUnsignedUrls(content)
+      this.setState({
+        isEditing: true,
+        post: {
+          ...this.state.post,
+          content: updatedContent
+        }
+      })
+    }
   }
   publish = async (isPublished) => {
     const { file, post, post: { title, content, description } } = this.state
     if (!title || !content) return
-    this.setState({ isPublishing: true })
+    if (isPublished) {
+      this.setState({ isPublishing: true })
+    } else (
+      this.setState({ isSaving: true })
+    )
     if (file.name) {
       const { url: fileForUpload } = await saveFile(file)
       post['cover_image'] = fileForUpload
@@ -60,7 +91,7 @@ class NewPost extends React.Component {
 
     try {
       await API.graphql(graphqlOperation(createPost, { input: post }))
-      this.setState({ isPublishing: false, post: postState })
+      this.setState({ isSaving: false, isPublishing: false, post: postState })
       this.props.toggleViewState('list')
       toast(`Post successfully ${isPublished ? "published" : "saved"}!`)
       this.props.fetchPosts()
@@ -83,6 +114,7 @@ class NewPost extends React.Component {
     })
   }
   uploadImage = async event => {
+    this.setState({ isUploadingImage: true })
     const { target: { files } } = event
     const fileForUpload = files[0]
     this.setState({
@@ -93,7 +125,8 @@ class NewPost extends React.Component {
         this.setState({
           uploadedImageUrl: url,
           showOverlay: true,
-          trimmedKey: getTrimmedKey(url, 20)
+          trimmedKey: getTrimmedKey(url, 20),
+          isUploadingImage: false
         })
       } catch (err) {
         console.log('error: ', err)
@@ -107,11 +140,11 @@ class NewPost extends React.Component {
     }, 500)
   }
   render() {
-    const { trimmedKey, showOverlay, isEditing, cover_image, post: { title, description, content } } = this.state
+    const { trimmedKey, showOverlay, isEditing, cover_image,
+      isUploadingImage, isPublishing, isSaving,
+      post: { title, description, content } } = this.state
     const { window } = this.props.context
-    const saveButton = css`
-      background-color: ${highlight};
-    `
+    console.log('trimmedKey: ', trimmedKey)
     const dynamicPreviewButton = css`
       color: ${highlight};
     `
@@ -163,33 +196,42 @@ class NewPost extends React.Component {
           )
         }
         <div css={buttonContainer}>
-          <Button
-            onClick={() => this.toggleInput()}
-            title="Edit"
-            customCss={[preview]}
-          />
-          <Button
+            <Button
+              onClick={() => this.toggleInput()}
+              title={isEditing ? "Preview" : "Edit"}
+              customCss={[preview, baseButton]}
+              customLoadingCss={[loadingStyle]}
+            />
+            <Button
             onClick={() => this.publish()}
             title="Publish"
-            customCss={[publish]}
+            customCss={[publish, baseButton]}
+            customLoadingCss={[loadingStyle]}
+            isLoading={isPublishing}
           />
           <Button
             onClick={() => this.publish()}
             title="Save"
-            customCss={[publish, saveButton]}
+            customCss={[publish, baseButton]}
+            customLoadingCss={[loadingStyle]}
+            isLoading={isSaving}
           />
           {
             isEditing && (
               <>
+
                 <FileInput
                   placeholder={`${cover_image ? "Update Cover Image" : "Add Cover Image" }`}
                   customCss={[imageButton]}
+                  labelStyle={[baseButton]}
                   onChange={this.setCoverImage}
                 />
                 <FileInput
                   placeholder="Upload Image"
                   customCss={[imageButton]}
                   onChange={this.uploadImage}
+                  isLoading={isUploadingImage}
+                  customLoadingCss={[loadingStyle]}
                 />
               </>
             )
@@ -198,7 +240,7 @@ class NewPost extends React.Component {
         {
           showOverlay && (
             <ImageLinkOverlay
-              key={trimmedKey}
+              imageKey={trimmedKey}
               copyUploadedImageLink={this.copyUploadedImageLink}
             />
           )
@@ -207,6 +249,12 @@ class NewPost extends React.Component {
     )
   }
 }
+
+const loadingStyle = css`
+  margin-top: 21px;
+  margin-left: 12px;
+  margin-right: -4px;
+`
 
 const dateStyle = css`
   margin-top: 0px;
@@ -244,34 +292,9 @@ const coverImage = css`
   margin-top: 20px;
 `
 
-const coverImageEdit = css`
-  margin-top: 20px;
-  margin-bottom: 20px;
-`
-
 const postPreview = css`
   background-color: white;
   padding: 10px 0px 50px;
-`
-
-const titleStyle = css`
-  font-size: 45px;
-  border: none;
-  outline: none;
-  width: 100%;
-  margin: 20px 0px 5px;
-  font-weight: 300;
-`
-
-const titleInputStyle = css`
-  ${titleStyle};
-  font-size: 30px;
-  margin-top: 0px;
-`
-
-const descriptionInputStyle = css`
-  ${titleStyle};
-  font-size: 20px;
 `
 
 const textareaContainer = css`
@@ -284,24 +307,19 @@ const baseButton = css`
   margin-left: 10px;
   padding: 2px 14px;
   border: none;
+  border-right: 1px solid black;
 `
 
 const preview = css`
   ${baseButton};
-  background-color: white;
-  color: black;
 `
 
 const imageButton = css`
   ${baseButton};
-  color: black;
-  background-color: #dedede;
 `
 
 const publish = css`
   ${baseButton};
-  background-color: #00a54a;
-  color: white;
 `
 
 const blogPost = css`

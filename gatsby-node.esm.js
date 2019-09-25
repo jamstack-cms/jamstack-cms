@@ -8,9 +8,9 @@ import downloadImage from './src/utils/downloadImage'
 import config from './jamstack-config'
 
 let APPSYNC_KEY
-if(process.env.APPSYNC_KEY) { 
+if(process.env.APPSYNC_KEY) {
   APPSYNC_KEY = process.env.APPSYNC_KEY
-} else { 
+} else {
   const JSConfig = require('./jamstack-api-key.js')
   APPSYNC_KEY = JSConfig['aws_appsync_apiKey']
 }

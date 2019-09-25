@@ -5,8 +5,6 @@ exports.handler = async (event, context, callback) => {
 
   let isAdmin = false
   const adminEmails = ["dabit3@gmail.com"]
-
-  console.log('event from Lambda to Cognito: ', event)
   
   if (adminEmails.indexOf(event.request.userAttributes.email) !== -1) {
     isAdmin = true

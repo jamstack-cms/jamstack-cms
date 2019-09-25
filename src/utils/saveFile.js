@@ -1,6 +1,7 @@
 import { Storage } from 'aws-amplify'
 import config from '../../jamstack-config.js'
 import uuid from 'uuid/v4'
+import { getCleanedFileName } from './helpers'
 
 const {
   aws_user_files_s3_bucket_region: region,
@@ -10,7 +11,8 @@ const {
 function saveFile(file) {
   return new Promise(async(resolve) => {
     const { name: fileName, type: mimeType } = file
-    const key = `images/${uuid()}_${fileName}`      
+    const cleanedFileName = getCleanedFileName(fileName)
+    const key = `images/${uuid()}_${cleanedFileName}`      
     const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
     try {
       await Storage.put(key, file, {

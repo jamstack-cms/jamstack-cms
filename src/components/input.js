@@ -2,12 +2,14 @@ import React from 'react'
 import { css } from '@emotion/core'
 import { fontFamily } from '../theme'
 import uuid from 'uuid/v4'
+import Loader from './loadingIndicator'
 
 export default function FileInput(props) {
-  const { onChange, customCss = [], placeholder, labelStyle = [] } = props
+  const { onChange, customCss = [], placeholder, labelStyle = [],
+    isLoading, customLoadingCss = [] } = props
   const id = `file-upload-${uuid()}`
   return (
-    <>
+    <div css={container}>
       <input
         type='file'
         placeholder={placeholder}
@@ -16,13 +18,18 @@ export default function FileInput(props) {
         name="file"
         id={id}
       />
+      { isLoading && <Loader customLoadingCss={[...customLoadingCss]} />}
       <label
         htmlFor={id}
         css={[label, ...labelStyle]}
       >{placeholder}</label>
-    </>
+    </div>
   )
 }
+
+const container = css`
+  display: flex;
+`
 
 const buttonStyle = css`
   width: 0.1px;
@@ -36,15 +43,12 @@ const buttonStyle = css`
 const label = css`
   font-family: ${fontFamily};
   font-size: 14px;
-  color: white;
-  background-color: black;
   display: inline-block;
-  padding: 4px 20px;
-  margin-left: 10px;
+  padding: 4px 15px;
   margin-top: 20px;
   cursor: pointer;
   border-radius: 3px;
-  opacity: .8;
+  opacity: .7;
   &:hover {
     opacity: 1;
   }

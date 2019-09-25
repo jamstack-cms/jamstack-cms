@@ -5,6 +5,7 @@ import { fontFamily } from '../theme'
 import PostComponent from '../components/postComponent'
 import { API, graphqlOperation } from 'aws-amplify'
 import getSignedUrls from '../utils/getSignedUrls'
+import getSignedImage from '../utils/getSignedImage'
 
 class Preview extends React.Component {
   state = {
@@ -18,6 +19,10 @@ class Preview extends React.Component {
       const { getPost: post } = postData.data
       const updatedContent = await getSignedUrls(post.content)
       post['content'] = updatedContent
+      if (post['cover_image']) {
+        const signedCoverImage = await getSignedImage(post['cover_image'])
+        post['cover_image'] = signedCoverImage
+      }
       this.setState({ post, isLoading: false })
     } catch (err) { console.log({ err })}
   }

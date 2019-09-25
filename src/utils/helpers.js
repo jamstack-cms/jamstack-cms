@@ -36,11 +36,22 @@ function getTrimmedKey(key, length = 8) {
   return key.substr(0, length) + '...'
 }
 
+function getCleanedFileName (fileName) {
+  const modifiedFileName = fileName.replace(/\s+/g, '-').toLowerCase();
+  let fileNameArray = modifiedFileName.split('.')
+  const extension = fileNameArray[fileNameArray.length - 1]
+  delete fileNameArray[fileNameArray.length - 1]
+  fileNameArray = fileNameArray.filter(r => r)
+  const newFileName = `${fileNameArray.join('-')}.${extension}`
+  return newFileName
+}
+
 const helpers = {
   slugify,
   generatePreviewLink,
   copyToClipboard,
-  getTrimmedKey
+  getTrimmedKey,
+  getCleanedFileName
 }
 
 module.exports = helpers
