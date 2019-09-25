@@ -1,10 +1,8 @@
+![](jamstackcms.jpg)
+
 # JAMstack CMS
 
-End to end serverless blogging system.
-
-Built with [Gatsby](https://www.gatsbyjs.org/) & [AWS Amplify](https://aws-amplify.github.io/).
-
-![](jamstackcms.jpg)
+End to end serverless blogging system. Built with [Gatsby](https://www.gatsbyjs.org/) & [AWS Amplify](https://aws-amplify.github.io/).
 
 ### Philosophy
 
