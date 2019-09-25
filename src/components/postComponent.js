@@ -3,6 +3,8 @@ import marked from 'marked'
 import { css } from '@emotion/core'
 import { fontFamily } from '../theme'
 import format from 'date-fns/format'
+import ProgressiveImage from 'react-progressive-image'
+import placeholder from '../images/placeholder.jpg'
 
 function Title({ title }) {
   return (
@@ -42,7 +44,11 @@ export default function PostComponent({
   }
   return (
     <div css={postContainer}>
-      { cover_image && <img css={coverImageStyle} src={cover_image} />}
+      { cover_image && (
+        <ProgressiveImage src={cover_image} placeholder={placeholder}>
+          {(src, loading) => <img style={{ opacity: loading ? 0.5 : 1 }} src={src} alt="an image" />}
+        </ProgressiveImage>
+      )}
       <div css={contentContainer} className="blog-post">
         <Title title={title} />
         { description && <Description description={description} />}
@@ -63,6 +69,7 @@ const contentContainer = css`
 
 const coverImageStyle = css`
   margin-bottom: -10px;
+  min-h
 `
 
 const titleStyle = css`

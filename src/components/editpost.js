@@ -12,7 +12,7 @@ import FileInput from './input'
 import { updatePost } from '../graphql/mutations'
 import { getPost } from '../graphql/queries'
 import { BlogContext } from './context'
-import { highlight, fontFamily } from '../theme'
+import { fontFamily } from '../theme'
 import getSignedUrls from '../utils/getSignedUrls'
 import getUnsignedUrls from '../utils/getUnsignedUrls'
 import getKeyWithPath from '../utils/getKeyWithPath'
@@ -318,7 +318,6 @@ const fixedPreview = css`
   position: fixed;
   width: 150px;
   margin-top: 30vh;
-  font-weight: 700;
   margin-left: -150px;
   display: flex;
   flex-direction: column;
@@ -329,28 +328,9 @@ const baseButton = css`
   line-height: 20px;
 `
 
-const loadingStyle = css`
-  margin-top: 21px;
-  margin-left: 12px;
-  margin-right: -4px;
-`
-
 const sideLoadingStyle = css`
   margin-top: 12px;
   margin-right: -4px;
-`
-
-const lastButton = css`
-border: none;
-`
-
-const preview = css`
-  ${baseButton};
-`
-
-const coverImageButton = css`
-  ${baseButton};
-  border: 1px solid #ededed;
 `
 
 export default PostRoute

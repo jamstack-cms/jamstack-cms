@@ -44,8 +44,15 @@ class NewPost extends React.Component {
       }
     })
   }
-  toggleInput = async () => {
-    const { isEditing, post: { content } } = this.state
+  toggleEditView = async editState => {
+    const { post: { content } } = this.state
+    let { isEditing } = this.state
+    if (editState === 'viewPost') {
+      isEditing = true
+    }
+    if (editState === 'viewEditor') {
+      isEditing = false
+    }
     if (isEditing) {
       const updatedContent = await getSignedUrls(content)
       this.setState({
@@ -145,24 +152,50 @@ class NewPost extends React.Component {
       post: { title, description, content } } = this.state
     const { window } = this.props.context
     console.log('trimmedKey: ', trimmedKey)
-    const dynamicPreviewButton = css`
-      color: ${highlight};
-    `
+
     return (
       <div css={container}>
-        {
-          isEditing ? (
-            <div>
-              <button onClick={this.toggleInput} css={[fixedPreview, dynamicPreviewButton]}>
-                Preview
-              </button>
-            </div>
-          ) : (
-            <button onClick={this.toggleInput} css={[fixedPreview, dynamicPreviewButton]}>
-              Edit
-            </button>
-          )
-        }
+        <div css={[fixedPreview]}>
+          <Button
+            onClick={this.toggleEditView}
+            title={isEditing ? "Preview" : "Edit"}
+            customCss={[fixedButton]}
+            customLoadingCss={[loadingStyle]}
+          />
+          <Button
+            onClick={() => this.publish(true)}
+            title="Publish"
+            customCss={[fixedButton]}
+            customLoadingCss={[loadingStyle]}
+            isLoading={isPublishing}
+          />
+          <Button
+            onClick={() => this.publish(false)}
+            title="Save"
+            customCss={[fixedButton]}
+            customLoadingCss={[loadingStyle]}
+            isLoading={isSaving}
+          />
+          {
+            isEditing && (
+              <>
+                <FileInput
+                  placeholder={`${cover_image ? "Update Cover Image" : "Add Cover Image" }`}
+                  labelStyle={[fixedButton]}
+                  onChange={this.setCoverImage}
+                />
+                <FileInput
+                  placeholder="Upload Image"
+                  labelStyle={[fixedButton]}
+                  onChange={this.uploadImage}
+                  isLoading={isUploadingImage}
+                  customLoadingCss={[loadingStyle]}
+                />
+              </>
+            )
+          }
+        </div>
+        
         {
           isEditing ? (
             <div css={textareaContainer}>
@@ -174,9 +207,6 @@ class NewPost extends React.Component {
                 setPost={this.setPost}
                 window={window}
               />
-              <div css={buttonContainer}>
-                
-              </div>
             </div>
           ) : (
             <div>
@@ -195,48 +225,6 @@ class NewPost extends React.Component {
             </div>
           )
         }
-        <div css={buttonContainer}>
-            <Button
-              onClick={() => this.toggleInput()}
-              title={isEditing ? "Preview" : "Edit"}
-              customCss={[preview, baseButton]}
-              customLoadingCss={[loadingStyle]}
-            />
-            <Button
-            onClick={() => this.publish()}
-            title="Publish"
-            customCss={[publish, baseButton]}
-            customLoadingCss={[loadingStyle]}
-            isLoading={isPublishing}
-          />
-          <Button
-            onClick={() => this.publish()}
-            title="Save"
-            customCss={[publish, baseButton]}
-            customLoadingCss={[loadingStyle]}
-            isLoading={isSaving}
-          />
-          {
-            isEditing && (
-              <>
-
-                <FileInput
-                  placeholder={`${cover_image ? "Update Cover Image" : "Add Cover Image" }`}
-                  customCss={[imageButton]}
-                  labelStyle={[baseButton]}
-                  onChange={this.setCoverImage}
-                />
-                <FileInput
-                  placeholder="Upload Image"
-                  customCss={[imageButton]}
-                  onChange={this.uploadImage}
-                  isLoading={isUploadingImage}
-                  customLoadingCss={[loadingStyle]}
-                />
-              </>
-            )
-          }
-        </div>
         {
           showOverlay && (
             <ImageLinkOverlay
@@ -250,9 +238,9 @@ class NewPost extends React.Component {
   }
 }
 
+
 const loadingStyle = css`
-  margin-top: 21px;
-  margin-left: 12px;
+  margin-top: 12px;
   margin-right: -4px;
 `
 
@@ -277,15 +265,11 @@ const container = css`
 
 const fixedPreview = css`
   position: fixed;
-  font-weight: 700;
-  margin-left: -140px;
-  color: blue;
-  border: none;
-  outline: none;
-  font-family: ${fontFamily};
-  font-weight: 400;
-  background-color: transparent;
-  cursor: pointer;
+  width: 150px;
+  margin-top: 0vh;
+  margin-left: -150px;
+  display: flex;
+  flex-direction: column;
 `
 
 const coverImage = css`
@@ -303,30 +287,22 @@ const textareaContainer = css`
 `
 
 const baseButton = css`
-  margin-top: 20px;
-  margin-left: 10px;
-  padding: 2px 14px;
+  margin-top: 12px;
+  line-height: 20px;
+`
+
+const fixedButton = css`
+  ${baseButton};
+  font-family: ${fontFamily} !important;
   border: none;
-  border-right: 1px solid black;
-`
-
-const preview = css`
-  ${baseButton};
-`
-
-const imageButton = css`
-  ${baseButton};
-`
-
-const publish = css`
-  ${baseButton};
+  background-color: transparent;
+  outline: none;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: 400;
 `
 
 const blogPost = css`
-`
-
-const buttonContainer = css`
-  display: flex;
 `
 
 const NewPostWithContext = props => (
