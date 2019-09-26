@@ -1,7 +1,7 @@
 import React from "react"
 import { Link } from "gatsby"
 import { css } from "@emotion/core"
-import { ContextProviderComponent, BlogContext } from './context'
+import { ContextProviderComponent, BlogContext } from '../context/mainContext'
 import logo from '../images/logo.png'
 import "easymde/dist/easymde.min.css"
 import { highlight, fontFamily } from '../theme'

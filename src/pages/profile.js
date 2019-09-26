@@ -3,8 +3,9 @@ import { Auth } from 'aws-amplify'
 import { graphql } from "gatsby"
 import { css } from "@emotion/core"
 import styledAuthenticator from '../components/styledAuthenticator'
-import { ContextProviderComponent, BlogContext } from '../components/context'
+import { BlogContext } from '../context/mainContext'
 import TitleComponent from '../components/titleComponent'
+import Layout from '../layouts/mainLayout'
 
 class Admin extends React.Component {
   state = {
@@ -29,12 +30,9 @@ class Admin extends React.Component {
       .catch(err => console.log({ err }))
   }
   render() {
-    const { data } = this.props
     const { email, username } = this.state
-    const { isAdmin } = this.context
-    console.log('context:', this.context)
     return (
-      <ContextProviderComponent>
+      <Layout>
         <div>
           <TitleComponent title="Profile" />
           <h4>Username: {username}</h4>
@@ -45,7 +43,7 @@ class Admin extends React.Component {
               css={button}>Sign Out</button>
           </div>
         </div>
-      </ContextProviderComponent>
+      </Layout>
     )
   }
 }

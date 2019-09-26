@@ -4,11 +4,11 @@ import marked from 'marked';
 import Button from './button'
 import FileInput from './input'
 import FormComponent from './formComponent'
-import { ContextProviderComponent, BlogContext } from './context'
+import { BlogContext } from '../context/mainContext'
 import { createPost } from '../graphql/mutations'
 import {  API, graphqlOperation } from 'aws-amplify'
 import format from 'date-fns/format'
-import { highlight, fontFamily } from '../theme'
+import { fontFamily } from '../theme'
 import saveFile from '../utils/saveFile'
 import { getTrimmedKey, copyToClipboard } from '../utils/helpers'
 import { toast } from 'react-toastify'
@@ -99,7 +99,7 @@ class NewPost extends React.Component {
     try {
       await API.graphql(graphqlOperation(createPost, { input: post }))
       this.setState({ isSaving: false, isPublishing: false, post: postState })
-      this.props.toggleViewState('list')
+      this.props.toggleViewState('listPosts')
       toast(`Post successfully ${isPublished ? "published" : "saved"}!`)
       this.props.fetchPosts()
     } catch (err) {
@@ -306,13 +306,11 @@ const blogPost = css`
 `
 
 const NewPostWithContext = props => (
-  <ContextProviderComponent>
-    <BlogContext.Consumer>
-      {
-        context => <NewPost {...props} context={context} />
-      }
-    </BlogContext.Consumer>
-  </ContextProviderComponent>
+  <BlogContext.Consumer>
+    {
+      context => <NewPost {...props} context={context} />
+    }
+  </BlogContext.Consumer>
 )
 
 export default NewPostWithContext

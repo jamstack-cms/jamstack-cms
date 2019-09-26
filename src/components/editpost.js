@@ -1,9 +1,8 @@
 import React from 'react'
-import uuid from 'uuid/v4'
 import { Storage, API, graphqlOperation } from 'aws-amplify'
 import { css } from "@emotion/core"
-import { toast } from 'react-toastify'
 
+import MainLayout from '../layouts/mainLayout'
 import Button from './button'
 import PostComponent from './postComponent'
 import FormComponent from './formComponent'
@@ -11,7 +10,7 @@ import ImageLinkOverlay from './imageLinkOverlay'
 import FileInput from './input'
 import { updatePost } from '../graphql/mutations'
 import { getPost } from '../graphql/queries'
-import { BlogContext } from './context'
+import { BlogContext } from '../context/mainContext'
 import { fontFamily } from '../theme'
 import getSignedUrls from '../utils/getSignedUrls'
 import getUnsignedUrls from '../utils/getUnsignedUrls'
@@ -27,10 +26,11 @@ const initialPostState = {
     description: '',
     createdAt: '',
     previewEnabled: false,
+    published: false,
   }
 }
 
-class PostRoute extends React.Component {
+class EditPost extends React.Component {
   state = {
     file: {},
     hasChanged: false,
@@ -43,9 +43,9 @@ class PostRoute extends React.Component {
     // loading indicators
     isSaving: false,
     isUploadingImage: false,
+    isPublishing: false,
     isGeneratingPreview: false
   }
-  static contextType = BlogContext
   async componentDidMount() {
     const { id } = this.props
     let wildcard = this.props["*"]
@@ -137,15 +137,32 @@ class PostRoute extends React.Component {
       })
     }
   }
-  updatePost = async () => {
-    this.setState({ isSaving: true })
+  updatePost = async publishedState => {
     const input = {...this.state.post}
-    if (this.state.file && this.state.file.name) {
-      const { url: fileForUpload } = await saveFile(this.state.file)
-      input['cover_image'] = fileForUpload
+    if (!publishedState) {
+      this.setState({ isSaving: true })
+      if (this.state.file && this.state.file.name) {
+        const { url: fileForUpload } = await saveFile(this.state.file)
+        input['cover_image'] = fileForUpload
+      }
+    } else {
+      this.setState({ isPublishing: true })
+      if(publishedState === 'publish') {
+        input['published'] = true
+      } else {
+        input['published'] = false
+      }
     }
     await API.graphql(graphqlOperation(updatePost, {input}))
-    this.setState({ hasChanged: false, isSaving: false })
+    this.setState({
+      hasChanged: false, isSaving: false, isPublishing: false
+    })
+    if(publishedState === 'publish') {
+      this.setState({ post: {...this.state.post, published: true }})
+    }
+    if(publishedState === 'unpublish') {
+      this.setState({ post: {...this.state.post, published: false }})
+    }
     this.toggleEditView('viewPost')
   }
   copyPreviewLink = () => {
@@ -169,22 +186,20 @@ class PostRoute extends React.Component {
     await API.graphql(graphqlOperation(updatePost, {input}))
     copyToClipboard(link)
     this.setState({
+      isGeneratingPreview: false,
       post: {
         ...this.state.post,
-        previewEnabled: true,
-        isGeneratingPreview: false
+        previewEnabled: true
       }
     })
-    toast(`Success! Link copied to clipboard.`)
   }
   render() {
-    const { window } = this.context
+    const { window } = this.props.context
     const { isEditing, isLoading, hasChanged, showOverlay,
-    isSaving, isGeneratingPreview, isUploadingImage } = this.state
-    const { title, content, createdAt, cover_image, previewEnabled, description  } = this.state.post
-    
+    isSaving, isGeneratingPreview, isUploadingImage, isPublishing } = this.state
+    const { title, content, createdAt, cover_image, previewEnabled, description, published } = this.state.post
     if (isLoading) return <p css={loading}>Loading...</p>
-    console.log('isEditing: ', isEditing)
+    console.log('post: ', this.state.post)
     return (
       <div>
         <div css={[fixedPreview]}>
@@ -199,7 +214,7 @@ class PostRoute extends React.Component {
                 {
                   hasChanged && (
                     <Button
-                      onClick={this.updatePost}
+                      onClick={() => this.updatePost()}
                       title="Save"
                       customCss={[baseButton, fixedButton]}
                       customLoadingCss={[sideLoadingStyle]}
@@ -207,6 +222,13 @@ class PostRoute extends React.Component {
                     />
                   )
                 }
+                <Button
+                  onClick={() => this.updatePost(published ? 'unpublish' : 'publish')}
+                  title={published ? "Unpublish" : "Publish"}
+                  customCss={[baseButton, fixedButton]}
+                  customLoadingCss={[sideLoadingStyle]}
+                  isLoading={isPublishing}
+                />
                 <FileInput
                   placeholder="Upload Image"
                   onChange={this.uploadImage}
@@ -230,7 +252,7 @@ class PostRoute extends React.Component {
                 />
                 {hasChanged && (
                   <Button
-                    onClick={this.updatePost}
+                    onClick={() => this.updatePost()}
                     title="Save"
                     customCss={[baseButton, fixedButton]}
                     customLoadingCss={[sideLoadingStyle]}
@@ -240,22 +262,13 @@ class PostRoute extends React.Component {
               </>
             )
           }
-          {
-            previewEnabled ? (
-              <Button
-                onClick={this.copyPreviewLink}
-                title="Preview link"
-                customCss={[baseButton, fixedButton, alignLeft]}
-              />
-            ) : (
-              <Button
-                onClick={() => this.generatePreviewLink()}
-                title="Generate preview"
-                customCss={[baseButton, fixedButton, alignLeft]}
-                customLoadingCss={[sideLoadingStyle]}
-              />
-            )
-          }
+          <Button
+            onClick={previewEnabled ? this.copyPreviewLink : this.generatePreviewLink}
+            title={previewEnabled ? "Preview link" : "Generate preview"}
+            customCss={[baseButton, fixedButton, alignLeft]}
+            customLoadingCss={[previewLoading]}
+            isLoading={isGeneratingPreview}
+          />
         </div>
         {
           isEditing ? (
@@ -294,10 +307,24 @@ class PostRoute extends React.Component {
   }
 }
 
+function EditPostWithContext(props) {
+  return (
+    <MainLayout>
+      <BlogContext.Consumer>
+        {
+          context => <EditPost {...props} context={context} />
+        }
+      </BlogContext.Consumer>
+    </MainLayout>
+  )
+}
+
+export default EditPostWithContext
+
 const loading = css`
   font-family: ${fontFamily} !important;
   font-weight: 400;
-  font-size: 22px;
+  font-size: 20px;
 `
 
 const alignLeft = css`
@@ -333,4 +360,7 @@ const sideLoadingStyle = css`
   margin-right: -4px;
 `
 
-export default PostRoute
+const previewLoading = css`
+  ${sideLoadingStyle};
+  margin-top: 22px;
+`

@@ -2,9 +2,10 @@ import React from "react"
 import { navigate, graphql } from "gatsby"
 import marked from 'marked';
 import { css } from "@emotion/core"
-import { ContextProviderComponent, BlogContext } from '../components/context'
+import { BlogContext } from '../context/mainContext'
 import { fontFamily } from '../theme'
 import PostComponent from '../components/postComponent'
+import MainLayout from '../layouts/mainLayout.js'
 
 class BlogPostTemplate extends React.Component {
   static contextType = BlogContext
@@ -23,28 +24,41 @@ class BlogPostTemplate extends React.Component {
     const { pageContext: { content, local_cover_image } } = this.props
 
     return (
-      <ContextProviderComponent>
-        <div>
-          {
-            isAdmin && (
-              <button
-                onClick={this.editPost}
-                css={editPostButton}
-              >Edit Post</button>
-            )
-          }
-          <PostComponent
-            title={title}
-            description={description}
-            content={content}
-            cover_image={local_cover_image}
-            createdAt={new Date(createdAt)}
-          />
-        </div>
-      </ContextProviderComponent>
+      <div>
+        {
+          isAdmin && (
+            <button
+              onClick={this.editPost}
+              css={editPostButton}
+            >Edit Post</button>
+          )
+        }
+        <PostComponent
+          title={title}
+          description={description}
+          content={content}
+          cover_image={local_cover_image}
+          createdAt={new Date(createdAt)}
+        />
+      </div>
     )
   }
 }
+
+function BlogPostTemplateWithContext(props) {
+  return (
+    <MainLayout>
+      <BlogContext.Consumer>
+        {
+          context => <BlogPostTemplate {...props} context={context} />
+        }
+      </BlogContext.Consumer>
+    </MainLayout>
+  )
+}
+
+export default BlogPostTemplateWithContext
+
 
 const editPostButton = css`
   cursor: pointer;
@@ -58,35 +72,6 @@ const editPostButton = css`
   font-family: ${fontFamily};
 `
 
-const dateStyle = css`
-  margin-top: 0px;
-  font-size: 15px !important;
-  font-family: ${fontFamily} !important;
-`
-
-const titleStyle = css`
-  font-weight: 400;
-`
-
-const descriptionStyle = css`
-  font-weight: 500;
-  font-size: 22px;
-  color: rgba(0, 0, 0, .55);
-`
-
-const coverImageStyle = css`
-  margin-bottom: -10px;
-`
-
-const buttonStyle = css`
-  margin-bottom: 10px;
-`
-
-const container = css`
-  padding: 20px 0px;
-`
-
-export default BlogPostTemplate
 
 export const pageQuery = graphql`
   query BlogPostByID($id: ID!) {

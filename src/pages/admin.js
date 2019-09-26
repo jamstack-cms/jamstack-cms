@@ -2,6 +2,8 @@ import React from "react"
 import { Storage, API, graphqlOperation } from "aws-amplify"
 import styledAuthenticator from '../components/styledAuthenticator'
 import NewPost from '../components/NewPost'
+import NewPage from '../components/NewPage'
+import Layout from '../layouts/mainLayout'
 import { listPosts } from '../graphql/queries'
 import { deletePost, updatePost } from '../graphql/mutations'
 import { css } from "@emotion/core"
@@ -16,12 +18,13 @@ import JakobsLoader from '../components/jakobsLoader'
 class Admin extends React.Component {
   state = {
     isLoading: true,
-    viewState: 'list',
+    viewState: 'listPosts',
     posts: [],
     images: [],
     imageKeys: [],
     imagesInUse: [],
-    imagesNotInUse: []
+    imagesNotInUse: [],
+    pageTemplate: 'hero'
   }
   async componentDidMount() {    
     this.fetchPosts()
@@ -35,6 +38,11 @@ class Admin extends React.Component {
     } catch(err) {
       console.log('error:' , err)
     }
+  }
+  updatePageTemplate = e => {
+    this.setState({
+      pageTemplate: e.target.value
+    })
   }
   fetchPosts = async () => {
     try {
@@ -123,35 +131,51 @@ class Admin extends React.Component {
     }
   }
   render() {
-    const { viewState, isLoading } = this.state
+    const { viewState, isLoading, pageTemplate } = this.state
     const highlightButton = state => css`
       color: ${state === viewState ? highlight: 'black'};
     `
-
     return (
         <div css={container}>
-          <TitleComponent title='Admin' />
-          <div css={buttonContainer}>
-            <button
-              onClick={() => this.toggleViewState('list')}
-              css={[adminButtonStyle, highlightButton('list')]}
-            >View Posts</button>
-            <button
-              onClick={() => this.toggleViewState('media')}
-              css={[adminButtonStyle, highlightButton('media')]}
-            >View Media</button>
-            <button
-              css={[adminButtonStyle, highlightButton('create')]}
-              onClick={() => this.toggleViewState('create')}
-            >New Post</button>
-          </div>
+          <Layout>
+            <TitleComponent title='Admin' />
+            <div css={buttonContainer}>
+              <button
+                onClick={() => this.toggleViewState('listPosts')}
+                css={[adminButtonStyle, highlightButton('listPosts')]}
+              >View Posts</button>
+              <button
+                onClick={() => this.toggleViewState('media')}
+                css={[adminButtonStyle, highlightButton('media')]}
+              >View Media</button>
+              <button
+                css={[adminButtonStyle, highlightButton('createPost')]}
+                onClick={() => this.toggleViewState('createPost')}
+              >New Post</button>
+              <button
+                css={[adminButtonStyle, highlightButton('createPage')]}
+                onClick={() => this.toggleViewState('createPage')}
+              >New Page</button>
+              {
+                viewState === 'createPage' && (
+                  <select css={selectMenu} value={pageTemplate} onChange={this.updatePageTemplate}>
+                    <option value='hero'>Hero</option>
+                    <option value='sidebar'>Sidebar</option>
+                  </select>
+                )
+              }
+            </div>
+          </Layout>
           {
-            isLoading && <JakobsLoader />
+            isLoading && viewState === 'listPosts' && (
+            <Layout>
+              <JakobsLoader />
+            </Layout>)
           }
           {
-            viewState === 'list' && (
+            viewState === 'listPosts' && (
               (
-                <div>
+                <Layout noPadding>
                   <PostList
                     posts={this.state.posts}
                     highlight={highlight}
@@ -160,34 +184,58 @@ class Admin extends React.Component {
                     publishPost={this.publishPost}
                     unPublishPost={this.unPublishPost}
                   />
-                </div>
+                </Layout>
               )
             )
           }
           {
-            viewState === 'create' && (
-              <NewPost
-                toggleViewState={this.toggleViewState}
-                fetchPosts={this.fetchPosts}
-              />
+            viewState === 'createPost' && (
+              <Layout noPadding>
+                <NewPost
+                  toggleViewState={this.toggleViewState}
+                  fetchPosts={this.fetchPosts}
+                />
+              </Layout>
             )
           }
           {
             viewState === 'media' && (
-              <MediaView
-                toggleViewState={this.toggleViewState}
-                images={this.state.images}
-                addImageToState={this.addImageToState}
-                imagesInUse={this.state.imagesInUse}
-                imagesNotInUse={this.state.imagesNotInUse}
-                removeImage={this.removeImage}
-              />
+              <Layout noPadding>
+                <MediaView
+                  toggleViewState={this.toggleViewState}
+                  images={this.state.images}
+                  addImageToState={this.addImageToState}
+                  imagesInUse={this.state.imagesInUse}
+                  imagesNotInUse={this.state.imagesNotInUse}
+                  removeImage={this.removeImage}
+                />
+              </Layout>
+            )
+          }
+          {
+            viewState === 'createPage' && (
+              <div>
+                <NewPage
+                  template={pageTemplate}
+                  toggleViewState={this.toggleViewState}
+                  images={this.state.images}
+                  addImageToState={this.addImageToState}
+                  imagesInUse={this.state.imagesInUse}
+                  imagesNotInUse={this.state.imagesNotInUse}
+                  removeImage={this.removeImage}
+                />
+              </div>
             )
           }
         </div>
     )
   }
 }
+
+const selectMenu = css`
+  outline: none;
+  border: none;
+`
 
 const buttonContainer = css`
   border-bottom: 1px solid rgba(0, 0, 0, .25);
@@ -206,10 +254,6 @@ const adminButtonStyle = css`
   &:hover {
     opacity: 1;
   }
-`
-
-const adminTitle = css`
-  margin-bottom: 25px;
 `
 
 const container = css`

@@ -6,6 +6,7 @@ import PostComponent from '../components/postComponent'
 import { API, graphqlOperation } from 'aws-amplify'
 import getSignedUrls from '../utils/getSignedUrls'
 import getSignedImage from '../utils/getSignedImage'
+import Layout from '../layouts/mainLayout'
 
 class Preview extends React.Component {
   state = {
@@ -28,26 +29,34 @@ class Preview extends React.Component {
   }
   render() {
     const { isLoading } = this.state
-    if (isLoading) return (
-      <p css={loading}>Loading...</p>
-    )
     const { cover_image, title, createdAt, content, description } = this.state.post
     return (
-      <>
-        <PostComponent
-          cover_image={cover_image}
-          title={title}
-          createdAt={new Date(createdAt)}
-          content={content}
-          description={description}
-        />        
-      </>
+      <Layout>
+        { isLoading && (
+          <p css={loading}>Loading...</p>
+        )}
+        {
+          !isLoading && (
+            <>
+              <PostComponent
+                cover_image={cover_image}
+                title={title}
+                createdAt={new Date(createdAt)}
+                content={content}
+                description={description}
+              />        
+            </>
+          )
+        }
+      </Layout>
     )
   }
 }
 
 const loading = css`
   font-family: ${fontFamily} !important;
+  font-weight: 400;
+  font-size: 20px;
 `
 
 export default Preview

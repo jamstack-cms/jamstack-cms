@@ -2,6 +2,8 @@ import React from "react"
 
 import SiteContainer from '../components/site-container'
 import SEO from "../components/seo"
+import MainLayout from '../layouts/mainLayout'
+import { BlogContext } from '../context/mainContext'
 import { css } from '@emotion/core'
 
 import { highlight } from '../theme'
@@ -42,12 +44,25 @@ class BlogIndex extends React.Component {
   }
 }
 
+
+function BlogIndexWithContext(props) {
+  return (
+    <MainLayout>
+      <BlogContext.Consumer>
+        {
+          context => <BlogIndex {...props} context={context} />
+        }
+      </BlogContext.Consumer>
+    </MainLayout>
+  )
+}
+
+export default BlogIndexWithContext
+
 const postContainer = css`
   width: 690px;
   margin: 0 auto;
 `
-
-export default BlogIndex
 
 export const pageQuery = graphql`
   query {

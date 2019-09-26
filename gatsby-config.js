@@ -15,7 +15,7 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-layout',
       options: {
-        component: require.resolve(`./src/components/layout.js`),
+        component: require.resolve(`./src/layouts/baseLayout.js`),
       },
     },
     'gatsby-plugin-emotion',
