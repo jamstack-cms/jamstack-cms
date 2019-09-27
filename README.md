@@ -23,6 +23,14 @@ JAMstack CMS solves this issue by giving you two views at run time, including bo
 
 This way you have the opportunity to test out new posts and web pages before deploying them to your live environmnet.
 
+#### 3 Ways to build a page
+
+1. Static page - As with any Gatsby site, can still create a custom static page and route by just creating a new file in the `src/pages` directory. These pages will all be created at build time.
+
+2. Blog post - In the Admin panel you can create Blog posts that will be dynamically generated at build time. These posts will be queried at build time from the server and used to build the pages. Any images referenced from your image gallery will be downloaded and served locally from the public/downloads folder.
+
+3. Dynamic page - Similarly to creating a 
+
 ### Context
 
 WordPress has dominated for quite some time with estimates that it powers around 30% of all websites today. One of the reasons for the popularity of WordPress is that it is composed of all of the elements needed for such a platform, including these necessary elements:
