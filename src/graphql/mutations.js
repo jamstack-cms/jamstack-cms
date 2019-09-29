@@ -73,27 +73,30 @@ export const deleteComment = `mutation DeleteComment($input: DeleteCommentInput!
 export const createSettings = `mutation CreateSettings($input: CreateSettingsInput!) {
   createSettings(input: $input) {
     id
-    mode
     categories
     adminGroups
+    theme
+    customStyles
   }
 }
 `;
 export const updateSettings = `mutation UpdateSettings($input: UpdateSettingsInput!) {
   updateSettings(input: $input) {
     id
-    mode
     categories
     adminGroups
+    theme
+    customStyles
   }
 }
 `;
 export const deleteSettings = `mutation DeleteSettings($input: DeleteSettingsInput!) {
   deleteSettings(input: $input) {
     id
-    mode
     categories
     adminGroups
+    theme
+    customStyles
   }
 }
 `;
@@ -130,6 +133,30 @@ export const deletePreview = `mutation DeletePreview($input: DeletePreviewInput!
     cover_image
     createdAt
     categories
+  }
+}
+`;
+export const createUser = `mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+    avatarUrl
+    owner
+  }
+}
+`;
+export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+    avatarUrl
+    owner
+  }
+}
+`;
+export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
+  deleteUser(input: $input) {
+    id
+    avatarUrl
+    owner
   }
 }
 `;

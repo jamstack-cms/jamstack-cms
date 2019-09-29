@@ -7,9 +7,7 @@ import { fontFamily } from '../theme'
 import PostComponent from '../components/postComponent'
 import MainLayout from '../layouts/mainLayout.js'
 
-class BlogPostTemplate extends React.Component {
-  static contextType = BlogContext
-  
+class BlogPostTemplate extends React.Component { 
   getMarkdownText(markdown) {
     var rawMarkup = marked(markdown, {sanitize: true});
     return { __html: rawMarkup };
@@ -19,9 +17,13 @@ class BlogPostTemplate extends React.Component {
     navigate(`/editpost/${getPost.id}/${getPost.title}/edit`, { replace: true })
   }
   render() {
-    const { isAdmin } = this.context
+    const { isAdmin, theme: { baseFontWeight } } = this.props.context
     const { title, description, createdAt  } = this.props.data.appsync.getPost
     const { pageContext: { content, local_cover_image } } = this.props
+
+    const themedButton = css`
+      font-weight: ${baseFontWeight};
+    `
 
     return (
       <div>
@@ -29,7 +31,7 @@ class BlogPostTemplate extends React.Component {
           isAdmin && (
             <button
               onClick={this.editPost}
-              css={editPostButton}
+              css={[editPostButton, themedButton]}
             >Edit Post</button>
           )
         }
@@ -67,7 +69,6 @@ const editPostButton = css`
   padding: 0;
   margin-right: 15px;
   margin-bottom: 20px;
-  font-weight: 400;
   outline: none;
   font-family: ${fontFamily};
 `

@@ -17,6 +17,7 @@ import getUnsignedUrls from '../utils/getUnsignedUrls'
 import getKeyWithPath from '../utils/getKeyWithPath'
 import saveFile from '../utils/saveFile'
 import { generatePreviewLink as generateLink, copyToClipboard, getTrimmedKey } from '../utils/helpers'
+import { toast } from 'react-toastify';
 
 const initialPostState = {
   post: {
@@ -159,9 +160,14 @@ class EditPost extends React.Component {
     })
     if(publishedState === 'publish') {
       this.setState({ post: {...this.state.post, published: true }})
+      toast("Successfully published post!")
     }
     if(publishedState === 'unpublish') {
       this.setState({ post: {...this.state.post, published: false }})
+      toast("Successfully unpublished post!")
+    }
+    if (!publishedState) {
+      toast("Successfully updated post!")
     }
     this.toggleEditView('viewPost')
   }

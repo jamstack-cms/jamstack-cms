@@ -14,15 +14,15 @@ fs.readFile(config, 'utf8', function (err, data) {
   })
   items.forEach(item => {
     if (item.includes('aws_appsync_apiKey')) {
-      var text = item.replace(/(\r?\n|\r|\\|n)/gm, "");
-      const exports = `const exports = {
+      let text = item.replace("\\n", "")
+      text = text.replace(/(\\)/gm, "")
+      const fileData = `const fileData = {
         ${text}
       }
-
-      module.exports = exports
+      module.exports = fileData
       `
 
-      fs.writeFile('jamstack-api-key.js', exports, 'utf8', function(err, success) {
+      fs.writeFile('jamstack-api-key.js', fileData, 'utf8', function(err) {
         if (err) {
           throw err
         }

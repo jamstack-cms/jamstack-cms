@@ -1,6 +1,5 @@
-const exports = {
-            "aws_appsyc_apiKey": "da2-dz4sb7b5hhpxgjfebjdpt4uq"
+const fileData = {
+            "aws_appsync_apiKey": "da2-dz4sb7b5hnhpxgjfebjdpnt4uq"
       }
-
-      module.exports = exports
+      module.exports = fileData
       

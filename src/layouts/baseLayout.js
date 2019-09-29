@@ -3,53 +3,55 @@ import { css } from '@emotion/core'
 import {
   ContextProviderComponent, BlogContext
 } from '../context/mainContext'
-import { fontFamily, highlight } from '../theme'
+import { fontFamily } from '../theme'
 import { Link } from 'gatsby'
 import logo from '../images/logo.png'
+import logoLight from '../images/logoLight.png'
 import "easymde/dist/easymde.min.css"
 import 'react-toastify/dist/ReactToastify.css'
 
-import { toast } from 'react-toastify';
-
-toast.configure( {
-  progressStyle: {
-    background: 'rgba(0, 0, 0, .2)',
-  }
-})
-
 function BaseLayout(props) {
-  const { isAdmin } = props.context
+  const { theme, window: { height }, isAdmin } = props.context
+  const { borderColor, baseFontWeight, highlight } = theme
+  let { type: themeType } = theme
+
   const footerLinkWithTheme = css`
     color: ${highlight};
   `
-  const { window: { height } } = props.context
   const dynamicContainerHeight = css`
     min-height: calc(${height}px - 157px);
   `
-  return (
+  const themedHeader = css`
+    border-color: ${borderColor};
+  `
+  const themedLink = css`
+    font-weight: ${baseFontWeight};
+  `
+
+  let mainLogo
+  if (themeType === 'light') mainLogo = logo
+  if (themeType === 'dark') mainLogo = logoLight
+  return ( 
     <div>
-      <div css={headerStyle}>
-        <div css={headerContainerStyle}>
+      <div css={[headerStyle, themedHeader]}>
+        <div css={[headerContainerStyle, themedHeader]}>
           <Link to="/" css={linkContainer}>
-            <img css={logoStyle} src={logo} />
+            <img css={logoStyle} src={mainLogo} />
           </Link>
           <div css={menu}>
             <Link to="/" css={linkContainer}>
-              <p css={link}>Blog</p>
+              <p css={[link, themedLink]}>Blog</p>
             </Link>
             <Link to="/about" css={linkContainer}>
-              <p css={link}>About Me</p>
-            </Link>
-            <Link to="/settings" css={linkContainer}>
-              <p css={link}>Settings</p>
+              <p css={[link, themedLink]}>About Me</p>
             </Link>
             <Link to="/profile" css={linkContainer}>
-              <p css={link}>Profile</p>
+              <p css={[link, themedLink]}>Profile</p>
             </Link>
             {
               isAdmin && (
                 <Link to="/admin" css={linkContainer}>
-                  <p css={link}>Admin</p>
+                  <p css={[link, themedLink]}>Admin</p>
                 </Link>
               )
             }
@@ -113,7 +115,6 @@ const menu = css`
 
 const headerStyle = css`
   border-bottom: 1px solid rgba(0, 0, 0, .1);
-  background-color: white;
 `
 
 const headerContainerStyle = css`
@@ -130,7 +131,6 @@ const headerContainerStyle = css`
 
 const footerContainer = css`
   width: 100%;
-  background-color: white;
 `
 
 const footer = css`

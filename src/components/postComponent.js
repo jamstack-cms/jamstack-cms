@@ -5,18 +5,8 @@ import { fontFamily } from '../theme'
 import format from 'date-fns/format'
 import ProgressiveImage from 'react-progressive-image'
 import placeholder from '../images/placeholder.jpg'
+import { BlogContext } from '../context/mainContext'
 
-function Title({ title }) {
-  return (
-    <h1 css={titleStyle}>{title}</h1>
-  )
-}
-
-function Description({ description }) {
-  return (
-    <h2 css={descriptionStyle}>{description}</h2>
-  )
-}
 
 function Date({ date }) {
   return (
@@ -35,29 +25,58 @@ function getMarkdownText(markdown) {
   return { __html: rawMarkup };
 }
 
-export default function PostComponent({
-  content, createdAt, description, title, cover_image
+function PostComponent({
+  content, createdAt, description, title, cover_image, context
 }) {
   let date
   if (createdAt) {
     date = format(createdAt, "MMMM dd yyyy")
   }
+  let { theme } = context
+  const { baseFontWeight, secondaryFontColor, coverImageOpacity } = theme
+  const themedTitleStyle = css`
+    font-weight: ${baseFontWeight};
+  `
+  const themedDescription = css`
+    color: ${secondaryFontColor};
+  `
   return (
     <div css={postContainer}>
       { cover_image && (
         <ProgressiveImage src={cover_image} placeholder={placeholder}>
-          {(src, loading) => <img style={{ opacity: loading ? 0.5 : 1 }} src={src} alt="an image" />}
+          {(src, loading) => {
+            const themedCoverImageStyle = css`
+              opacity: ${loading ? .6 : coverImageOpacity};
+            `
+            return <img css={themedCoverImageStyle} src={src} alt="an image" />
+          }}
         </ProgressiveImage>
       )}
-      <div css={contentContainer} className="blog-post">
-        <Title title={title} />
-        { description && <Description description={description} />}
-        { createdAt && <Date date={date} />}
-        <PostContent content={content} />
+      <div css={contentContainer}>
+        <h1 css={[titleStyle, themedTitleStyle]}>{title}</h1>
+        <div className="blog-post">
+          { description && (
+            <h2 css={[descriptionStyle, themedDescription]}>{description}</h2>
+          )}
+          { createdAt && <Date date={date} />}
+          <PostContent content={content} />
+        </div>
       </div>
     </div>
   )
 }
+
+function PostComponentWithContext(props) {
+  return (
+    <BlogContext.Consumer>
+      {
+        context => <PostComponent {...props} context={context} />
+      }
+    </BlogContext.Consumer>
+  )
+}
+
+export default PostComponentWithContext
 
 const postContainer = css`
   margin-top: 25px;
@@ -67,13 +86,9 @@ const contentContainer = css`
   padding: 20px 0px;
 `
 
-const coverImageStyle = css`
-  margin-bottom: -10px;
-  min-h
-`
-
 const titleStyle = css`
   font-weight: 400;
+  margin: 0;
 `
 
 const descriptionStyle = css`

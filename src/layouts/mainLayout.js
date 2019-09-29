@@ -2,24 +2,22 @@ import React from "react"
 import { css } from "@emotion/core"
 import { BlogContext } from '../context/mainContext'
 
-class MainLayout extends React.Component {
-  render() {
-    const { children, noPadding, customCss = [] } = this.props
-    let basePadding = css`
-      padding-top: 35px;
-      padding-bottom: 25px;
+function MainLayout(props) {
+  const { children, noPadding, customCss = [] } = props
+  let basePadding = css`
+    padding-top: 35px;
+    padding-bottom: 25px;
+  `
+  if (noPadding) {
+    basePadding = css`
+      padding: 0;
     `
-    if (noPadding) {
-      basePadding = css`
-        padding: 0;
-      `
-    }
-    return (
-      <div css={container}>
-        <main css={[mainContent, basePadding, ...customCss]}>{children}</main> 
-      </div>
-    )
   }
+  return (
+    <div css={container}>
+      <main css={[mainContent, basePadding, ...customCss]}>{children}</main> 
+    </div>
+  )
 }
 
 function MainLayoutWithContext(props) {

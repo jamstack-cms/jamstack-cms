@@ -33,10 +33,11 @@ type Settings @model @auth(rules: [
     { allow: groups, groups: ["Admin"] },
     { allow: groups, groupsField: "adminGroups"}
   ]) {
-  id: ID!
-  mode: String
+  id: ID!  
   categories: [String]
   adminGroups: [String]
+  theme: String
+  customStyles: String
 }
 
 type Preview @model

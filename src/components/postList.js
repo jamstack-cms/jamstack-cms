@@ -4,10 +4,12 @@ import { slugify } from '../utils/helpers'
 import format from 'date-fns/format'
 import { Link } from "gatsby"
 import { fontFamily, scriptFamily } from '../theme';
+import { BlogContext } from '../context/mainContext'
 
-export default function PostList ({
-  posts, highlight, isAdmin, deletePost, publishPost, unPublishPost
+function PostList ({
+  posts, isAdmin, deletePost, publishPost, unPublishPost, context
 }) {
+  const { theme: { baseFontWeight, highlight, secondaryFontColor } } = context
   const postStyleWithTheme = css`
     border-bottom: 3px solid ${highlight};
   `
@@ -15,9 +17,15 @@ export default function PostList ({
     color: ${highlight};
   `
   
-  const dynamicTitleStyle = css`
+  const themedTitle = css`
     font-size: ${isAdmin ? '20px': '32px'};
     line-height: ${isAdmin ? '30px' : '50px'};
+    font-weight: ${baseFontWeight};
+  `
+
+  const themedDescription = css`
+    font-weight: ${baseFontWeight};
+    color: ${secondaryFontColor};
   `
 
   return (
@@ -49,10 +57,10 @@ export default function PostList ({
                 <div css={[postStyle, postStyleWithTheme]}>
                   <div css={postContentStyle}>
                     <header>
-                      <h3 css={[titleStyle, dynamicTitleStyle]}>
+                      <h3 css={[titleStyle, themedTitle]}>
                         {title}
                       </h3>
-                      <p css={postDescription}>{post.description}</p>
+                      <p css={[postDescription, themedDescription]}>{post.description}</p>
                       {
                         isAdmin && (
                           <div>
@@ -77,6 +85,17 @@ export default function PostList ({
     </>
   )
 }
+
+export default function PostListWithContext(props) {
+  return (
+    <BlogContext.Consumer>
+      {
+        context => <PostList {...props} context={context} />
+      }
+    </BlogContext.Consumer>
+  )
+}
+
 
 const notPublishedStyle = css`
   font-family: ${fontFamily};

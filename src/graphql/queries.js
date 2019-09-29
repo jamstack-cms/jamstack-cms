@@ -29,9 +29,10 @@ export const listComments = `query ListComments(
 export const getSettings = `query GetSettings($id: ID!) {
   getSettings(id: $id) {
     id
-    mode
     categories
     adminGroups
+    theme
+    customStyles
   }
 }
 `;
@@ -43,9 +44,10 @@ export const listSettingss = `query ListSettingss(
   listSettingss(filter: $filter, limit: $limit, nextToken: $nextToken) {
     items {
       id
-      mode
       categories
       adminGroups
+      theme
+      customStyles
     }
     nextToken
   }
@@ -77,6 +79,29 @@ export const listPreviews = `query ListPreviews(
       cover_image
       createdAt
       categories
+    }
+    nextToken
+  }
+}
+`;
+export const getUser = `query GetUser($id: ID!) {
+  getUser(id: $id) {
+    id
+    avatarUrl
+    owner
+  }
+}
+`;
+export const listUsers = `query ListUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      avatarUrl
+      owner
     }
     nextToken
   }

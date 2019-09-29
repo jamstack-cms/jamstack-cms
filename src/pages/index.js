@@ -29,7 +29,6 @@ class BlogIndex extends React.Component {
   }
   render() {
     const posts = this.props.data.appsync.listPosts.items.filter(post => post.published)
-
     return (
       <SiteContainer {...this.props}> 
           <SEO title="All posts" />

@@ -10,10 +10,13 @@ import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
 import PostList from '../components/PostList'
 import MediaView from '../components/MediaView'
+import Settings from '../components/Settings'
 import { highlight, fontFamily } from '../theme'
 import getImageKey from '../utils/getImageKey'
 import { toast } from 'react-toastify'
 import JakobsLoader from '../components/jakobsLoader'
+import { BlogContext } from '../context/mainContext'
+import { graphql } from 'gatsby'
 
 class Admin extends React.Component {
   state = {
@@ -26,7 +29,7 @@ class Admin extends React.Component {
     imagesNotInUse: [],
     pageTemplate: 'hero'
   }
-  async componentDidMount() {    
+  async componentDidMount() {  
     this.fetchPosts()
     try {
       const media = await Storage.list('')
@@ -60,6 +63,7 @@ class Admin extends React.Component {
     })
   }
   setImagesInUse = () => {
+    console.log('props from setImagesInUse:', this.props)
     let imageKeys = this.props.data.allImageKeys.edges.map(k => k.node.data).flat()
     const signedImages = this.state.images
     const imagesInUse = []
@@ -105,7 +109,6 @@ class Admin extends React.Component {
       const posts = [...this.state.posts]
       const postIndex = posts.findIndex(post => post.id === id)
       posts[postIndex]['published'] = true
-      console.log('posts:', posts)
       try {
         await API.graphql(graphqlOperation(updatePost, { input: { id, published: true }}))
         toast(`🔥 Post successfully published!`)
@@ -132,14 +135,19 @@ class Admin extends React.Component {
   }
   render() {
     const { viewState, isLoading, pageTemplate } = this.state
+    const { borderColor, primaryFontColor, highlight } = this.props.context.theme
     const highlightButton = state => css`
-      color: ${state === viewState ? highlight: 'black'};
+      color: ${state === viewState ? highlight: primaryFontColor};
     `
+    const themedButtonContainer = css`
+      border-bottom: 1px solid ${borderColor};
+    `
+    console.log('Props: ', this.props)
     return (
         <div css={container}>
           <Layout>
             <TitleComponent title='Admin' />
-            <div css={buttonContainer}>
+            <div css={[buttonContainer, themedButtonContainer]}>
               <button
                 onClick={() => this.toggleViewState('listPosts')}
                 css={[adminButtonStyle, highlightButton('listPosts')]}
@@ -156,6 +164,10 @@ class Admin extends React.Component {
                 css={[adminButtonStyle, highlightButton('createPage')]}
                 onClick={() => this.toggleViewState('createPage')}
               >New Page</button>
+              <button
+                css={[adminButtonStyle, highlightButton('settings')]}
+                onClick={() => this.toggleViewState('settings')}
+              >Settings</button>
               {
                 viewState === 'createPage' && (
                   <select css={selectMenu} value={pageTemplate} onChange={this.updatePageTemplate}>
@@ -227,6 +239,16 @@ class Admin extends React.Component {
               </div>
             )
           }
+          {
+            viewState === 'settings' && (
+              <div>
+                <Settings
+                  toggleViewState={this.toggleViewState}
+                  context={this.props.context}
+                />
+              </div>
+            )
+          }
         </div>
     )
   }
@@ -238,7 +260,6 @@ const selectMenu = css`
 `
 
 const buttonContainer = css`
-  border-bottom: 1px solid rgba(0, 0, 0, .25);
   padding-bottom: 10px;
   margin-top: 20px;
 `
@@ -259,16 +280,37 @@ const adminButtonStyle = css`
 const container = css`
 `
 
-export const pageQuery = graphql`
-  query {
+function AdminWithContext(props) {
+  return (
+    <BlogContext.Consumer>
+      {
+        context => <Admin {...props} context={context} />
+      }
+    </BlogContext.Consumer>
+  )
+}
+
+export const themeQuery = graphql`
+  query themeQuery {
     allImageKeys {
       edges {
         node {
           data
         }
       }
+    },
+    allThemeInfo {
+      edges {
+        node {
+          data {
+            customStyles
+            theme
+            categories
+          }
+        }
+      }
     }
   }
 `
 
-export default styledAuthenticator(Admin)
+export default styledAuthenticator(AdminWithContext)

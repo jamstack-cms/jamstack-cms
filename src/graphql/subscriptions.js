@@ -73,27 +73,30 @@ export const onDeleteComment = `subscription OnDeleteComment {
 export const onCreateSettings = `subscription OnCreateSettings {
   onCreateSettings {
     id
-    mode
     categories
     adminGroups
+    theme
+    customStyles
   }
 }
 `;
 export const onUpdateSettings = `subscription OnUpdateSettings {
   onUpdateSettings {
     id
-    mode
     categories
     adminGroups
+    theme
+    customStyles
   }
 }
 `;
 export const onDeleteSettings = `subscription OnDeleteSettings {
   onDeleteSettings {
     id
-    mode
     categories
     adminGroups
+    theme
+    customStyles
   }
 }
 `;
@@ -130,6 +133,30 @@ export const onDeletePreview = `subscription OnDeletePreview {
     cover_image
     createdAt
     categories
+  }
+}
+`;
+export const onCreateUser = `subscription OnCreateUser($owner: String) {
+  onCreateUser(owner: $owner) {
+    id
+    avatarUrl
+    owner
+  }
+}
+`;
+export const onUpdateUser = `subscription OnUpdateUser($owner: String) {
+  onUpdateUser(owner: $owner) {
+    id
+    avatarUrl
+    owner
+  }
+}
+`;
+export const onDeleteUser = `subscription OnDeleteUser($owner: String) {
+  onDeleteUser(owner: $owner) {
+    id
+    avatarUrl
+    owner
   }
 }
 `;

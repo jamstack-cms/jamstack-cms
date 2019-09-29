@@ -7,11 +7,14 @@ import getRawPath from './src/utils/getRawPath'
 import downloadImage from './src/utils/downloadImage'
 import config from './jamstack-config'
 
+const blogPost = require.resolve(`./src/templates/blog-post.js`)
+
 let APPSYNC_KEY
 if(process.env.APPSYNC_KEY) {
   APPSYNC_KEY = process.env.APPSYNC_KEY
 } else {
   const JSConfig = require('./jamstack-api-key.js')
+  console.log("config: ", JSConfig)
   APPSYNC_KEY = JSConfig['aws_appsync_apiKey']
 }
 
@@ -28,10 +31,7 @@ const {
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
-
-  const blogPost = require.resolve(`./src/templates/blog-post.js`)
-  const postData = await graphql(`
-  {
+  const postData = await graphql(` {
     appsync {
       listPosts {
         items {
@@ -45,8 +45,7 @@ exports.createPages = async ({ graphql, actions }) => {
         }
       }
     }
-  }
-  `)
+  }`)
 
   const blogPosts = postData.data.appsync.listPosts.items.filter(post => post.published)
   const images = await Storage.list('')
@@ -165,6 +164,34 @@ exports.onCreatePage = async ({ page, actions }) => {
 exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
   const { createNode } = actions
   const imageKeys = []
+  
+  // create theming
+  const themeInfo = {
+    theme: 'light',
+    customStyles: JSON.stringify({
+      ['background-color']: 'rgba(0, 0, 0. .85)'
+    }),
+    categories: JSON.stringify([])
+  }
+  
+  const data = {
+    key: 'theme-info',
+    data: themeInfo
+  }
+  const nodeContent = JSON.stringify(data)
+  const nodeMeta = {
+    id: createNodeId(`my-data-${data.key}`),
+    parent: null,
+    children: [],
+    internal: {
+      type: `ThemeInfo`,
+      mediaType: `json`,
+      content: nodeContent,
+      contentDigest: createContentDigest(data)
+    }
+  }
+  const node = Object.assign({}, data, nodeMeta)
+  createNode(node)
 
   const query = graphqltag(`
     query listPosts {

@@ -1,5 +1,33 @@
 import React from "react"
 import { Hub, Auth } from 'aws-amplify'
+import { getThemeInfo } from '../themes/themeProvider'
+import { StaticQuery, graphql } from 'gatsby'
+
+import { toast } from 'react-toastify'
+import { Global, css } from '@emotion/core'
+
+toast.configure( {
+  progressStyle: {
+    background: 'rgba(0, 0, 0, .2)',
+  }
+})
+
+
+const themeQuery = graphql`
+  query ThemeQuery {
+    allThemeInfo {
+      edges {
+        node {
+          data {
+            customStyles
+            theme
+            categories
+          }
+        }
+      }
+    }
+  }
+`
 
 const BlogContext = React.createContext()
 
@@ -7,7 +35,8 @@ class ContextProviderComponent extends React.Component {
   state = {
     isAdmin: false,
     updateIsAdmin: this.updateIsAdmin,
-    window: {}
+    window: {},
+    theme: 'light'
   }
 
   componentDidMount() {
@@ -33,6 +62,10 @@ class ContextProviderComponent extends React.Component {
       this.onResize()
   }
 
+  updateTheme = theme => {
+    this.setState({ theme })
+  }
+
   onResize = () => {
     const width = document.documentElement.clientWidth;
     const height = document.documentElement.clientHeight;
@@ -46,12 +79,36 @@ class ContextProviderComponent extends React.Component {
 
   render() {
     return (
-      <BlogContext.Provider value={{
-        ...this.state,
-        updateIsAdmin: this.updateIsAdmin
-      }}>
-        {this.props.children}
-      </BlogContext.Provider>
+      <StaticQuery query={themeQuery}>
+        { themeData => {
+          const {allThemeInfo: { edges: [{ node: { data } }] }} = themeData
+          const theme = getThemeInfo('light')
+
+          return (
+            <>
+            <Global
+              styles={css`
+                ${blogPostStyle(theme.type, theme.highlight)}
+                body, html {
+                  background-color: ${theme.backgroundColor};
+                }
+                * {
+                  color: ${theme.primaryFontColor};
+                }
+              `}
+            />
+            <BlogContext.Provider value={{
+              ...this.state,
+              updateIsAdmin: this.updateIsAdmin,
+              updateTheme: this.updateTheme,
+              theme
+            }}>
+              {this.props.children}
+            </BlogContext.Provider>
+            </>
+          )
+        }}
+        </StaticQuery>
     )
   }
 }
@@ -59,4 +116,86 @@ class ContextProviderComponent extends React.Component {
 export {
   BlogContext,
   ContextProviderComponent
+}
+
+const blogPostStyle = (type, highlight) => {
+  const isDark = type === 'dark'
+  const isDank = type === 'dank'
+  const isLight = type === 'light'
+  return css`
+  .blog-post p {
+    font-family: Raleway, serif;
+    font-size: 20px;
+    margin: 11px 0px 13px;
+    line-height: 34px;
+    font-weight: ${isDark ? 200 : 400};
+  }
+
+  .blog-post li {
+    font-family: Raleway, serif;
+    margin-bottom: 7px;
+    line-height: 28px;
+    font-size: 18px;
+    font-weight: ${isDark ? 200 : 400};
+  }
+
+  .blog-post h1 {
+    font-family: Raleway, serif;
+    margin: 25px 0px 0px;
+    font-weight: 200 !important;
+    font-size: 36px;
+    line-height: 42px;
+  }
+
+  .blog-post h2 {
+    font-family: Raleway, serif;
+    margin: 25px 0px 15px;
+    font-weight: ${isDark ? 200 : 300};
+    line-height: 30px;
+  }
+
+  .blog-post h3 {
+    font-family: Raleway, serif;
+    margin: 25px 0px 25px;
+  }
+
+  .blog-post h4 {
+    font-family: Raleway, serif;
+    margin: 25px 0px 0px;
+  }
+
+  .blog-post h5 {
+    font-family: Raleway, serif;
+  }
+
+  .blog-post code {
+    font-size: 16px;
+  }
+
+  .blog-post a {
+    color: black;
+  }
+
+  .blog-post pre {
+    background-color: #ededed;
+    padding: 20px;
+    font-weight: 400;
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: scroll;
+  }
+
+  .blog-post p code {
+    background-color: #ededed;
+    font-family: 'Courier New', Courier, monospace;
+    padding: 2px 5px;
+  }
+
+  .blog-post pre code {
+    font-size: 16px;
+  }
+
+  .blog-post blockquote {
+    border-left: 1px solid ${isDark ? highlight : 'black'};
+  }
+`
 }
