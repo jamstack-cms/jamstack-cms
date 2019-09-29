@@ -6,8 +6,8 @@ const dankTheme = {
   baseFontWeight: '200',
   backgroundColor: '#270045',
   primaryFontColor: 'rgba(255, 255, 255, .9)',
-  secondaryFontColor: 'rgba(255, 255, 255, .5)',
-  inverseFontColor: '#7e338f',
+  secondaryFontColor: 'rgba(255, 255, 255, .75)',
+  inverseFontColor: '#ff004f',
   borderColor: '#ff004f',
   coverImageOpacity: .9
 }

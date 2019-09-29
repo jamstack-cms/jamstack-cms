@@ -7,6 +7,7 @@ import { fontFamily } from '../theme'
 import { Link } from 'gatsby'
 import logo from '../images/logo.png'
 import logoLight from '../images/logoLight.png'
+import logoDank from '../images/logoDank.png'
 import "easymde/dist/easymde.min.css"
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -31,6 +32,7 @@ function BaseLayout(props) {
   let mainLogo
   if (themeType === 'light') mainLogo = logo
   if (themeType === 'dark') mainLogo = logoLight
+  if (themeType === 'dank') mainLogo = logoDank
   return ( 
     <div>
       <div css={[headerStyle, themedHeader]}>

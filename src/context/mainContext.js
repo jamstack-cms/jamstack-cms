@@ -5,18 +5,16 @@ import { StaticQuery, graphql } from 'gatsby'
 
 import { toast } from 'react-toastify'
 import { Global, css } from '@emotion/core'
-import dankbg from "../images/dankbg.jpeg"
+import dankbg from "../images/dankbg.jpg"
 import Amplify from 'aws-amplify'
 import config from '../../jamstack-config.js'
 Amplify.configure(config)
-console.log('config from browser')
 
 toast.configure( {
   progressStyle: {
     background: 'rgba(0, 0, 0, .2)',
   }
 })
-
 
 const themeQuery = graphql`
   query ThemeQuery {

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Storage } from 'aws-amplify'
 import { css } from '@emotion/core'
-import { highlight, fontFamily } from '../theme'
+import { fontFamily } from '../theme'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLink } from '@fortawesome/free-solid-svg-icons'
 import getKeyWithPath from '../utils/getKeyWithPath'
@@ -51,7 +51,7 @@ class MediaView extends React.Component {
   
   render() {
     const { listType, dataType } = this.state
-    const { context: { theme }} = this.props
+    const { context: { theme: { baseFontWeight, primaryFontColor, highlight, inverseFontColor } }} = this.props
     const isList = listType === 'list';
     let imageListType = css``
     if (isList) {
@@ -60,11 +60,11 @@ class MediaView extends React.Component {
       `
     }
     const chosenViewButton = (type) => css`
-      color: ${type === listType ? theme.primaryFontColor : highlight};
-      font-weight: ${theme.baseFontWeight};
+      color: ${type === listType ? primaryFontColor : highlight};
+      font-weight: ${baseFontWeight};
     `
     const themedSelect = css`
-      color: ${theme.inverseFontColor};
+      color: ${inverseFontColor};
     `
     let images = this.props.images
     if (dataType === 'in-use') {

@@ -22,7 +22,6 @@ const axios = require('axios')
 const graphqltag = require('graphql-tag')
 const gql = require('graphql')
 const { print } = gql
-
 Amplify.configure(config)
 
 const {
