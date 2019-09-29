@@ -244,7 +244,6 @@ class Admin extends React.Component {
               <div>
                 <Settings
                   toggleViewState={this.toggleViewState}
-                  context={this.props.context}
                 />
               </div>
             )
@@ -265,6 +264,7 @@ const buttonContainer = css`
 `
 
 const adminButtonStyle = css`
+  background-color: transparent;
   border: none;
   outline: none;
   padding: 0;

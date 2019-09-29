@@ -4,13 +4,13 @@ import { css } from '@emotion/core'
 import { highlight, fontFamily } from '../theme'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLink } from '@fortawesome/free-solid-svg-icons'
-import getImageKey from '../utils/getImageKey'
 import getKeyWithPath from '../utils/getKeyWithPath'
 import getKeyWithFullPath from '../utils/getKeyWithFullPath'
 import FileInput from '../components/input'
 import saveFile from '../utils/saveFile'
 import { copyToClipboard, getTrimmedKey } from '../utils/helpers'
 import { toast } from 'react-toastify'
+import { BlogContext } from '../context/mainContext'
 
 class MediaView extends React.Component {
   state = {
@@ -51,6 +51,7 @@ class MediaView extends React.Component {
   
   render() {
     const { listType, dataType } = this.state
+    const { context: { theme }} = this.props
     const isList = listType === 'list';
     let imageListType = css``
     if (isList) {
@@ -59,7 +60,11 @@ class MediaView extends React.Component {
       `
     }
     const chosenViewButton = (type) => css`
-      color: ${type === listType ? 'black' : highlight};
+      color: ${type === listType ? theme.primaryFontColor : highlight};
+      font-weight: ${theme.baseFontWeight};
+    `
+    const themedSelect = css`
+      color: ${theme.inverseFontColor};
     `
     let images = this.props.images
     if (dataType === 'in-use') {
@@ -86,7 +91,7 @@ class MediaView extends React.Component {
             labelStyle={[toggleViewButton, uploadButton]}
             onChange={this.uploadImage}
           />
-          <select css={selectMenu} value={this.state.dataType} onChange={this.updateDataType}>
+          <select css={[selectMenu, themedSelect]} value={this.state.dataType} onChange={this.updateDataType}>
             <option value="all">All Images</option>
             <option value="in-use">Images in use</option>
             <option value="not-in-use">Images not in use</option>
@@ -123,6 +128,16 @@ class MediaView extends React.Component {
   }
 }
 
+export default function MediaViewWithContext(props) {
+  return (
+    <BlogContext.Consumer>
+      {
+        context => <MediaView {...props} context={context} />
+      }
+    </BlogContext.Consumer>
+  )
+}
+
 const deleteButton = css`
   font-family: ${fontFamily};
   font-size: 14px;
@@ -142,12 +157,12 @@ const selectMenu = css`
 `
 
 const uploadButton = css`
-  color: black;
   margin: 0;
   opacity: 1;
   font-size: 16px;
+  opacity: .8;
   &:hover {
-    color: rgba(0, 0, 0, .8);
+    opacity: 1;
   }
 `
 
@@ -234,5 +249,3 @@ const mediaContainer = css`
   margin-top: 30px;
   flex-wrap: wrap;
 `
-
-export default MediaView

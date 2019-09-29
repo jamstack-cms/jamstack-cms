@@ -55,7 +55,7 @@ JAMstack CMS fills in this gap by giving you a customizable end to end solution 
 - Comments
 - Server-side rendering
 
-### Roadmap
+### TODOs / Roadmap
 
 - Comments
 - Video support
@@ -63,6 +63,10 @@ JAMstack CMS fills in this gap by giving you a customizable end to end solution 
 - Analytics dashboard
 - Post categories
 - WYSWYG option
+- Providers for AWS specific code
+- Custom authentication flow
+- Profile with Avatar for Admins
+- Offline / caching of posts
 
 ### Tools
 

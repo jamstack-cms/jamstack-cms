@@ -20,6 +20,7 @@ const buttonContainer = css`
 `
 
 const buttonStyle = css`
+  background-color: transparent;
   font-family: ${fontFamily};
   font-size: 14px;
   border: none;

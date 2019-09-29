@@ -5,6 +5,11 @@ import { StaticQuery, graphql } from 'gatsby'
 
 import { toast } from 'react-toastify'
 import { Global, css } from '@emotion/core'
+import dankbg from "../images/dankbg.jpeg"
+import Amplify from 'aws-amplify'
+import config from '../../jamstack-config.js'
+Amplify.configure(config)
+console.log('config from browser')
 
 toast.configure( {
   progressStyle: {
@@ -63,7 +68,12 @@ class ContextProviderComponent extends React.Component {
   }
 
   updateTheme = theme => {
-    this.setState({ theme })
+    window.JAMSTACKTHEME = theme
+    this.setState(() => {
+      return {
+        theme
+      }
+    })
   }
 
   onResize = () => {
@@ -82,7 +92,16 @@ class ContextProviderComponent extends React.Component {
       <StaticQuery query={themeQuery}>
         { themeData => {
           const {allThemeInfo: { edges: [{ node: { data } }] }} = themeData
-          const theme = getThemeInfo('light')
+          let theme = getThemeInfo('light')
+
+          if (typeof window !== 'undefined') {
+            if (window.JAMSTACKTHEME) {
+              console.log('theme info: ', window.JAMSTACKTHEME)
+              theme = getThemeInfo(window.JAMSTACKTHEME)
+            } else {
+              console.log('no theme set in window global..')
+            }
+          }
 
           return (
             <>
@@ -91,6 +110,14 @@ class ContextProviderComponent extends React.Component {
                 ${blogPostStyle(theme.type, theme.highlight)}
                 body, html {
                   background-color: ${theme.backgroundColor};
+                }
+                body {
+                  border: 12px solid ${theme.highlight};
+                  background: url(${theme.type === 'dank' ? dankbg : null}) no-repeat center center fixed;
+                  -webkit-background-size: cover;
+                  -moz-background-size: cover;
+                  -o-background-size: cover;
+                  background-size: cover;
                 }
                 * {
                   color: ${theme.primaryFontColor};

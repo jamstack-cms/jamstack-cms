@@ -3,11 +3,16 @@ import { css } from '@emotion/core'
 import { fontFamily } from '../theme'
 import uuid from 'uuid/v4'
 import Loader from './loadingIndicator'
+import { BlogContext } from '../context/mainContext'
 
-export default function FileInput(props) {
+function FileInput(props) {
   const { onChange, customCss = [], placeholder, labelStyle = [],
-    isLoading, customLoadingCss = [] } = props
+    isLoading, customLoadingCss = [], context } = props
+  const { theme } = context
   const id = `file-upload-${uuid()}`
+  const themedLabel = css`
+    color: ${theme.primaryFontColor};
+  `
   return (
     <div css={container}>
       <input
@@ -21,9 +26,19 @@ export default function FileInput(props) {
       { isLoading && <Loader customLoadingCss={[...customLoadingCss]} />}
       <label
         htmlFor={id}
-        css={[label, ...labelStyle]}
+        css={[label, themedLabel, ...labelStyle]}
       >{placeholder}</label>
     </div>
+  )
+}
+
+export default function FileInputWithContext(props) {
+  return (
+    <BlogContext.Consumer>
+      {
+        context => <FileInput {...props} context={context} />
+      }
+    </BlogContext.Consumer>
   )
 }
 

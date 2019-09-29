@@ -9,9 +9,7 @@ import { css } from '@emotion/core'
 import { highlight } from '../theme'
 import PostList from '../components/PostList'
 
-import Amplify, { Auth } from 'aws-amplify'
-import config from '../../jamstack-config.js'
-Amplify.configure(config)
+import { Auth } from 'aws-amplify'
 
 class BlogIndex extends React.Component {
   state = {
