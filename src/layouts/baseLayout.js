@@ -38,7 +38,7 @@ function BaseLayout(props) {
       <div css={[headerStyle, themedHeader]}>
         <div css={[headerContainerStyle, themedHeader]}>
           <Link to="/" css={linkContainer}>
-            <img css={logoStyle} src={mainLogo} />
+            <img alt='logo' css={logoStyle} src={mainLogo} />
           </Link>
           <div css={menu}>
             <Link to="/" css={linkContainer}>
@@ -65,9 +65,9 @@ function BaseLayout(props) {
         <div css={footer}>
           © {new Date().getFullYear()}, Built with
           {` `}
-          <a target="_blank" href="https://www.gatsbyjs.org" css={[footerLinkWithTheme]}>Gatsby</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.gatsbyjs.org" css={[footerLinkWithTheme]}>Gatsby</a>
           {` `}&{` `}
-          <a target="_blank" href="https://aws-amplify.github.io" css={[footerLinkWithTheme]}>AWS Amplify</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://aws-amplify.github.io" css={[footerLinkWithTheme]}>AWS Amplify</a>
         </div>
       </footer>
     </div>

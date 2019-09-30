@@ -10,6 +10,7 @@ const darkTheme = {
   primaryFontColor: 'rgba(255, 255, 255, .85)',
   secondaryFontColor: 'rgba(255, 255, 255, .7)',
   inverseFontColor: 'rgba(0, 0, 0, .8)',
+  inverseButtonFontColor: 'white',
   borderColor: 'rgba(255, 255, 255, .2)'
 }
 

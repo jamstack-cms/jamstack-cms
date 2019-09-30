@@ -113,7 +113,7 @@ class ContextProviderComponent extends React.Component {
                   -o-background-size: cover;
                   background-size: cover;
                 }
-                * {
+                p, h1, h2, h3, h4, h5, span {
                   color: ${theme.primaryFontColor};
                 }
               `}
@@ -141,8 +141,8 @@ export {
 
 const blogPostStyle = ({ toastFontColor, inverseFontColor, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
   const isDark = type === 'dark'
-  const isDank = type === 'dank'
-  const isLight = type === 'light'
+  // const isDank = type === 'dank'
+  // const isLight = type === 'light'
   return css`
   .blog-post p {
     font-family: Raleway, serif;

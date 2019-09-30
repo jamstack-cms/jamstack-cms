@@ -12,6 +12,7 @@ class HeroTemplate extends React.Component {
     return (
       <div css={[container, dynamicWidthStyle]}>
         <img
+          alt='header'
           css={headerImage}
         />
         <h1

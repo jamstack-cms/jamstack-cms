@@ -66,6 +66,9 @@ class MediaView extends React.Component {
     const themedSelect = css`
       color: ${inverseFontColor};
     `
+    const themedOverlayButton = css`
+      color: ${inverseFontColor};
+    `
     const themedImageContainer = css`
       border-bottom: 8px solid ${highlight};
     `
@@ -113,7 +116,7 @@ class MediaView extends React.Component {
                       <div css={[overlayLinkContainer]}>
                         <div css={overlayLinkItems}>
                           <FontAwesomeIcon css={faIcon} icon={faLink} />
-                          <p css={[overlayLink]}>{getTrimmedKey(getKeyWithFullPath(image), 15)}</p>
+                          <p css={[overlayLink, themedOverlayButton]}>{getTrimmedKey(getKeyWithFullPath(image), 15)}</p>
                         </div>
                       </div>
                     </div>

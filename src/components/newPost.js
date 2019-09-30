@@ -157,11 +157,9 @@ class NewPost extends React.Component {
     const secondaryFontStyle = css`
       color: ${theme.secondaryFontColor};
     `
-
     const highlightFontStyle = css`
       color: ${theme.highlight};
     `
-    
     return (
       <div css={container}>
         <div css={[fixedPreview]}>

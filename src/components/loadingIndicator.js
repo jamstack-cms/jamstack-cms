@@ -4,11 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { css, keyframes } from '@emotion/core'
 
 export default function LoadingIndicator({
-  customLoadingCss
+  customLoadingCss = [], customSpinnerStyle = []
 }) {
   return (
     <div css={[...customLoadingCss]}>
-      <FontAwesomeIcon icon={faSpinner} css={[spinnerStyle]} />
+      <FontAwesomeIcon
+        icon={faSpinner}
+        css={[spinnerStyle, ...customSpinnerStyle]}
+      />
     </div>
   ) 
 }

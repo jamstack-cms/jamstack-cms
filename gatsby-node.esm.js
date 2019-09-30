@@ -15,7 +15,6 @@ if(process.env.APPSYNC_KEY) {
   APPSYNC_KEY = process.env.APPSYNC_KEY
 } else {
   const JSConfig = require('./jamstack-api-key.js')
-  console.log("config: ", JSConfig)
   APPSYNC_KEY = JSConfig['aws_appsync_apiKey']
 }
 
@@ -48,7 +47,7 @@ exports.createPages = async ({ graphql, actions }) => {
   }`)
 
   const blogPosts = postData.data.appsync.listPosts.items.filter(post => post.published)
-  const images = await Storage.list('')
+  const images = await Storage.list('images/')
   const imageKeys = images.map(i => i.key)
   await Promise.all(
     blogPosts.map(async(post, index) => {
@@ -111,10 +110,12 @@ exports.createPages = async ({ graphql, actions }) => {
           console.log('error downloading images to file system...', err)
         }
       }
-  
-      let updatedContent = content.replace(urlRegex({strict: false}), (url) => {
+
+      let updatedContent = content.replace(urlRegex(), (url) => {
+
         if(url.includes(bucket)) {
           const chosenUrl = rawPaths[urlIndex]
+         
           const split = chosenUrl.split('/')
           const relativeUrl = `../downloads/${split[split.length - 1]}`
           urlIndex++
@@ -252,12 +253,11 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
         const keyWithPath = `images/${cleanedKey}`
         imageKeys.push(keyWithPath)
       }
-
     })
-      
+
     const data = {
       key: 'image-keys',
-      data: imageKeys
+      data: imageKeys.length ? imageKeys : 'none'
     }
     const nodeContent = JSON.stringify(data)
     const nodeMeta = {

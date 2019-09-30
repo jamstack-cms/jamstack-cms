@@ -9,6 +9,8 @@ const lightTheme = {
   toastFontColor: 'black',
   primaryFontColor: 'black',
   secondaryFontColor: 'black',
+  inverseFontColor: 'white',
+  inverseButtonFontColor: 'white',
   borderColor: 'rgba(0, 0, 0, .1)',
 }
 

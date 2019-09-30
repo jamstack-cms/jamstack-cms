@@ -43,9 +43,9 @@ function PostComponent({
         <ProgressiveImage src={cover_image} placeholder={placeholder}>
           {(src, loading) => {
             const themedCoverImageStyle = css`
-              opacity: ${loading ? .6 : 1};
+              opacity: ${loading ? .8 : 1};
             `
-            return <img css={themedCoverImageStyle} src={src} alt="an image" />
+            return <img css={themedCoverImageStyle} src={src} alt="cover" />
           }}
         </ProgressiveImage>
       )}

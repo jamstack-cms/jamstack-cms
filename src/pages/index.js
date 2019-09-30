@@ -5,6 +5,7 @@ import SEO from "../components/seo"
 import MainLayout from '../layouts/mainLayout'
 import { BlogContext } from '../context/mainContext'
 import { css } from '@emotion/core'
+import { graphql } from 'gatsby'
 
 import { highlight } from '../theme'
 import PostList from '../components/PostList'
