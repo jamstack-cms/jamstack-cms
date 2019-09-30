@@ -94,9 +94,9 @@ const logoStyle = css`
 const linkContainer = css`
   box-shadow: none;
   color: black;
-  opacity: .8;
+  opacity: 1;
   &:hover {
-    opacity: 1;
+    opacity: .8;
   }
 `
 

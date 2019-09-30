@@ -150,9 +150,18 @@ class NewPost extends React.Component {
     const { trimmedKey, showOverlay, isEditing, cover_image,
       isUploadingImage, isPublishing, isSaving,
       post: { title, description, content } } = this.state
-    const { window } = this.props.context
-    console.log('trimmedKey: ', trimmedKey)
+    const { window, theme } = this.props.context
+    const primaryFontStyle = css`
+      color: ${theme.primaryFontColor};
+    `
+    const secondaryFontStyle = css`
+      color: ${theme.secondaryFontColor};
+    `
 
+    const highlightFontStyle = css`
+      color: ${theme.highlight};
+    `
+    
     return (
       <div css={container}>
         <div css={[fixedPreview]}>
@@ -214,11 +223,11 @@ class NewPost extends React.Component {
                 cover_image && <img object-fit="contain" alt="cover" css={coverImage} src={cover_image} />
               }
               <div css={postPreview} className="blog-post">
-                <h1 css={previewTitleStyle}>{this.state.post.title}</h1>
-                <p css={previewDescriptionStyle}>{this.state.post.description}</p>
-                <p css={dateStyle}>{format(new Date(), 'MMMM dd yyyy')}</p>
+                <h1 css={[previewTitleStyle, primaryFontStyle]}>{this.state.post.title}</h1>
+                <p css={[previewDescriptionStyle, secondaryFontStyle]}>{this.state.post.description}</p>
+                <p css={[dateStyle, highlightFontStyle]}>{format(new Date(), 'MMMM dd yyyy')}</p>
                 <section
-                  css={blogPost}
+                  css={[blogPost, primaryFontStyle]}
                   dangerouslySetInnerHTML={this.getMarkdownText(this.state.post.content)}
                 />
               </div>
@@ -277,7 +286,6 @@ const coverImage = css`
 `
 
 const postPreview = css`
-  background-color: white;
   padding: 10px 0px 50px;
 `
 

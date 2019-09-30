@@ -6,6 +6,7 @@ import getImageKey from './src/utils/getImageKey'
 import getRawPath from './src/utils/getRawPath'
 import downloadImage from './src/utils/downloadImage'
 import config from './jamstack-config'
+import { getSettings } from './src/graphql/queries'
 
 const blogPost = require.resolve(`./src/templates/blog-post.js`)
 
@@ -164,15 +165,27 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
   const { createNode } = actions
   const imageKeys = []
   
-  // create theming
+  const getSettingsData = await axios({
+    url: config.aws_appsync_graphqlEndpoint,
+    method: 'post',
+    headers: {
+      'x-api-key': APPSYNC_KEY
+    },
+    data: {
+      query: print(graphqltag(getSettings)),
+      variables: { id: 'jamstack-cms-theme-info' }
+    }
+  })
+
+  const { theme, categories, adminGroups, customStyles } = getSettingsData.data.data.getSettings
+
   const themeInfo = {
-    theme: 'light',
-    customStyles: JSON.stringify({
-      ['background-color']: 'rgba(0, 0, 0. .85)'
-    }),
-    categories: JSON.stringify([])
+    theme: theme || 'light',
+    categories: categories || 'none',
+    adminGroups: adminGroups || 'none',
+    customStyles: customStyles || 'none',
   }
-  
+
   const data = {
     key: 'theme-info',
     data: themeInfo
@@ -192,7 +205,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
   const node = Object.assign({}, data, nodeMeta)
   createNode(node)
 
-  const query = graphqltag(`
+  const listPostsQuery = graphqltag(`
     query listPosts {
       listPosts(limit: 500) {
         items {
@@ -209,17 +222,17 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
   `)
   
   try {
-    const graphqlData = await axios({
+    const listPostsData = await axios({
       url: config.aws_appsync_graphqlEndpoint,
       method: 'post',
       headers: {
         'x-api-key': APPSYNC_KEY
       },
       data: {
-        query: print(query)
+        query: print(listPostsQuery)
       }
     })
-    const blogPosts = graphqlData.data.data.listPosts.items
+    const blogPosts = listPostsData.data.data.listPosts.items
     blogPosts.map(post => {
       const content = post.content
       const contentUrls = content.match(urlRegex());

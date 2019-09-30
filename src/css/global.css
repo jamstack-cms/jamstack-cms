@@ -21,25 +21,25 @@ h4 {
   animation: rotate 4s infinite linear;
 }
 
-.loading {
+.jakobs-loading {
   position: absolute;
   width: 30%;
   height: 30%;
   border-radius: 50px;
 }
 
-.loading:nth-child(1) {
+.jakobs-loading:nth-child(1) {
   animation: animate1 12s infinite;
 }
 
-.loading:nth-child(2) {
+.jakobs-loading:nth-child(2) {
   animation: animate2 12s infinite;
   animation-delay: 1s;
   bottom: 0;
   left: 0;
 }
 
-.loading:nth-child(3) {
+.jakobs-loading:nth-child(3) {
   animation: animate3 12s infinite;
   animation-delay: 2s;
   bottom: 0;
@@ -55,7 +55,7 @@ h4 {
   4% {
       left: 0;
       width: 100%;
-      background: white;
+      background: transparent;
   }
   8% {
       width: 30%;
@@ -72,7 +72,7 @@ h4 {
   29% {
       top: 0;
       height: 100%;
-      background: white;
+      background: transparent;
   }
   33% {
       top: 70%;
@@ -91,7 +91,7 @@ h4 {
   54% {
       width: 100%;
       left: 0;
-      background: white;
+      background: transparent;
   }
   58% {
       width: 30%;
@@ -110,7 +110,7 @@ h4 {
   79% {
       height: 100%;
       top: 0;
-      background: white;
+      background: transparent;
   }
   83% {
       left: 0;
@@ -132,7 +132,7 @@ h4 {
   4% {
       top: 0;
       height: 100%;
-      background: white;
+      background: transparent;
   }
   8% {
       width: 30%;
@@ -149,7 +149,7 @@ h4 {
   29% {
       left: 0;
       width: 100%;
-      background: white;
+      background: transparent;
   }
   33% {
       left: 70%;
@@ -166,7 +166,7 @@ h4 {
   54% {
       height: 100%;
       top: 0;
-      background: white;
+      background: transparent;
   }
   58% {
       width: 30%;
@@ -184,7 +184,7 @@ h4 {
   79% {
       width: 100%;
       left: 0;
-      background: white;
+      background: transparent;
   }
   83% {
       width: 30%;
@@ -205,7 +205,7 @@ h4 {
   4% {
       left: 0;
       width: 100%;
-      background: white;
+      background: transparent;
   }
   8% {
       width: 30%;
@@ -221,7 +221,7 @@ h4 {
   29% {
       height: 100%;
       top: 0;
-      background: white;
+      background: transparent;
   }
   33% {
       height: 30%;
@@ -236,7 +236,7 @@ h4 {
   54% {
       width: 100%;
       left: 0;
-      background: white;
+      background: transparent;
   }
   58% {
       width: 30%;
@@ -253,7 +253,7 @@ h4 {
   79% {
       height: 100%;
       top: 0;
-      background: white;
+      background: transparent;
   }
   83% {
       width: 30%;

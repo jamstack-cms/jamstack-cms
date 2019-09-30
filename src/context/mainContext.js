@@ -2,19 +2,13 @@ import React from "react"
 import { Hub, Auth } from 'aws-amplify'
 import { getThemeInfo } from '../themes/themeProvider'
 import { StaticQuery, graphql } from 'gatsby'
-
 import { toast } from 'react-toastify'
 import { Global, css } from '@emotion/core'
 import dankbg from "../images/dankbg.jpg"
 import Amplify from 'aws-amplify'
 import config from '../../jamstack-config.js'
 Amplify.configure(config)
-
-toast.configure( {
-  progressStyle: {
-    background: 'rgba(0, 0, 0, .2)',
-  }
-})
+toast.configure()
 
 const themeQuery = graphql`
   query ThemeQuery {
@@ -89,12 +83,14 @@ class ContextProviderComponent extends React.Component {
     return (
       <StaticQuery query={themeQuery}>
         { themeData => {
-          const {allThemeInfo: { edges: [{ node: { data } }] }} = themeData
-          let theme = getThemeInfo('light')
+          const {allThemeInfo: { edges: [{ node: { data: { theme: savedTheme } } }] }} = themeData
+          let theme = getThemeInfo(savedTheme)
+          // if (savedTheme) {
+          //   theme = getThemeInfo(savedTheme)
+          // }
 
           if (typeof window !== 'undefined') {
             if (window.JAMSTACKTHEME) {
-              console.log('theme info: ', window.JAMSTACKTHEME)
               theme = getThemeInfo(window.JAMSTACKTHEME)
             } else {
               console.log('no theme set in window global..')
@@ -105,7 +101,7 @@ class ContextProviderComponent extends React.Component {
             <>
             <Global
               styles={css`
-                ${blogPostStyle(theme.type, theme.highlight)}
+                ${blogPostStyle(theme)}
                 body, html {
                   background-color: ${theme.backgroundColor};
                 }
@@ -143,7 +139,7 @@ export {
   ContextProviderComponent
 }
 
-const blogPostStyle = (type, highlight) => {
+const blogPostStyle = ({ toastFontColor, inverseFontColor, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
   const isDark = type === 'dark'
   const isDank = type === 'dank'
   const isLight = type === 'light'
@@ -221,6 +217,41 @@ const blogPostStyle = (type, highlight) => {
 
   .blog-post blockquote {
     border-left: 1px solid ${isDark ? highlight : 'black'};
+  }
+  .editor-toolbar button.active, .editor-toolbar button:hover {
+    background-color: transparent;
+  }
+  .CodeMirror {
+    background-color: transparent;
+  }
+
+  .CodeMirror-cursor, .CodeMirror-cursors {
+    border-left: 1px solid ${secondaryFontColor} !important;
+  }
+  
+  ::placeholder {
+    color: ${secondaryFontColor} !important;
+    opacity: 1 !important;
+  }
+
+  .Toastify__close-button--default {
+    color: ${toastFontColor};
+  }
+
+  .Toastify__toast-body {
+    color: ${toastFontColor};
+  }
+
+  .Toastify__toast .Toastify__toast--default {
+    background: ${toastBackgroundColor};
+  }
+
+  .Toastify__toast--default {
+    background: ${toastBackgroundColor};
+  }
+
+  .Toastify__progress-bar, .Toastify__progress-bar--animated, .Toastify__progress-bar--default {
+    background: ${highlight};
   }
 `
 }

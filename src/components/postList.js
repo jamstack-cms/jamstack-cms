@@ -13,7 +13,7 @@ function PostList ({
   const postStyleWithTheme = css`
     border-bottom: 3px solid ${highlight};
   `
-  const dateStyleWithTheme = css`
+  const highlightButton = css`
     color: ${highlight};
   `
   
@@ -46,7 +46,7 @@ function PostList ({
                     post.published ? (
                       <p onClick={() => unPublishPost(post)} css={[sideButton]}>Unpublish</p>
                     ) : (
-                      <p onClick={() => publishPost(post)} css={[publishButton]}>Publish</p>
+                      <p onClick={() => publishPost(post)} css={[publishButton, highlightButton]}>Publish</p>
                     )
                   }
                 </div>
@@ -66,7 +66,7 @@ function PostList ({
                           <div>
                             {
                               post.published ? (
-                                <p css={[postDate, dateStyleWithTheme]}>Published {format(new Date(post.createdAt), 'MMMM dd yyyy')}</p>
+                                <p css={[postDate, highlightButton]}>Published {format(new Date(post.createdAt), 'MMMM dd yyyy')}</p>
                               ) : (
                                 <p css={[notPublishedStyle]}>Not Published</p>
                               )

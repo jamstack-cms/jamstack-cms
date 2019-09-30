@@ -142,7 +142,6 @@ class Admin extends React.Component {
     const themedButtonContainer = css`
       border-bottom: 1px solid ${borderColor};
     `
-    console.log('Props: ', this.props)
     return (
         <div css={container}>
           <Layout>

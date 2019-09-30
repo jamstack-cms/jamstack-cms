@@ -8,12 +8,6 @@ import placeholder from '../images/placeholder.jpg'
 import { BlogContext } from '../context/mainContext'
 
 
-function Date({ date }) {
-  return (
-    <p css={dateStyle}>{date}</p>
-  )
-}
-
 function PostContent({ content }) {
   return (
     <section dangerouslySetInnerHTML={getMarkdownText(content)} />
@@ -33,12 +27,15 @@ function PostComponent({
     date = format(createdAt, "MMMM dd yyyy")
   }
   let { theme } = context
-  const { baseFontWeight, secondaryFontColor, coverImageOpacity } = theme
+  const { baseFontWeight, secondaryFontColor } = theme
   const themedTitleStyle = css`
     font-weight: ${baseFontWeight};
   `
   const themedDescription = css`
     color: ${secondaryFontColor};
+  `
+  const themedDateStyle = css`
+    color: ${theme.highlight};
   `
   return (
     <div css={postContainer}>
@@ -46,7 +43,7 @@ function PostComponent({
         <ProgressiveImage src={cover_image} placeholder={placeholder}>
           {(src, loading) => {
             const themedCoverImageStyle = css`
-              opacity: ${loading ? .6 : coverImageOpacity};
+              opacity: ${loading ? .6 : 1};
             `
             return <img css={themedCoverImageStyle} src={src} alt="an image" />
           }}
@@ -58,7 +55,7 @@ function PostComponent({
           { description && (
             <h2 css={[descriptionStyle, themedDescription]}>{description}</h2>
           )}
-          { createdAt && <Date date={date} />}
+          { createdAt && <p css={[dateStyle, themedDateStyle]}>{date}</p>}
           <PostContent content={content} />
         </div>
       </div>

@@ -26,33 +26,6 @@ export const listComments = `query ListComments(
   }
 }
 `;
-export const getSettings = `query GetSettings($id: ID!) {
-  getSettings(id: $id) {
-    id
-    categories
-    adminGroups
-    theme
-    customStyles
-  }
-}
-`;
-export const listSettingss = `query ListSettingss(
-  $filter: ModelSettingsFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listSettingss(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      categories
-      adminGroups
-      theme
-      customStyles
-    }
-    nextToken
-  }
-}
-`;
 export const getPreview = `query GetPreview($id: ID!) {
   getPreview(id: $id) {
     id
@@ -137,6 +110,33 @@ export const listPosts = `query ListPosts(
       published
       previewEnabled
       categories
+    }
+    nextToken
+  }
+}
+`;
+export const getSettings = `query GetSettings($id: ID!) {
+  getSettings(id: $id) {
+    id
+    categories
+    adminGroups
+    theme
+    customStyles
+  }
+}
+`;
+export const listSettingss = `query ListSettingss(
+  $filter: ModelSettingsFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSettingss(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      categories
+      adminGroups
+      theme
+      customStyles
     }
     nextToken
   }

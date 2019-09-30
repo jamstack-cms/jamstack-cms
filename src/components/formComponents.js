@@ -48,6 +48,7 @@ function MarkdownEditor({
 }
 
 const titleInputStyle = css`
+  background-color: transparent;
   font-size: 30px;
   border: none;
   outline: none;

@@ -31,13 +31,14 @@ type Comment @model @auth(
 
 type Settings @model @auth(rules: [
     { allow: groups, groups: ["Admin"] },
-    { allow: groups, groupsField: "adminGroups"}
+    { allow: groups, groupsField: "adminGroups"},
+    { allow: public, operations: [read] },
   ]) {
   id: ID!  
   categories: [String]
   adminGroups: [String]
   theme: String
-  customStyles: String
+  customStyles: [String]
 }
 
 type Preview @model

@@ -66,6 +66,9 @@ class MediaView extends React.Component {
     const themedSelect = css`
       color: ${inverseFontColor};
     `
+    const themedImageContainer = css`
+      border-bottom: 8px solid ${highlight};
+    `
     let images = this.props.images
     if (dataType === 'in-use') {
       images = this.props.imagesInUse
@@ -103,7 +106,7 @@ class MediaView extends React.Component {
               return (
                 <div css={imageWrapper} key={index}>
                   <div css={[imageContainerStyle, imageListType]}>
-                    <img alt='media-item' css={imageStyle} src={image}  />
+                    <img alt='media-item' css={[imageStyle, themedImageContainer]} src={image}  />
                     <div
                     onClick={() => copyToClipboard(getKeyWithFullPath(image))}
                     css={[imageOverlay]}>

@@ -5,10 +5,11 @@ const lightTheme = {
   secondaryFontFamily: 'Nunito',
   baseFontWeight: '400',
   backgroundColor: 'transparent',
+  toastBackgroundColor: 'white',
+  toastFontColor: 'black',
   primaryFontColor: 'black',
   secondaryFontColor: 'black',
   borderColor: 'rgba(0, 0, 0, .1)',
-  coverImageOpacity: 1
 }
 
 export default lightTheme
