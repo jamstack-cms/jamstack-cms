@@ -2,8 +2,8 @@ type Post @model
   @auth (
       rules: [
           { allow: groups, groups: ["Admin"], operations: [create, update, delete] },
-          { allow: public, operations: [read] },
-          { allow: private, operations: [read] }
+          { allow: private, operations: [read] },
+          { allow: public, operations: [read] }
       ]
   ) {
   id: ID!
