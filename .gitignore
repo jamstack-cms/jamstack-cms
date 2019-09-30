@@ -58,6 +58,9 @@ typings/
 .cache/
 public
 
+# jamstack
+jamstack-api-key.js
+
 # Mac files
 .DS_Store
 
@@ -69,7 +72,6 @@ yarn-error.log
 .yarn-integrity
 
 #amplify
-src/credentials.js
 src/aws-exports.js
 amplify/team-provider-info.json
 amplify/\#current-cloud-backend
