@@ -74,7 +74,8 @@
   },
   "scripts": {
     "jamstack-develop": "node createConfig.js && gatsby develop",
-    "jamstack-build": "node createConfig.js && gatsby build",
+    "jamstack-build-local": "node createLocalConfig.js && gatsby build",
+    "jamstack-build": "node createBaseConfig.js && gatsby build",
     "build": "gatsby build",
     "develop": "gatsby develop",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",

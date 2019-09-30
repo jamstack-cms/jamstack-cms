@@ -38,5 +38,4 @@ fs.readFile(config, 'utf8', function (err, data) {
     }
     console.log('JAMstack config successfully created!')
   })
-
 })
