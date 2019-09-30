@@ -1,5 +1,13 @@
 const path = require('path')
-const credentials = require('./src/credentials')
+const config = require('./jamstack-config.js')
+
+let APPSYNC_KEY
+if(process.env.APPSYNC_KEY) {
+  APPSYNC_KEY = process.env.APPSYNC_KEY
+} else {
+  const JSConfig = require('../jamstack-api-key.js')
+  APPSYNC_KEY = JSConfig['aws_appsync_apiKey']
+}
 
 module.exports = {
   siteMetadata: {
@@ -46,9 +54,9 @@ module.exports = {
       options: {
         typeName: "Blog",
         fieldName: "appsync",
-        url: "https://thfnupjc6vg4vixf7k65k5a4mi.appsync-api.us-east-2.amazonaws.com/graphql",
+        url: config.aws_appsync_graphqlEndpoint,
         headers: {
-          'x-api-key': credentials.API_KEY
+          'x-api-key': APPSYNC_KEY
         }
       },
     },
