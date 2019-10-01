@@ -14,16 +14,18 @@ class Settings extends React.Component {
     isDeploying: false
   }
   deploy = async () => {
-    this.setState(() => {
-      return {
+    this.setState({
         isDeploying: true
+      }, async () => {
+      try {
+        await fetch('https://webhooks.amplify.eu-central-1.amazonaws.com/prod/webhooks?id=c2c6833f-2c79-4977-aea2-ee51191296cd&token=N90FODxSk2XM8l9OZGfQU17GSl6J960442KSlCSvQ', {
+          method: 'POST'
+        })
+        console.log('successfully triggered webhook')
+        this.setState({ isDeploying: false})
+      } catch (err) {
+        console.log('Error triggering webook: ', err)
       }
-    }, () => {
-      setTimeout(() => {
-        this.setState(() => ({
-          isDeploying: false
-        }))
-      }, 2000)
     })
   }
   updateSettings = async theme => {
