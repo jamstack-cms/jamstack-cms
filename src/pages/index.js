@@ -8,7 +8,7 @@ import { css } from '@emotion/core'
 import { graphql } from 'gatsby'
 
 import { highlight } from '../theme'
-import PostList from '../components/PostList'
+import PostList from '../components/postList'
 
 import { Auth } from 'aws-amplify'
 

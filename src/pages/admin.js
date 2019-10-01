@@ -1,16 +1,16 @@
 import React from "react"
 import { Storage, API, graphqlOperation } from "aws-amplify"
 import styledAuthenticator from '../components/styledAuthenticator'
-import NewPost from '../components/NewPost'
-import NewPage from '../components/NewPage'
+import NewPost from '../components/newPost'
+import NewPage from '../components/newPage'
 import Layout from '../layouts/mainLayout'
 import { listPosts } from '../graphql/queries'
 import { deletePost, updatePost } from '../graphql/mutations'
 import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
-import PostList from '../components/PostList'
-import MediaView from '../components/MediaView'
-import Settings from '../components/Settings'
+import PostList from '../components/postList'
+import MediaView from '../components/mediaView'
+import Settings from '../components/settings'
 import { fontFamily } from '../theme'
 import getImageKey from '../utils/getImageKey'
 import { toast } from 'react-toastify'
