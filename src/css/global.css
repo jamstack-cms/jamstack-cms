@@ -10,6 +10,10 @@ h4 {
   background: transparent !important;
 }
 
+body {
+  min-height: 100vh;
+}
+
 /* Thanks to Jakob from CodePen for the awesome animation! */
 /* Check him out at https://codepen.io/JacobDvlpr */
 
