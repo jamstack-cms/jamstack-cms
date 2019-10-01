@@ -19,7 +19,8 @@ class Settings extends React.Component {
       }, async () => {
       try {
         await fetch('https://webhooks.amplify.eu-central-1.amazonaws.com/prod/webhooks?id=c2c6833f-2c79-4977-aea2-ee51191296cd&token=N90FODxSk2XM8l9OZGfQU17GSl6J960442KSlCSvQ', {
-          method: 'POST'
+          method: 'POST',
+          mode: 'no-cors'
         })
         console.log('successfully triggered webhook')
         this.setState({ isDeploying: false})
