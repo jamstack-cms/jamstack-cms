@@ -13,6 +13,15 @@ function createLocalConfig() {
     const withoutAPIKey = items.filter(item => {
       return !(item.includes('aws_appsync_apiKey'))
     })
+    let newJson = withoutAPIKey.join(',')
+    newJson = newJson.replace('export default awsmobile', 'module.exports = awsmobile')
+    newJson = JSON.parse(newJson)
+    fs.writeFile('jamstack-config.js', newJson, 'utf8', function(err, success) {
+      if (err) {
+        throw err
+      }
+      console.log('JAMstack config successfully created!')
+    })
     items.forEach(item => {
       if (item.includes('aws_appsync_apiKey')) {
         let text = item.replace("\\n", "")
@@ -31,14 +40,7 @@ function createLocalConfig() {
         })
       }
     })
-    let newJson = withoutAPIKey.join(',')
-    newJson = JSON.parse(newJson)
-    fs.writeFile('jamstack-config.js', newJson, 'utf8', function(err, success) {
-      if (err) {
-        throw err
-      }
-      console.log('JAMstack config successfully created!')
-    })
+    
   })
 }
 

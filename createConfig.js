@@ -12,6 +12,15 @@ fs.readFile(config, 'utf8', function (err, data) {
   const withoutAPIKey = items.filter(item => {
     return !(item.includes('aws_appsync_apiKey'))
   })
+  let newJson = withoutAPIKey.join(',')
+  newJson = newJson.replace('export default awsmobile', 'module.exports = awsmobile')
+  newJson = JSON.parse(newJson)
+  fs.writeFile('jamstack-config.js', newJson, 'utf8', function(err, success) {
+    if (err) {
+      throw err
+    }
+    console.log('JAMstack config successfully created!')
+  })
   items.forEach(item => {
     if (item.includes('aws_appsync_apiKey')) {
       let text = item.replace("\\n", "")
@@ -29,13 +38,5 @@ fs.readFile(config, 'utf8', function (err, data) {
         console.log('JAMstack API key config successfully created!')
       })
     }
-  })
-  let newJson = withoutAPIKey.join(',')
-  newJson = JSON.parse(newJson)
-  fs.writeFile('jamstack-config.js', newJson, 'utf8', function(err, success) {
-    if (err) {
-      throw err
-    }
-    console.log('JAMstack config successfully created!')
   })
 })
