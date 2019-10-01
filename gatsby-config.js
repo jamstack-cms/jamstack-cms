@@ -5,7 +5,7 @@ let APPSYNC_KEY
 if(process.env.APPSYNC_KEY) {
   APPSYNC_KEY = process.env.APPSYNC_KEY
 } else {
-  const JSConfig = require('../jamstack-api-key.js')
+  const JSConfig = require('./jamstack-api-key.js')
   APPSYNC_KEY = JSConfig['aws_appsync_apiKey']
 }
 
