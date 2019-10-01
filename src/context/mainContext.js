@@ -139,7 +139,7 @@ export {
   ContextProviderComponent
 }
 
-const blogPostStyle = ({ toastFontColor, inverseFontColor, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
+const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, inverseFontColor, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
   const isDark = type === 'dark'
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
@@ -191,6 +191,7 @@ const blogPostStyle = ({ toastFontColor, inverseFontColor, type, highlight, seco
 
   .blog-post code {
     font-size: 16px;
+    color: ${primaryFontColor};
   }
 
   .blog-post a {
@@ -198,7 +199,7 @@ const blogPostStyle = ({ toastFontColor, inverseFontColor, type, highlight, seco
   }
 
   .blog-post pre {
-    background-color: #ededed;
+    background-color: ${codeBackgroundColor};
     padding: 20px;
     font-weight: 400;
     font-family: 'Courier New', Courier, monospace;
@@ -206,9 +207,10 @@ const blogPostStyle = ({ toastFontColor, inverseFontColor, type, highlight, seco
   }
 
   .blog-post p code {
-    background-color: #ededed;
+    background-color: ${codeBackgroundColor};
     font-family: 'Courier New', Courier, monospace;
     padding: 2px 5px;
+    color: ${primaryFontColor};
   }
 
   .blog-post pre code {
@@ -220,6 +222,9 @@ const blogPostStyle = ({ toastFontColor, inverseFontColor, type, highlight, seco
   }
   .editor-toolbar button.active, .editor-toolbar button:hover {
     background-color: transparent;
+  }
+  .editor-toolbar i {
+    color: ${primaryFontColor};
   }
   .CodeMirror {
     background-color: transparent;

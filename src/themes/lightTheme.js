@@ -5,6 +5,7 @@ const lightTheme = {
   secondaryFontFamily: 'Nunito',
   baseFontWeight: '400',
   backgroundColor: 'transparent',
+  codeBackgroundColor: '#ededed',
   toastBackgroundColor: 'white',
   toastFontColor: 'black',
   primaryFontColor: 'black',

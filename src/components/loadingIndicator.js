@@ -2,18 +2,29 @@ import React from 'react'
 import { faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { css, keyframes } from '@emotion/core'
+import { BlogContext } from '../context/mainContext'
 
-export default function LoadingIndicator({
-  customLoadingCss = [], customSpinnerStyle = []
+function LoadingIndicator({
+  customLoadingCss = [], customSpinnerStyle = [], context: { theme }
 }) {
   return (
     <div css={[...customLoadingCss]}>
       <FontAwesomeIcon
         icon={faSpinner}
-        css={[spinnerStyle, ...customSpinnerStyle]}
+        css={[spinnerStyle(theme), ...customSpinnerStyle]}
       />
     </div>
   ) 
+}
+
+export default function LoadingIndicatorWithContext(props) {
+  return (
+    <BlogContext.Consumer>
+      {
+        context => <LoadingIndicator {...props} context={context} />
+      }
+    </BlogContext.Consumer>
+  )
 }
 
 const rotate = keyframes`
@@ -26,6 +37,7 @@ const rotate = keyframes`
   }
 `
 
-const spinnerStyle = css`
+const spinnerStyle = ({ primaryFontColor }) => css`
+  color: ${primaryFontColor};
   animation: ${rotate} 1.5s linear infinite;
 `

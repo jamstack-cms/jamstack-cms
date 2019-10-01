@@ -311,12 +311,12 @@ const fixedButton = css`
 const blogPost = css`
 `
 
-const NewPostWithContext = props => (
-  <BlogContext.Consumer>
-    {
-      context => <NewPost {...props} context={context} />
-    }
-  </BlogContext.Consumer>
-)
-
-export default NewPostWithContext
+export default function NewPostWithContext(props) {
+  return (
+    <BlogContext.Consumer>
+      {
+        context => <NewPost {...props} context={context} />
+      }
+    </BlogContext.Consumer>
+  )
+}

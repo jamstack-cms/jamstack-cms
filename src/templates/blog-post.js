@@ -17,13 +17,9 @@ class BlogPostTemplate extends React.Component {
     navigate(`/editpost/${getPost.id}/${getPost.title}/edit`, { replace: true })
   }
   render() {
-    const { isAdmin, theme: { baseFontWeight } } = this.props.context
+    const { isAdmin, theme } = this.props.context
     const { title, description, createdAt  } = this.props.data.appsync.getPost
     const { pageContext: { content, local_cover_image } } = this.props
-
-    const themedButton = css`
-      font-weight: ${baseFontWeight};
-    `
 
     return (
       <div>
@@ -31,7 +27,7 @@ class BlogPostTemplate extends React.Component {
           isAdmin && (
             <button
               onClick={this.editPost}
-              css={[editPostButton, themedButton]}
+              css={[editPostButton(theme)]}
             >Edit Post</button>
           )
         }
@@ -62,8 +58,10 @@ function BlogPostTemplateWithContext(props) {
 export default BlogPostTemplateWithContext
 
 
-const editPostButton = css`
+const editPostButton = ({ baseFontWeight, primaryFontColor }) => css`
   cursor: pointer;
+  color: ${primaryFontColor};
+  font-weight: ${baseFontWeight};
   background-color: transparent;
   border: none;
   padding: 0;

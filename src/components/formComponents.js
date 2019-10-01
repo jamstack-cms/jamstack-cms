@@ -3,13 +3,13 @@ import SimpleMDE from "react-simplemde-editor"
 import { css } from '@emotion/core'
 
 function TitleComponent({
-  title, setPost
+  title, setPost, theme
 }) {
   return (
     <>
       <input
         value={title}
-        css={[titleInputStyle]}
+        css={[titleInputStyle(theme)]}
         placeholder="Post title"
         onChange={e => setPost('title', e.target.value)}
       />
@@ -18,13 +18,13 @@ function TitleComponent({
 }
 
 function DescriptionComponent({
-  description, setPost
+  description, setPost, theme
 }) {
   return (
     <>
       <input
         value={description}
-        css={[descriptionInputStyle]}
+        css={[descriptionInputStyle(theme)]}
         placeholder="Post description"
         onChange={e => setPost('description', e.target.value)}
       />
@@ -47,7 +47,8 @@ function MarkdownEditor({
   )
 }
 
-const titleInputStyle = css`
+const titleInputStyle = ({ primaryFontColor }) => css`
+  color: ${primaryFontColor};
   background-color: transparent;
   font-size: 30px;
   border: none;
@@ -58,8 +59,8 @@ const titleInputStyle = css`
   margin-top: 0px;
 `
 
-const descriptionInputStyle = css`
-  ${titleInputStyle};
+const descriptionInputStyle = (theme) => css`
+  ${titleInputStyle(theme)};
   font-size: 20px;
 `
 

@@ -5,6 +5,7 @@ const darkTheme = {
   secondaryFontFamily: 'Nunito',
   baseFontWeight: '200',
   backgroundColor: '#111111',
+  codeBackgroundColor: '#48464a',
   toastBackgroundColor: '#111111',
   toastFontColor: 'rgba(255, 255, 255, .85)',
   primaryFontColor: 'rgba(255, 255, 255, .85)',
