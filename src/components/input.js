@@ -63,8 +63,8 @@ const label = css`
   margin-top: 20px;
   cursor: pointer;
   border-radius: 3px;
-  opacity: .7;
+  opacity: 1;
   &:hover {
-    opacity: 1;
+    opacity: .8;
   }
 `

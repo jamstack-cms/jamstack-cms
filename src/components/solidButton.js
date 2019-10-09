@@ -5,9 +5,11 @@ import Loader from './loadingIndicator'
 import { BlogContext } from '../context/mainContext'
 
 function Button(props) {
-  const { context: { theme }, isLoading = false, onClick, title, customCss = [], customLoadingCss = [] } = props
+  const {
+    context: { theme }, isLoading = false, onClick, title,
+    customCss = [], customLoadingCss = [], customButtonContainerCss = [] } = props
   return (
-    <div css={buttonContainer}>
+    <div css={[buttonContainer, ...customButtonContainerCss]}>
       { isLoading && <Loader customLoadingCss={[...customLoadingCss]} />}
       <button css={[buttonStyle(theme), ...customCss]} onClick={onClick}>
         {title}
@@ -30,21 +32,19 @@ const buttonContainer = css`
   display: flex;
 `
 
-function buttonStyle ({ primaryFontColor }) {
+function buttonStyle ({ primaryFontColor, highlight }) {
   return css`
-    background-color: transparent;
+    background-color: ${highlight};
     font-family: ${fontFamily};
     color: ${primaryFontColor};
-    font-size: 14px;
+    font-size: 16px;
+    text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
     border: none;
     outline: none;
-    padding: 4px 15px;
+    padding: 4px 35px;
     margin: 0;
     cursor: pointer;
     border-radius: 3px;
     opacity: 1;
-    &:hover {
-      opacity: .8;
-    }
   `
 }

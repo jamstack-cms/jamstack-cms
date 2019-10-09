@@ -4,6 +4,7 @@
 
 h4 {
   font-family: Raleway, serif !important;
+  text-transform: none;
 }
 
 .CodeMirror .cm-spell-error:not(.cm-url):not(.cm-comment):not(.cm-tag):not(.cm-word) {

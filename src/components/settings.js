@@ -8,6 +8,7 @@ import { API, graphqlOperation } from 'aws-amplify'
 import { updateSettings, createSettings } from '../graphql/mutations'
 import { toast } from 'react-toastify'
 import Loader from '../components/loadingIndicator'
+import amplifyDeploy from '../providers/webhookProviders/amplifyDeploy'
 
 class Settings extends React.Component {
   state = {
@@ -18,11 +19,7 @@ class Settings extends React.Component {
         isDeploying: true
       }, async () => {
       try {
-        await fetch('https://webhooks.amplify.eu-central-1.amazonaws.com/prod/webhooks?id=c2c6833f-2c79-4977-aea2-ee51191296cd&token=N90FODxSk2XM8l9OZGfQU17GSl6J960442KSlCSvQ', {
-          method: 'POST',
-          mode: 'no-cors'
-        })
-        console.log('successfully triggered webhook')
+        await amplifyDeploy()
         this.setState({ isDeploying: false})
       } catch (err) {
         console.log('Error triggering webook: ', err)

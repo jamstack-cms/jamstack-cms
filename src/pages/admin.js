@@ -27,17 +27,21 @@ class Admin extends React.Component {
     imageKeys: [],
     imagesInUse: [],
     imagesNotInUse: [],
-    pageTemplate: 'hero'
+    pageTemplate: 'hero',
   }
-  async componentDidMount() {  
+  mounted = false
+  async componentDidMount() {
+    this.mounted = true
     this.fetchPosts()
     try {
       const media = await Storage.list('')
       const images = media.map(k => Storage.get(k.key))
       const signedImages = await Promise.all(images)
-      this.setState({ images: signedImages }, () => {
-        this.setImagesInUse()
-      })
+      if (this.mounted) {
+        this.setState({ images: signedImages }, () => {
+          this.setImagesInUse()
+        })
+      }
     } catch(err) {
       console.log('error:' , err)
     }
@@ -47,11 +51,16 @@ class Admin extends React.Component {
       pageTemplate: e.target.value
     })
   }
+  componentWillUnmount(){
+    this.mounted = false;
+  }
   fetchPosts = async () => {
     try {
       const postData = await API.graphql(graphqlOperation(listPosts))
       const { items } = postData.data.listPosts
-      this.setState({ posts: items, isLoading: false })
+      if (this.mounted) {
+        this.setState({ posts: items, isLoading: false })
+      }
     } catch (err) {
       console.log('error fetching posts:', err)
     }
@@ -269,10 +278,10 @@ const adminButtonStyle = css`
   padding: 0;
   margin-right: 15px;
   font-family: ${fontFamily};
-  opacity: .8;
+  opacity: 1;
   cursor: pointer;
   &:hover {
-    opacity: 1;
+    opacity: .8;
   }
 `
 

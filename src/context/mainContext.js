@@ -32,6 +32,7 @@ class ContextProviderComponent extends React.Component {
   state = {
     isAdmin: false,
     updateIsAdmin: this.updateIsAdmin,
+    avatarUrl: null,
     window: {},
     theme: 'light'
   }
@@ -68,6 +69,8 @@ class ContextProviderComponent extends React.Component {
     })
   }
 
+  setAvatar = avatarUrl => this.setState({ avatarUrl })
+
   onResize = () => {
     const width = document.documentElement.clientWidth;
     const height = document.documentElement.clientHeight;
@@ -92,8 +95,6 @@ class ContextProviderComponent extends React.Component {
           if (typeof window !== 'undefined') {
             if (window.JAMSTACKTHEME) {
               theme = getThemeInfo(window.JAMSTACKTHEME)
-            } else {
-              console.log('no theme set in window global..')
             }
           }
 
@@ -122,6 +123,7 @@ class ContextProviderComponent extends React.Component {
               ...this.state,
               updateIsAdmin: this.updateIsAdmin,
               updateTheme: this.updateTheme,
+              setAvatar: this.setAvatar,
               theme
             }}>
               {this.props.children}
