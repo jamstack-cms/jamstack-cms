@@ -26,7 +26,6 @@ function PostComponent({
     date = format(createdAt, "MMMM dd yyyy")
   }
   let { theme } = context
-  const { baseFontWeight, secondaryFontColor } = theme
 
   return (
     <div css={postContainer}>
@@ -42,10 +41,10 @@ function PostComponent({
         </ProgressiveImage>
       )}
       <div css={contentContainer}>
+        { description && (
+          <h2 css={[descriptionStyle(theme)]}>{description}</h2>
+        )}
         <div className="blog-post">
-          { description && (
-            <h2 css={[descriptionStyle(theme)]}>{description}</h2>
-          )}
           { createdAt && <p css={[dateStyle(theme)]}>{date}</p>}
           <PostContent content={content} />
         </div>
@@ -88,11 +87,12 @@ const titleStyle = ({ scriptFamily }) => css`
   width: 680px;
 `
 
-const descriptionStyle = ({ secondaryFontColor }) =>  css`
+const descriptionStyle = ({ primaryFontColor, scriptFamily }) =>  css`
   font-weight: 500;
-  color: ${secondaryFontColor};
-  font-size: 22px;
-  color: rgba(0, 0, 0, .55);
+  color: ${primaryFontColor};
+  font-family: ${scriptFamily};
+  font-size: 28px;
+  line-height: 32px;
 `
 
 const dateStyle = ({ fontFamily, highlight }) => css`
