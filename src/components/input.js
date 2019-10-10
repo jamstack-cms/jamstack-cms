@@ -1,6 +1,5 @@
 import React from 'react'
 import { css } from '@emotion/core'
-import { fontFamily } from '../theme'
 import uuid from 'uuid/v4'
 import Loader from './loadingIndicator'
 import { BlogContext } from '../context/mainContext'
@@ -10,9 +9,7 @@ function FileInput(props) {
     isLoading, customLoadingCss = [], context } = props
   const { theme } = context
   const id = `file-upload-${uuid()}`
-  const themedLabel = css`
-    color: ${theme.primaryFontColor};
-  `
+  
   return (
     <div css={container}>
       <input
@@ -26,7 +23,7 @@ function FileInput(props) {
       { isLoading && <Loader customLoadingCss={[...customLoadingCss]} />}
       <label
         htmlFor={id}
-        css={[label, themedLabel, ...labelStyle]}
+        css={[label(theme), ...labelStyle]}
       >{placeholder}</label>
     </div>
   )
@@ -55,8 +52,9 @@ const buttonStyle = css`
   z-index: -1;
 `
 
-const label = css`
+const label = ({ fontFamily, primaryFontColor }) => css`
   font-family: ${fontFamily};
+  color: ${primaryFontColor};
   font-size: 16px;
   display: inline-block;
   padding: 4px 15px;

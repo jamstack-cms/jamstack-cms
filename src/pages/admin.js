@@ -11,7 +11,6 @@ import TitleComponent from '../components/titleComponent'
 import PostList from '../components/postList'
 import MediaView from '../components/mediaView'
 import Settings from '../components/settings'
-import { fontFamily } from '../theme'
 import getImageKey from '../utils/getImageKey'
 import { toast } from 'react-toastify'
 import JakobsLoader from '../components/jakobsLoader'
@@ -149,36 +148,34 @@ class Admin extends React.Component {
   }
   render() {
     const { viewState, isLoading, pageTemplate } = this.state
-    const { borderColor, primaryFontColor, highlight } = this.props.context.theme
+    const { theme, theme: { borderColor, primaryFontColor, highlight }} = this.props.context
     const highlightButton = state => css`
       color: ${state === viewState ? highlight: primaryFontColor};
     `
-    const themedButtonContainer = css`
-      border-bottom: 1px solid ${borderColor};
-    `
+
     return (
         <div css={container}>
           <Layout>
             <TitleComponent title='Admin' />
-            <div css={[buttonContainer, themedButtonContainer]}>
+            <div css={[buttonContainer(theme)]}>
               <button
                 onClick={() => this.toggleViewState('listPosts')}
-                css={[adminButtonStyle, highlightButton('listPosts')]}
+                css={[adminButtonStyle(theme), highlightButton('listPosts')]}
               >View Posts</button>
               <button
                 onClick={() => this.toggleViewState('media')}
-                css={[adminButtonStyle, highlightButton('media')]}
+                css={[adminButtonStyle(theme), highlightButton('media')]}
               >View Media</button>
               <button
-                css={[adminButtonStyle, highlightButton('createPost')]}
+                css={[adminButtonStyle(theme), highlightButton('createPost')]}
                 onClick={() => this.toggleViewState('createPost')}
               >New Post</button>
               <button
-                css={[adminButtonStyle, highlightButton('createPage')]}
+                css={[adminButtonStyle(theme), highlightButton('createPage')]}
                 onClick={() => this.toggleViewState('createPage')}
               >New Page</button>
               <button
-                css={[adminButtonStyle, highlightButton('settings')]}
+                css={[adminButtonStyle(theme), highlightButton('settings')]}
                 onClick={() => this.toggleViewState('settings')}
               >Settings</button>
               {
@@ -271,12 +268,13 @@ const selectMenu = css`
   border: none;
 `
 
-const buttonContainer = css`
+const buttonContainer = ({ borderColor }) => css`
+  border-bottom: 1px solid ${borderColor};
   padding-bottom: 10px;
   margin-top: 20px;
 `
 
-const adminButtonStyle = css`
+const adminButtonStyle = ({ fontFamily }) => css`
   background-color: transparent;
   border: none;
   outline: none;

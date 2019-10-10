@@ -14,7 +14,7 @@ function MainLayout(props) {
     `
   }
   return (
-    <div css={container}>
+    <div>
       <main css={[mainContent, basePadding, ...customCss]}>{children}</main> 
     </div>
   )
@@ -32,10 +32,7 @@ function MainLayoutWithContext(props) {
 
 export default MainLayoutWithContext
 
-const container = css` 
-`
-
 const mainContent = css`
   margin: auto;
-  width: 680px;
+  width: 944px;
 `

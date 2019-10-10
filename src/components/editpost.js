@@ -11,7 +11,6 @@ import FileInput from './input'
 import { updatePost } from '../graphql/mutations'
 import { getPost } from '../graphql/queries'
 import { BlogContext } from '../context/mainContext'
-import { fontFamily } from '../theme'
 import getSignedUrls from '../utils/getSignedUrls'
 import getUnsignedUrls from '../utils/getUnsignedUrls'
 import getKeyWithPath from '../utils/getKeyWithPath'
@@ -204,7 +203,8 @@ class EditPost extends React.Component {
     const { isEditing, isLoading, hasChanged, showOverlay,
     isSaving, isGeneratingPreview, isUploadingImage, isPublishing } = this.state
     const { title, content, createdAt, cover_image, previewEnabled, description, published } = this.state.post
-    if (isLoading) return <p css={loading}>Loading...</p>
+    const { theme } = this.props.context
+    if (isLoading) return <p css={loading(theme)}>Loading...</p>
     console.log('post: ', this.state.post)
     return (
       <div>
@@ -215,14 +215,14 @@ class EditPost extends React.Component {
                 <Button
                   onClick={this.toggleEditView}
                   title="Preview"
-                  customCss={[baseButton, fixedButton]}
+                  customCss={[baseButton, fixedButton(theme)]}
                 />
                 {
                   hasChanged && (
                     <Button
                       onClick={() => this.updatePost()}
                       title="Save"
-                      customCss={[baseButton, fixedButton]}
+                      customCss={[baseButton, fixedButton(theme)]}
                       customLoadingCss={[sideLoadingStyle]}
                       isLoading={isSaving}
                     />
@@ -231,20 +231,20 @@ class EditPost extends React.Component {
                 <Button
                   onClick={() => this.updatePost(published ? 'unpublish' : 'publish')}
                   title={published ? "Unpublish" : "Publish"}
-                  customCss={[baseButton, fixedButton]}
+                  customCss={[baseButton, fixedButton(theme)]}
                   customLoadingCss={[sideLoadingStyle]}
                   isLoading={isPublishing}
                 />
                 <FileInput
                   placeholder="Upload Image"
                   onChange={this.uploadImage}
-                  labelStyle={[baseButton, fixedButton]}
+                  labelStyle={[baseButton, fixedButton(theme)]}
                   customLoadingCss={[sideLoadingStyle]}
                   isLoading={isUploadingImage}
                 />
                 <FileInput
                   placeholder={cover_image ? "Update Cover Image" : "Upload Cover Image"}
-                  labelStyle={[baseButton, fixedButton]}
+                  labelStyle={[baseButton, fixedButton(theme)]}
                   onChange={this.uploadCoverImage}
                 />
               </>
@@ -253,14 +253,14 @@ class EditPost extends React.Component {
                 <Button
                   onClick={this.toggleEditView}
                   title="Edit"
-                  customCss={[baseButton, fixedButton]}
+                  customCss={[baseButton, fixedButton(theme)]}
                   customLoadingCss={[sideLoadingStyle]}
                 />
                 {hasChanged && (
                   <Button
                     onClick={() => this.updatePost()}
                     title="Save"
-                    customCss={[baseButton, fixedButton]}
+                    customCss={[baseButton, fixedButton(theme)]}
                     customLoadingCss={[sideLoadingStyle]}
                     isLoading={isSaving}
                   />
@@ -271,7 +271,7 @@ class EditPost extends React.Component {
           <Button
             onClick={previewEnabled ? this.copyPreviewLink : this.generatePreviewLink}
             title={previewEnabled ? "Preview link" : "Generate preview"}
-            customCss={[baseButton, fixedButton, alignLeft]}
+            customCss={[baseButton, fixedButton(theme), alignLeft]}
             customLoadingCss={[previewLoading]}
             isLoading={isGeneratingPreview}
           />
@@ -327,7 +327,7 @@ function EditPostWithContext(props) {
 
 export default EditPostWithContext
 
-const loading = css`
+const loading = ({ fontFamily }) => css`
   font-family: ${fontFamily} !important;
   font-weight: 400;
   font-size: 20px;
@@ -337,7 +337,7 @@ const alignLeft = css`
   text-align: left;
 `
 
-const fixedButton = css`
+const fixedButton = ({ fontFamily }) => css`
   font-family: ${fontFamily} !important;
   border: none;
   background-color: transparent;

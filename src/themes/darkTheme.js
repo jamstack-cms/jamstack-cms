@@ -1,8 +1,8 @@
 const darkTheme = {
   type: 'dark',
   highlight: '#3bbcbd',
+  fontFamily: 'Be Vietnam',
   scriptFamily: 'Raleway',
-  secondaryFontFamily: 'Nunito',
   baseFontWeight: '200',
   backgroundColor: '#111111',
   codeBackgroundColor: '#48464a',

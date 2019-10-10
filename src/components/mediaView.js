@@ -1,7 +1,6 @@
 import React from 'react'
 import { Storage } from 'aws-amplify'
 import { css } from '@emotion/core'
-import { fontFamily } from '../theme'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLink } from '@fortawesome/free-solid-svg-icons'
 import getKeyWithPath from '../utils/getKeyWithPath'
@@ -51,7 +50,7 @@ class MediaView extends React.Component {
   
   render() {
     const { listType, dataType } = this.state
-    const { context: { theme: { baseFontWeight, primaryFontColor, highlight, inverseFontColor } }} = this.props
+    const { context: { theme, theme: { baseFontWeight, primaryFontColor, highlight } }} = this.props
     const isList = listType === 'list';
     let imageListType = css``
     if (isList) {
@@ -63,15 +62,7 @@ class MediaView extends React.Component {
       color: ${type === listType ? primaryFontColor : highlight};
       font-weight: ${baseFontWeight};
     `
-    const themedSelect = css`
-      color: ${inverseFontColor};
-    `
-    const themedOverlayButton = css`
-      color: ${inverseFontColor};
-    `
-    const themedImageContainer = css`
-      border-bottom: 8px solid ${highlight};
-    `
+   
     let images = this.props.images
     if (dataType === 'in-use') {
       images = this.props.imagesInUse
@@ -84,20 +75,20 @@ class MediaView extends React.Component {
         <div css={[viewTypeContainer]}>
           <div>
             <button
-              css={[toggleViewButton, chosenViewButton('list')]}
+              css={[toggleViewButton(theme), chosenViewButton('list')]}
               onClick={() => this.updateListType('grid')}>Grid View</button>
           </div>
           <div>
             <button
-              css={[toggleViewButton, chosenViewButton('grid')]}
+              css={[toggleViewButton(theme), chosenViewButton('grid')]}
               onClick={() => this.updateListType('list')}>List View</button>
           </div>
           <FileInput
             placeholder="Upload"
-            labelStyle={[toggleViewButton, uploadButton]}
+            labelStyle={[toggleViewButton(theme), uploadButton]}
             onChange={this.uploadImage}
           />
-          <select css={[selectMenu, themedSelect]} value={this.state.dataType} onChange={this.updateDataType}>
+          <select css={[selectMenu]} value={this.state.dataType} onChange={this.updateDataType}>
             <option value="all">All Images</option>
             <option value="in-use">Images in use</option>
             <option value="not-in-use">Images not in use</option>
@@ -109,20 +100,20 @@ class MediaView extends React.Component {
               return (
                 <div css={imageWrapper} key={index}>
                   <div css={[imageContainerStyle, imageListType]}>
-                    <img alt='media-item' css={[imageStyle, themedImageContainer]} src={image}  />
+                    <img alt='media-item' css={[imageStyle(theme)]} src={image}  />
                     <div
                     onClick={() => copyToClipboard(getKeyWithFullPath(image))}
                     css={[imageOverlay]}>
                       <div css={[overlayLinkContainer]}>
                         <div css={overlayLinkItems}>
                           <FontAwesomeIcon css={faIcon} icon={faLink} />
-                          <p css={[overlayLink, themedOverlayButton]}>{getTrimmedKey(getKeyWithFullPath(image), 15)}</p>
+                          <p css={[overlayLink(theme)]}>{getTrimmedKey(getKeyWithFullPath(image), 15)}</p>
                         </div>
                       </div>
                     </div>
                   </div>
                   <div onClick={() => this.deleteImage(image)} css={deleteButtonContainer}>
-                    <p css={deleteButton}>Delete Image</p>
+                    <p css={deleteButton(theme)}>Delete Image</p>
                   </div>
                 </div>
               )
@@ -144,7 +135,7 @@ export default function MediaViewWithContext(props) {
   )
 }
 
-const deleteButton = css`
+const deleteButton = ({ fontFamily }) => css`
   font-family: ${fontFamily};
   font-size: 14px;
 `
@@ -157,9 +148,10 @@ const deleteButtonContainer = css`
   }
 `
 
-const selectMenu = css`
+const selectMenu = ({ inverseFontColor }) => css`
   margin-left: 15px;
   outline: none;
+  color: ${inverseFontColor};
 `
 
 const uploadButton = css`
@@ -188,7 +180,7 @@ const viewTypeContainer = css`
   padding-top: 15px;
 `
 
-const toggleViewButton = css`
+const toggleViewButton = ({ fontFamily }) => css`
   cursor: pointer;
   background-color: transparent;
   border: none;
@@ -237,17 +229,17 @@ const overlayLinkItems = css`
   border-radius: 3px;
 `
 
-const overlayLink = css`
+const overlayLink = ({ fontFamily, inverseFontColor }) => css`
+  color: ${inverseFontColor};
   margin: 0;
   font-family: ${fontFamily};
 `
 
-const imageStyle = css`
+const imageStyle = ({ highlight }) => css`
+  border-bottom: 8px solid ${highlight};
   margin: 0;
   margin-bottom: -5px;
-  &:hover {
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, .15);
-  }
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 60px -10px, rgba(0, 0, 0, 0.22) 0px 18px 36px -18px;
 `
 
 const mediaContainer = css`

@@ -141,36 +141,37 @@ export {
   ContextProviderComponent
 }
 
-const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, inverseFontColor, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
+const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
   const isDark = type === 'dark'
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
   return css`
   body {
     margin: 0;
-    padding: 0;
+    padding: 35px 0px 0px;
   }
 
   * {
-    font-family: Raleway, sans-serif;
+    font-family: ${fontFamily}, sans-serif;
     text-decoration: none;
     box-sizing: border-box;
   }
 
   h4 {
-    font-family: Raleway, sans-serif;
+    font-family: ${fontFamily}, sans-serif;
     text-transform: none;
   }
   .blog-post p {
-    font-family: Raleway, serif;
-    font-size: 20px;
-    margin: 11px 0px 13px;
+    font-family: ${fontFamily}, serif;
+    font-size: 18px;
+    margin: 0px 0px 35px;
     line-height: 34px;
     font-weight: ${isDark ? 200 : 400};
+    color: ${primaryFontColor};
   }
 
   .blog-post li {
-    font-family: Raleway, serif;
+    font-family: ${fontFamily}, serif;
     margin-bottom: 7px;
     line-height: 28px;
     font-size: 18px;
@@ -178,32 +179,32 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
   }
 
   .blog-post h1 {
-    font-family: Raleway, serif;
-    margin: 25px 0px 0px;
+    font-family: ${fontFamily}, serif;
+    margin: 25px auto 18px;
     font-weight: 200 !important;
     font-size: 36px;
     line-height: 42px;
   }
 
   .blog-post h2 {
-    font-family: Raleway, serif;
-    margin: 25px 0px 15px;
-    font-weight: ${isDark ? 200 : 300};
+    font-family: ${scriptFamily}, serif;
     line-height: 30px;
+    font-size: 32px;
+    margin: 25px auto 18px;
   }
 
   .blog-post h3 {
-    font-family: Raleway, serif;
-    margin: 25px 0px 25px;
+    font-family: ${scriptFamily}, serif;
+    margin: 20px auto 10px
   }
 
   .blog-post h4 {
-    font-family: Raleway, serif;
+    font-family: ${fontFamily}, serif;
     margin: 25px 0px 0px;
   }
 
   .blog-post h5 {
-    font-family: Raleway, serif;
+    font-family: ${fontFamily}, serif;
   }
 
   .blog-post code {
@@ -217,6 +218,8 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
 
   .blog-post img {
     border-radius: 5px;
+    margin: 15px auto 15px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 60px -10px, rgba(0, 0, 0, 0.22) 0px 18px 36px -18px;
   }
 
   .blog-post pre {
@@ -225,6 +228,7 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
     font-weight: 400;
     font-family: 'Courier New', Courier, monospace;
     overflow-x: scroll;
+    margin: 15px auto 50px;
   }
 
   .blog-post p code {

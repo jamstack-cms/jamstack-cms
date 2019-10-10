@@ -1,7 +1,6 @@
 import React from 'react'
 import marked from 'marked'
 import { css } from '@emotion/core'
-import { fontFamily } from '../theme'
 import format from 'date-fns/format'
 import ProgressiveImage from 'react-progressive-image'
 import placeholder from '../images/placeholder.jpg'
@@ -28,17 +27,10 @@ function PostComponent({
   }
   let { theme } = context
   const { baseFontWeight, secondaryFontColor } = theme
-  const themedTitleStyle = css`
-    font-weight: ${baseFontWeight};
-  `
-  const themedDescription = css`
-    color: ${secondaryFontColor};
-  `
-  const themedDateStyle = css`
-    color: ${theme.highlight};
-  `
+
   return (
     <div css={postContainer}>
+      <h1 css={[titleStyle(theme)]}>{title}</h1>
       { cover_image && (
         <ProgressiveImage src={cover_image} placeholder={placeholder}>
           {(src, loading) => {
@@ -50,12 +42,11 @@ function PostComponent({
         </ProgressiveImage>
       )}
       <div css={contentContainer}>
-        <h1 css={[titleStyle, themedTitleStyle]}>{title}</h1>
         <div className="blog-post">
           { description && (
-            <h2 css={[descriptionStyle, themedDescription]}>{description}</h2>
+            <h2 css={[descriptionStyle(theme)]}>{description}</h2>
           )}
-          { createdAt && <p css={[dateStyle, themedDateStyle]}>{date}</p>}
+          { createdAt && <p css={[dateStyle(theme)]}>{date}</p>}
           <PostContent content={content} />
         </div>
       </div>
@@ -85,21 +76,28 @@ const postContainer = css`
 
 const contentContainer = css`
   padding: 20px 0px;
+  width: 680px;
+  margin: 0 auto;
 `
 
-const titleStyle = css`
-  font-weight: 400;
-  margin: 0;
-`
-
-const descriptionStyle = css`
+const titleStyle = ({ scriptFamily }) => css`
   font-weight: 500;
+  font-family: ${scriptFamily};
+  font-size: 46px;
+  margin: 90px auto 80px;
+  width: 680px;
+`
+
+const descriptionStyle = ({ secondaryFontColor }) =>  css`
+  font-weight: 500;
+  color: ${secondaryFontColor};
   font-size: 22px;
   color: rgba(0, 0, 0, .55);
 `
 
-const dateStyle = css`
+const dateStyle = ({ fontFamily, highlight }) => css`
   margin-top: 0px;
   font-size: 15px !important;
   font-family: ${fontFamily} !important;
+  color: ${highlight};
 `

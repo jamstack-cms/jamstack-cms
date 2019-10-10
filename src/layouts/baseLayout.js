@@ -3,7 +3,6 @@ import { css } from '@emotion/core'
 import {
   ContextProviderComponent, BlogContext
 } from '../context/mainContext'
-import { fontFamily } from '../theme'
 import { Link } from 'gatsby'
 import logo from '../images/logo.png'
 import logoLight from '../images/logoLight.png'
@@ -13,20 +12,11 @@ import 'react-toastify/dist/ReactToastify.css'
 
 function BaseLayout(props) {
   const { theme, window: { height }, isAdmin } = props.context
-  const { borderColor, baseFontWeight, highlight } = theme
+  const { borderColor } = theme
   let { type: themeType } = theme
 
-  const footerLinkWithTheme = css`
-    color: ${highlight};
-  `
   const dynamicContainerHeight = css`
     min-height: calc(${height}px - 157px);
-  `
-  const themedHeader = css`
-    border-color: ${borderColor};
-  `
-  const themedLink = css`
-    font-weight: ${baseFontWeight};
   `
 
   let mainLogo
@@ -35,25 +25,25 @@ function BaseLayout(props) {
   if (themeType === 'dank') mainLogo = logoDank
   return ( 
     <div>
-      <div css={[headerStyle, themedHeader]}>
-        <div css={[headerContainerStyle, themedHeader]}>
+      <div css={[headerStyle]}>
+        <div css={[headerContainerStyle]}>
           <Link to="/" css={linkContainer}>
             <img alt='logo' css={logoStyle} src={mainLogo} />
           </Link>
           <div css={menu}>
             <Link to="/" css={linkContainer}>
-              <p css={[link, themedLink]}>Blog</p>
+              <p css={[link(theme)]}>Blog</p>
             </Link>
             <Link to="/about" css={linkContainer}>
-              <p css={[link, themedLink]}>About Me</p>
+              <p css={[link(theme)]}>About Me</p>
             </Link>
             <Link to="/profile" css={linkContainer}>
-              <p css={[link, themedLink]}>Profile</p>
+              <p css={[link(theme)]}>Profile</p>
             </Link>
             {
               isAdmin && (
                 <Link to="/admin" css={linkContainer}>
-                  <p css={[link, themedLink]}>Admin</p>
+                  <p css={[link(theme)]}>Admin</p>
                 </Link>
               )
             }
@@ -65,9 +55,9 @@ function BaseLayout(props) {
         <div css={footer}>
           © {new Date().getFullYear()}, Built with
           {` `}
-          <a target="_blank" rel="noopener noreferrer" href="https://www.gatsbyjs.org" css={[footerLinkWithTheme]}>Gatsby</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://www.gatsbyjs.org" css={[footerLink(theme)]}>Gatsby</a>
           {` `}&{` `}
-          <a target="_blank" rel="noopener noreferrer" href="https://aws-amplify.github.io" css={[footerLinkWithTheme]}>AWS Amplify</a>
+          <a target="_blank" rel="noopener noreferrer" href="https://aws-amplify.github.io" css={[footerLink(theme)]}>AWS Amplify</a>
         </div>
       </footer>
     </div>
@@ -86,6 +76,10 @@ function BaseLayoutWithContext(props) {
   )
 }
 
+const footerLink = ({ highlight }) => `
+  color: ${highlight};
+`
+
 const logoStyle = css`
   width: 200px;
   margin: 14px 0px 0px;
@@ -100,12 +94,13 @@ const linkContainer = css`
   }
 `
 
-const link = css`
+const link = ({ fontFamily, baseFontWeight }) => css`
   margin-bottom: 0px;
   margin-top: 0px;
   margin-left: 15px;
   padding-top: 5px;
   font-family: ${fontFamily}, sans-serif;
+  font-weight: ${baseFontWeight};
 `
 
 const menu = css`
@@ -116,7 +111,6 @@ const menu = css`
 `
 
 const headerStyle = css`
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
 `
 
 const headerContainerStyle = css`

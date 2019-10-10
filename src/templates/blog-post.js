@@ -3,7 +3,6 @@ import { navigate, graphql } from "gatsby"
 import marked from 'marked';
 import { css } from "@emotion/core"
 import { BlogContext } from '../context/mainContext'
-import { fontFamily } from '../theme'
 import PostComponent from '../components/postComponent'
 import MainLayout from '../layouts/mainLayout.js'
 
@@ -58,7 +57,7 @@ function BlogPostTemplateWithContext(props) {
 export default BlogPostTemplateWithContext
 
 
-const editPostButton = ({ baseFontWeight, primaryFontColor }) => css`
+const editPostButton = ({ baseFontWeight, primaryFontColor, fontFamily }) => css`
   cursor: pointer;
   color: ${primaryFontColor};
   font-weight: ${baseFontWeight};

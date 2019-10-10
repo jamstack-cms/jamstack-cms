@@ -1,16 +1,17 @@
 import React from 'react'
 import { css } from '@emotion/core'
-import { fontFamily } from '../theme'
+import { BlogContext } from '../context/mainContext'
 
-function TitleComponent({ title, customStyles }) {
+function TitleComponent({ title, customStyles, context }) {
+  const { theme } = context
   return (
     <div>
-      <h1 css={[titleStyle, customStyles]}>{title}</h1>
+      <h1 css={[titleStyle(theme), customStyles]}>{title}</h1>
     </div>
   )
 }
 
-const titleStyle = css`
+const titleStyle = ({ fontFamily }) => css`
   font-family: ${fontFamily}, sans-serif;
   font-size: 32px;
   font-weight: 200;
@@ -18,4 +19,12 @@ const titleStyle = css`
   margin-bottom: 10px;
 `
 
-export default TitleComponent
+export default function TitleComponentWithContext(props) {
+  return (
+    <BlogContext.Consumer>
+      {
+        context => <TitleComponent {...props} context={context} />
+      }
+    </BlogContext.Consumer>
+  )
+}

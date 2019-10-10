@@ -8,7 +8,6 @@ import { BlogContext } from '../context/mainContext'
 import { createPost } from '../graphql/mutations'
 import {  API, graphqlOperation } from 'aws-amplify'
 import format from 'date-fns/format'
-import { fontFamily } from '../theme'
 import { getTrimmedKey, copyToClipboard } from '../utils/helpers'
 import { toast } from 'react-toastify'
 import ImageLinkOverlay from './imageLinkOverlay'
@@ -166,20 +165,20 @@ class NewPost extends React.Component {
           <Button
             onClick={this.toggleEditView}
             title={isEditing ? "Preview" : "Edit"}
-            customCss={[fixedButton]}
+            customCss={[fixedButton(theme)]}
             customLoadingCss={[loadingStyle]}
           />
           <Button
             onClick={() => this.publish(true)}
             title="Publish"
-            customCss={[fixedButton]}
+            customCss={[fixedButton(theme)]}
             customLoadingCss={[loadingStyle]}
             isLoading={isPublishing}
           />
           <Button
             onClick={() => this.publish(false)}
             title="Save"
-            customCss={[fixedButton]}
+            customCss={[fixedButton(theme)]}
             customLoadingCss={[loadingStyle]}
             isLoading={isSaving}
           />
@@ -188,12 +187,12 @@ class NewPost extends React.Component {
               <>
                 <FileInput
                   placeholder={`${cover_image ? "Update Cover Image" : "Add Cover Image" }`}
-                  labelStyle={[fixedButton]}
+                  labelStyle={[fixedButton(theme)]}
                   onChange={this.setCoverImage}
                 />
                 <FileInput
                   placeholder="Upload Image"
-                  labelStyle={[fixedButton]}
+                  labelStyle={[fixedButton(theme)]}
                   onChange={this.uploadImage}
                   isLoading={isUploadingImage}
                   customLoadingCss={[loadingStyle]}
@@ -223,7 +222,7 @@ class NewPost extends React.Component {
               <div css={postPreview} className="blog-post">
                 <h1 css={[previewTitleStyle, primaryFontStyle]}>{this.state.post.title}</h1>
                 <p css={[previewDescriptionStyle, secondaryFontStyle]}>{this.state.post.description}</p>
-                <p css={[dateStyle, highlightFontStyle]}>{format(new Date(), 'MMMM dd yyyy')}</p>
+                <p css={[dateStyle(theme), highlightFontStyle]}>{format(new Date(), 'MMMM dd yyyy')}</p>
                 <section
                   css={[blogPost, primaryFontStyle]}
                   dangerouslySetInnerHTML={this.getMarkdownText(this.state.post.content)}
@@ -251,7 +250,7 @@ const loadingStyle = css`
   margin-right: -4px;
 `
 
-const dateStyle = css`
+const dateStyle = ({ fontFamily }) => css`
   margin-top: 0px;
   font-size: 15px !important;
   font-family: ${fontFamily} !important;
@@ -297,7 +296,7 @@ const baseButton = css`
   line-height: 20px;
 `
 
-const fixedButton = css`
+const fixedButton = ({ fontFamily }) => css`
   ${baseButton};
   font-family: ${fontFamily} !important;
   border: none;

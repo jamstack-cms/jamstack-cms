@@ -1,8 +1,8 @@
 const dankTheme = {
   type: 'dank',
   highlight: '#ff004f',
+  fontFamily: 'Be Vietnam',
   scriptFamily: 'Raleway',
-  secondaryFontFamily: 'Nunito',
   baseFontWeight: '400',
   backgroundColor: '#141315',
   codeBackgroundColor: '#141315',

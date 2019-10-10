@@ -1,6 +1,5 @@
 import React from 'react'
 import { css } from '@emotion/core'
-import { fontFamily } from '../theme'
 import Loader from './loadingIndicator'
 import { BlogContext } from '../context/mainContext'
 
@@ -30,7 +29,7 @@ const buttonContainer = css`
   display: flex;
 `
 
-function buttonStyle ({ primaryFontColor }) {
+function buttonStyle ({ primaryFontColor, fontFamily }) {
   return css`
     background-color: transparent;
     font-family: ${fontFamily};

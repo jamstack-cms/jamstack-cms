@@ -4,7 +4,7 @@ import { css } from "@emotion/core"
 import { ContextProviderComponent, BlogContext } from '../context/mainContext'
 import logo from '../images/logo.png'
 import "easymde/dist/easymde.min.css"
-import { highlight, fontFamily } from '../theme'
+import { highlight } from '../theme'
 import 'react-toastify/dist/ReactToastify.css'
 import { toast } from 'react-toastify';
 
@@ -16,7 +16,7 @@ toast.configure( {
 
 class Layout extends React.Component {
   render() {
-    const { children } = this.props
+    const { theme, children } = this.props
     const { isAdmin, window: { height } } = this.props.context
     const dynamicContainerHeight = css`
       min-height: calc(${height}px - 157px);
@@ -33,21 +33,21 @@ class Layout extends React.Component {
             </Link>
             <div css={menu}>
               <Link to="/" css={linkContainer}>
-                <p css={link}>Blog</p>
+                <p css={link(theme)}>Blog</p>
               </Link>
               <Link to="/about" css={linkContainer}>
-                <p css={link}>About Me</p>
+                <p css={link(theme)}>About Me</p>
               </Link>
               <Link to="/settings" css={linkContainer}>
-                <p css={link}>Settings</p>
+                <p css={link(theme)}>Settings</p>
               </Link>
               <Link to="/profile" css={linkContainer}>
-                <p css={link}>Profile</p>
+                <p css={link(theme)}>Profile</p>
               </Link>
               {
                 isAdmin && (
                   <Link to="/admin" css={linkContainer}>
-                    <p css={link}>Admin</p>
+                    <p css={link(theme)}>Admin</p>
                   </Link>
                 )
               }
@@ -97,7 +97,7 @@ const linkContainer = css`
   }
 `
 
-const link = css`
+const link = ({ fontFamily }) => css`
   margin-bottom: 0px;
   margin-left: 15px;
   padding-top: 5px;

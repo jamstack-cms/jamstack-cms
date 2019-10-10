@@ -1,12 +1,12 @@
 import React from 'react'
 import { css } from '@emotion/core'
 import { getPost } from '../graphql/queries'
-import { fontFamily } from '../theme'
 import PostComponent from '../components/postComponent'
 import { API, graphqlOperation } from 'aws-amplify'
 import getSignedUrls from '../utils/getSignedUrls'
 import getSignedImage from '../utils/getSignedImage'
 import Layout from '../layouts/mainLayout'
+import { BlogContext } from '../context/mainContext'
 
 class Preview extends React.Component {
   state = {
@@ -30,10 +30,11 @@ class Preview extends React.Component {
   render() {
     const { isLoading } = this.state
     const { cover_image, title, createdAt, content, description } = this.state.post
+    const { context: { theme } } = this.props
     return (
       <Layout>
         { isLoading && (
-          <p css={loading}>Loading...</p>
+          <p css={loading(theme)}>Loading...</p>
         )}
         {
           !isLoading && (
@@ -53,10 +54,18 @@ class Preview extends React.Component {
   }
 }
 
-const loading = css`
+const loading = ({ fontFamily }) => css`
   font-family: ${fontFamily} !important;
   font-weight: 400;
   font-size: 20px;
 `
 
-export default Preview
+export default function PreviewWithContext(props) {
+  return (
+    <BlogContext.Consumer>
+      {
+        context => <Preview {...props} context={context} />
+      }
+    </BlogContext.Consumer>
+  )
+}
