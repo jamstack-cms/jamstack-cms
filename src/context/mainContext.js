@@ -146,6 +146,21 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
   return css`
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  * {
+    font-family: Raleway, sans-serif;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+
+  h4 {
+    font-family: Raleway, sans-serif;
+    text-transform: none;
+  }
   .blog-post p {
     font-family: Raleway, serif;
     font-size: 20px;
@@ -198,6 +213,10 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
 
   .blog-post a {
     color: black;
+  }
+
+  .blog-post img {
+    border-radius: 5px;
   }
 
   .blog-post pre {

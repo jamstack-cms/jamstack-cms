@@ -34,14 +34,12 @@ const buttonContainer = css`
 
 function buttonStyle ({ primaryFontColor, highlight }) {
   return css`
-    background-color: ${highlight};
+    background-color: transparent;
     font-family: ${fontFamily};
     color: ${primaryFontColor};
     font-size: 16px;
-    text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
     border: none;
     outline: none;
-    padding: 4px 35px;
     margin: 0;
     cursor: pointer;
     border-radius: 3px;

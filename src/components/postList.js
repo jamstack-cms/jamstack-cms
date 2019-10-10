@@ -3,8 +3,9 @@ import { css } from '@emotion/core'
 import { slugify } from '../utils/helpers'
 import format from 'date-fns/format'
 import { Link } from "gatsby"
-import { fontFamily, scriptFamily } from '../theme';
+import { fontFamily } from '../theme';
 import { BlogContext } from '../context/mainContext'
+import getImageKey from '../utils/getImageKey'
 
 function PostList ({
   posts, isAdmin, deletePost, publishPost, unPublishPost, context
@@ -20,7 +21,7 @@ function PostList ({
   const themedTitle = css`
     font-size: ${isAdmin ? '20px': '32px'};
     line-height: ${isAdmin ? '30px' : '50px'};
-    font-weight: ${baseFontWeight};
+    font-weight: ${isAdmin ? '600' : baseFontWeight};
   `
 
   const themedDescription = css`
@@ -29,15 +30,17 @@ function PostList ({
   `
 
   return (
-    <>
+    <div css={[postListContainer(isAdmin)]}>
       {posts.map(post => {
+        const cover_image = `./downloads/${getImageKey(post.cover_image)}`
+        const signed_image = post.signedImage
         const title = post.title
         let link = slugify(post.title)
         if (isAdmin) {
           link = `/editpost/${post.id}/${link}`
         }
         return (
-          <div css={[postContainer]} key={post.id}>
+          <div css={[postContainer(isAdmin)]} key={post.id}>
             {
               isAdmin && (
                 <div css={[sideButtonContainer]}>
@@ -56,6 +59,9 @@ function PostList ({
               <article >
                 <div css={[postStyle, postStyleWithTheme]}>
                   <div css={postContentStyle}>
+                    <div css={(coverImageContainer(isAdmin))}>
+                      <img src={isAdmin ? signed_image : cover_image} css={coverImage} />
+                    </div>
                     <header>
                       <h3 css={[titleStyle, themedTitle]}>
                         {title}
@@ -82,7 +88,7 @@ function PostList ({
           </div>
         )
       })}
-    </>
+    </div>
   )
 }
 
@@ -96,6 +102,27 @@ export default function PostListWithContext(props) {
   )
 }
 
+const postListContainer = isAdmin => css`
+  display: ${isAdmin ? 'inline' : 'flex'};
+  flex-wrap: wrap;
+`
+
+const coverImageContainer = isAdmin => css`
+  height: ${isAdmin ? '250px' : '350px'};
+  overflow: hidden;
+  margin-bottom: 40px;
+  text-align:center;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 60px -10px, rgba(0, 0, 0, 0.22) 0px 18px 36px -18px;
+`
+
+const coverImage = css`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+`
 
 const notPublishedStyle = css`
   font-family: ${fontFamily};
@@ -125,9 +152,10 @@ const sideButtonContainer = css`
   min-width: 100px;
 `
 
-const postContainer = css`
+const postContainer = isAdmin => css`
   display: flex;
-  align-items: center;
+  width: ${isAdmin ? '100%': '570px'};
+  margin: 20px;
 `
 
 const postDescription = css`
@@ -135,7 +163,6 @@ const postDescription = css`
   margin-top: 8px;
   font-size: 20px;
   margin-bottom: 6px;
-  font-family: ${scriptFamily}, serif;
 `
 
 const postDate = css`
@@ -152,13 +179,11 @@ const postStyle = css`
 const postContentStyle = css`
   margin: 10px auto 0px;
   padding: 10px 0px 20px;
-  font-family: ${scriptFamily}, serif;
 `
 
 const titleStyle = css`
   margin: 5px 0px;
   line-height: 50px;
-  font-family: ${scriptFamily}, serif;
   font-weight: 300;
   @media(max-width: 1000px) {
     font-size: 30px;

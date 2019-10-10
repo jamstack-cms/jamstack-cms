@@ -5,7 +5,7 @@ import { css } from "@emotion/core"
 import styledAuthenticator from '../components/styledAuthenticator'
 import TitleComponent from '../components/titleComponent'
 import Layout from '../layouts/mainLayout'
-import SolidButton from '../components/solidButton'
+import Button from '../components/button'
 import InputButton from '../components/input'
 import { BlogContext } from '../context/mainContext'
 import { createUser, updateUser } from '../graphql/mutations'
@@ -94,15 +94,14 @@ class Profile extends React.Component {
               </div>
             </div>
             <div css={buttonContainer}>
-              <SolidButton
-                customButtonContainerCss={[button]}
+              <Button
                 onClick={this.signOut}
                 title="Sign Out"
+                customCss={[leftButton]}
               />
               <InputButton
                 onChange={this.onChange}
                 placeholder={avatarUrl ? "Update Avatar" : "Set Avatar"}
-                labelStyle={[button, labelStyle(theme)]}
               />
             </div>
           </div>
@@ -111,6 +110,10 @@ class Profile extends React.Component {
     )
   }
 }
+
+const leftButton = css`
+  padding-left: 0px;
+`
 
 const profileInfoContainer = css`
   margin-top: 35px;
@@ -127,15 +130,7 @@ const avatarStyle = ({ highlight }) => css`
   margin-top: 20px;
   margin-right: 30px;
   margin-bottom: 0px;
-  box-shadow: 0px 0px 14px rgba(0, 0, 0, .5);
-  border: 4px solid ${highlight};
-`
-
-const labelStyle = ({ highlight }) => css`
-  background-color: ${highlight};
-  font-size: 16px;
-  text-shadow: 0px 0px 2px rgba(0, 0, 0, .5);
-  padding: 4px 35px;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 30px 60px -10px, rgba(0, 0, 0, 0.28) 0px 18px 36px -18px;
 `
 
 const container = css`
@@ -144,15 +139,11 @@ const container = css`
 
 const buttonContainer = css`
   display: flex;
+  margin-top: 20px;
 `
 
 const profileInfo = css`
   margin: 0px 0px 5px;
-`
-
-const button = css`
-  margin-top: 25px;
-  margin-right: 10px;
 `
 
 function ProfileWithContext(props) {

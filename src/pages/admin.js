@@ -17,6 +17,7 @@ import { toast } from 'react-toastify'
 import JakobsLoader from '../components/jakobsLoader'
 import { BlogContext } from '../context/mainContext'
 import { graphql } from 'gatsby'
+import getSignedImage from '../utils/getSignedImage'
 
 class Admin extends React.Component {
   state = {
@@ -57,9 +58,14 @@ class Admin extends React.Component {
   fetchPosts = async () => {
     try {
       const postData = await API.graphql(graphqlOperation(listPosts))
-      const { items } = postData.data.listPosts
+      const { items: posts } = postData.data.listPosts
+      const postsWithSignedImages = await Promise.all(posts.map(async post => {
+        const signedImage = await getSignedImage(post.cover_image)
+        post['signedImage'] = signedImage
+        return post
+      }))
       if (this.mounted) {
-        this.setState({ posts: items, isLoading: false })
+        this.setState({ posts, isLoading: false })
       }
     } catch (err) {
       console.log('error fetching posts:', err)
@@ -72,7 +78,6 @@ class Admin extends React.Component {
     })
   }
   setImagesInUse = () => {
-    console.log('props from setImagesInUse:', this.props)
     let imageKeys = this.props.data.allImageKeys.edges.map(k => k.node.data).flat()
     const signedImages = this.state.images
     const imagesInUse = []
@@ -277,6 +282,7 @@ const adminButtonStyle = css`
   outline: none;
   padding: 0;
   margin-right: 15px;
+  font-size: 16px;
   font-family: ${fontFamily};
   opacity: 1;
   cursor: pointer;

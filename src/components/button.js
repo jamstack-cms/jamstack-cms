@@ -7,7 +7,7 @@ import { BlogContext } from '../context/mainContext'
 function Button(props) {
   const { context: { theme }, isLoading = false, onClick, title, customCss = [], customLoadingCss = [] } = props
   return (
-    <div css={buttonContainer}>
+    <div css={[buttonContainer]}>
       { isLoading && <Loader customLoadingCss={[...customLoadingCss]} />}
       <button css={[buttonStyle(theme), ...customCss]} onClick={onClick}>
         {title}
@@ -35,7 +35,7 @@ function buttonStyle ({ primaryFontColor }) {
     background-color: transparent;
     font-family: ${fontFamily};
     color: ${primaryFontColor};
-    font-size: 14px;
+    font-size: 16px;
     border: none;
     outline: none;
     padding: 4px 15px;

@@ -1,5 +1,4 @@
 // custom typefaces
-import "typeface-montserrat"
 import "./src/css/global.css"
 
 // const React = require("react")

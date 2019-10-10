@@ -57,10 +57,9 @@ const buttonStyle = css`
 
 const label = css`
   font-family: ${fontFamily};
-  font-size: 14px;
+  font-size: 16px;
   display: inline-block;
   padding: 4px 15px;
-  margin-top: 20px;
   cursor: pointer;
   border-radius: 3px;
   opacity: 1;

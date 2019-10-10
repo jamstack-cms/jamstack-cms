@@ -45,7 +45,7 @@ function PostComponent({
             const themedCoverImageStyle = css`
               opacity: ${loading ? .8 : 1};
             `
-            return <img css={themedCoverImageStyle} src={src} alt="cover" />
+            return <img css={[imageStyle, themedCoverImageStyle]} src={src} alt="cover" />
           }}
         </ProgressiveImage>
       )}
@@ -74,6 +74,10 @@ function PostComponentWithContext(props) {
 }
 
 export default PostComponentWithContext
+
+const imageStyle = css`
+  box-shadow: 0 30px 60px -10px rgba(0,0,0,0.22), 0 18px 36px -18px rgba(0,0,0,0.25);
+`
 
 const postContainer = css`
   margin-top: 25px;

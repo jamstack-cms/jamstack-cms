@@ -2,12 +2,10 @@ import React from "react"
 
 import SiteContainer from '../components/site-container'
 import SEO from "../components/seo"
-import MainLayout from '../layouts/mainLayout'
 import { BlogContext } from '../context/mainContext'
 import { css } from '@emotion/core'
 import { graphql } from 'gatsby'
-
-import { highlight } from '../theme'
+import { highlight, fontFamily } from '../theme'
 import PostList from '../components/postList'
 
 import { Auth } from 'aws-amplify'
@@ -31,7 +29,8 @@ class BlogIndex extends React.Component {
     return (
       <SiteContainer {...this.props}> 
           <SEO title="All posts" />
-          <div css={postContainer}>
+          <div css={mainContainer}>
+            <h1 css={heading}>Welcome to the first full stack CMS built for the modern age.</h1>
             <PostList
               posts={posts}
               highlight={highlight}
@@ -45,21 +44,27 @@ class BlogIndex extends React.Component {
 
 function BlogIndexWithContext(props) {
   return (
-    <MainLayout>
-      <BlogContext.Consumer>
-        {
-          context => <BlogIndex {...props} context={context} />
-        }
-      </BlogContext.Consumer>
-    </MainLayout>
+    <BlogContext.Consumer>
+      {
+        context => <BlogIndex {...props} context={context} />
+      }
+    </BlogContext.Consumer>
   )
 }
 
 export default BlogIndexWithContext
 
-const postContainer = css`
-  width: 690px;
+const mainContainer = css`
+  width: 1220px;
   margin: 0 auto;
+`
+
+const heading = css`
+  width: 50%;
+  font-family: ${fontFamily};
+  font-size: 44px;
+  margin: 110px 30px;
+  font-weight: 500;
 `
 
 export const pageQuery = graphql`

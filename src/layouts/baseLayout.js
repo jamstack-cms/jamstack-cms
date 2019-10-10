@@ -102,10 +102,10 @@ const linkContainer = css`
 
 const link = css`
   margin-bottom: 0px;
+  margin-top: 0px;
   margin-left: 15px;
   padding-top: 5px;
   font-family: ${fontFamily}, sans-serif;
-
 `
 
 const menu = css`
