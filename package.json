@@ -51,6 +51,7 @@
     "react-toastify": "^5.4.0",
     "react-typography": "^0.16.19",
     "strip-json-comments": "^3.0.1",
+    "typeface-montserrat": "^0.0.75",
     "typography": "^0.16.19",
     "typography-theme-wordpress-2016": "^0.16.19",
     "uglify-js": "1",

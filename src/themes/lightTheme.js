@@ -1,7 +1,7 @@
 const lightTheme = {
   type: 'light',
   highlight: '#3bbcbd',
-  fontFamily: 'Be Vietnam',
+  fontFamily: 'Montserrat',
   scriptFamily: 'EB Garamond',
   baseFontWeight: '400',
   backgroundColor: 'transparent',

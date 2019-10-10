@@ -154,7 +154,7 @@ const postDescription =  ({ baseFontWeight, secondaryFontColor, fontFamily }) =>
   font-family: ${fontFamily};
   font-weight: 300;
   margin-top: 8px;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 24px;
   margin-bottom: 6px;
 `
@@ -166,9 +166,8 @@ const postDate = ({ fontFamily }) => css`
   font-family: ${fontFamily} !important;
 `
 
-const postStyle = ({ highlight }) => css`
+const postStyle = () => css`
   margin-bottom: 50px;
-  border-bottom: 3px solid ${highlight};
 `
 
 const postContentStyle = css`
@@ -177,12 +176,13 @@ const postContentStyle = css`
 `
 
 const titleStyle = (theme, isAdmin) => css`
-  font-size: ${isAdmin ? '20px': '32px'};
-  line-height: ${isAdmin ? '30px' : '40px'};
+  font-size: ${isAdmin ? '20px': '28px'};
+  line-height: ${isAdmin ? '30px' : '32px'};
+  white-space: normal;
   font-weight: ${isAdmin ? '600' : theme.baseFontWeight};
   margin: 5px 0px 10px;
   font-family: ${theme.scriptFamily};
-  font-weight: 300;
+  font-weight: 500;
   @media(max-width: 1000px) {
     font-size: 30px;
   }

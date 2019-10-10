@@ -65,7 +65,7 @@ const heading = ({ fontFamily }) => css`
   font-family: ${fontFamily};
   font-size: 44px;
   margin: 110px 30px;
-  font-weight: 500;
+  font-weight: 600;
 `
 
 export const pageQuery = graphql`
