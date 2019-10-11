@@ -178,13 +178,14 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
     }
   })
 
-  const { theme, categories, adminGroups, customStyles } = getSettingsData.data.data.getSettings
+  const { theme, categories, adminGroups, border, borderWidth } = getSettingsData.data.data.getSettings
 
   const themeInfo = {
     theme: theme || 'light',
     categories: categories || 'none',
     adminGroups: adminGroups || 'none',
-    customStyles: customStyles || 'none',
+    borderWidth: borderWidth || 'none',
+    border: border || 'none'
   }
 
   const data = {

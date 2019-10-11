@@ -76,7 +76,8 @@ export const onCreateSettings = `subscription OnCreateSettings {
     categories
     adminGroups
     theme
-    customStyles
+    border
+    borderWidth
   }
 }
 `;
@@ -86,7 +87,8 @@ export const onUpdateSettings = `subscription OnUpdateSettings {
     categories
     adminGroups
     theme
-    customStyles
+    border
+    borderWidth
   }
 }
 `;
@@ -96,7 +98,8 @@ export const onDeleteSettings = `subscription OnDeleteSettings {
     categories
     adminGroups
     theme
-    customStyles
+    border
+    borderWidth
   }
 }
 `;

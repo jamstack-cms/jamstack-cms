@@ -121,7 +121,8 @@ export const getSettings = `query GetSettings($id: ID!) {
     categories
     adminGroups
     theme
-    customStyles
+    border
+    borderWidth
   }
 }
 `;
@@ -136,7 +137,8 @@ export const listSettingss = `query ListSettingss(
       categories
       adminGroups
       theme
-      customStyles
+      border
+      borderWidth
     }
     nextToken
   }

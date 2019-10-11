@@ -76,7 +76,8 @@ export const createSettings = `mutation CreateSettings($input: CreateSettingsInp
     categories
     adminGroups
     theme
-    customStyles
+    border
+    borderWidth
   }
 }
 `;
@@ -86,7 +87,8 @@ export const updateSettings = `mutation UpdateSettings($input: UpdateSettingsInp
     categories
     adminGroups
     theme
-    customStyles
+    border
+    borderWidth
   }
 }
 `;
@@ -96,7 +98,8 @@ export const deleteSettings = `mutation DeleteSettings($input: DeleteSettingsInp
     categories
     adminGroups
     theme
-    customStyles
+    border
+    borderWidth
   }
 }
 `;

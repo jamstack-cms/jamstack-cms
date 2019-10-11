@@ -315,7 +315,6 @@ export const themeQuery = graphql`
       edges {
         node {
           data {
-            customStyles
             theme
             categories
           }

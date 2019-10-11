@@ -16,9 +16,10 @@ const themeQuery = graphql`
       edges {
         node {
           data {
-            customStyles
             theme
             categories
+            border
+            borderWidth
           }
         }
       }
@@ -86,11 +87,22 @@ class ContextProviderComponent extends React.Component {
     return (
       <StaticQuery query={themeQuery}>
         { themeData => {
-          const {allThemeInfo: { edges: [{ node: { data: { theme: savedTheme } } }] }} = themeData
+          const {allThemeInfo: { edges: [{ node: { data: {
+            border: themeBorder, borderWidth: themeBorderWidth, theme: savedTheme
+          } } }] }} = themeData
           let theme = getThemeInfo(savedTheme)
-          // if (savedTheme) {
-          //   theme = getThemeInfo(savedTheme)
-          // }
+
+          let borderWidth = '12'
+          let border = `${borderWidth}px solid ${theme.highlight}`
+         
+          if (themeBorderWidth !== 'none') {
+            border = `${themeBorderWidth}px solid ${theme.highlight}`
+          }
+          if (themeBorder !== 'none') {
+            if (themeBorder === 'disabled') {
+              border = 'none'
+            }
+          }
 
           if (typeof window !== 'undefined') {
             if (window.JAMSTACKTHEME) {
@@ -107,7 +119,7 @@ class ContextProviderComponent extends React.Component {
                   background-color: ${theme.backgroundColor};
                 }
                 body {
-                  border: 12px solid ${theme.highlight};
+                  border: ${border};
                   background: url(${theme.type === 'dank' ? dankbg : null}) no-repeat center center fixed;
                   -webkit-background-size: cover;
                   -moz-background-size: cover;
