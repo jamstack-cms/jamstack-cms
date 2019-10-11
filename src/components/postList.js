@@ -96,7 +96,12 @@ const coverImageContainer = isAdmin => css`
   margin-bottom: 40px;
   text-align:center;
   position: relative;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 60px -10px, rgba(0, 0, 0, 0.22) 0px 18px 36px -18px;
+  box-shadow: 0 30px 60px -10px rgba(0,0,0,0.25), 0 18px 36px -18px rgba(0,0,0,0.30);
+  transition: all .45s;
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 45px 60px -15px rgba(0,0,0,0.2), 0 45px 36px -25px rgba(0,0,0,0.2);
+  }
 `
 
 // const coverImage = (isAdmin) => css`

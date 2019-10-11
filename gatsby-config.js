@@ -11,15 +11,16 @@ if(process.env.APPSYNC_KEY) {
 
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Starter Blog`,
-    author: `Kyle Mathews`,
-    description: `A starter blog demonstrating what Gatsby can do.`,
-    siteUrl: `https://gatsby-starter-blog-demo.netlify.com/`,
+    title: `JAMstack CMS`,
+    author: `Nader Dabit`,
+    description: `The full stack CMS built for the modern age.`,
+    siteUrl: `https://github.com/jamstack-cms`,
     social: {
-      twitter: `kylemathews`,
+      twitter: `dabit3`,
     },
   },
   plugins: [
+    'gatsby-plugin-typescript',
     {
       resolve: 'gatsby-plugin-layout',
       options: {

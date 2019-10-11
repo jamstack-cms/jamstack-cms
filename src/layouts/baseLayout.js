@@ -117,6 +117,7 @@ const headerContainerStyle = css`
   display: flex;
   width: 1200px;
   margin: 0 auto;
+  padding: 10px 20px 6px;
   padding-top: 10px;
   padding-bottom: 6px;
   @media (max-width: 1200px) {
