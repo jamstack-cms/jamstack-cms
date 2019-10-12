@@ -35,7 +35,6 @@ class ContextProviderComponent extends React.Component {
     updateIsAdmin: this.updateIsAdmin,
     avatarUrl: null,
     window: {},
-    theme: 'light'
   }
 
   componentDidMount() {
@@ -63,11 +62,15 @@ class ContextProviderComponent extends React.Component {
 
   updateTheme = theme => {
     window.JAMSTACKTHEME = theme
-    this.setState(() => {
-      return {
-        theme
-      }
-    })
+    this.forceUpdate()
+  }
+  updateBorderEnabled = borderEnabled => {
+    window.JAMSTACKTHEME_BORDER_ENABLED = borderEnabled
+    this.forceUpdate()
+  }
+  updateBorderWith = borderWidth => {
+    window.JAMSTACKTHEME_BORDER_WIDTH = borderWidth
+    this.forceUpdate()
   }
 
   setAvatar = avatarUrl => this.setState({ avatarUrl })
@@ -87,29 +90,26 @@ class ContextProviderComponent extends React.Component {
     return (
       <StaticQuery query={themeQuery}>
         { themeData => {
-          const {allThemeInfo: { edges: [{ node: { data: {
-            border: themeBorder, borderWidth: themeBorderWidth, theme: savedTheme
+          let {allThemeInfo: { edges: [{ node: { data: {
+            border: borderEnabled, borderWidth: themeBorderWidth, theme: savedTheme
           } } }] }} = themeData
           let theme = getThemeInfo(savedTheme)
-
-          let borderWidth = '12'
-          let border = `${borderWidth}px solid ${theme.highlight}`
-         
-          if (themeBorderWidth !== 'none') {
-            border = `${themeBorderWidth}px solid ${theme.highlight}`
-          }
-          if (themeBorder !== 'none') {
-            if (themeBorder === 'disabled') {
-              border = 'none'
-            }
-          }
+          borderEnabled = borderEnabled === 'none' ? 'enabled' : borderEnabled
+          themeBorderWidth = themeBorderWidth === 'none' ? 12 : themeBorderWidth
 
           if (typeof window !== 'undefined') {
             if (window.JAMSTACKTHEME) {
               theme = getThemeInfo(window.JAMSTACKTHEME)
             }
+            if (window.JAMSTACKTHEME_BORDER_ENABLED) {
+              borderEnabled = window.JAMSTACKTHEME_BORDER_ENABLED
+            }
+            if (window.JAMSTACKTHEME_BORDER_WIDTH) {
+              themeBorderWidth = window.JAMSTACKTHEME_BORDER_WIDTH
+            }
           }
-
+          
+          const showBorder = borderEnabled === 'enabled' ? true : false
           return (
             <>
             <Global
@@ -119,7 +119,7 @@ class ContextProviderComponent extends React.Component {
                   background-color: ${theme.backgroundColor};
                 }
                 body {
-                  border: ${border};
+                  border: ${showBorder ? themeBorderWidth + 'px solid ' + theme.highlight : 'none'};
                   background: url(${theme.type === 'dank' ? dankbg : null}) no-repeat center center fixed;
                   -webkit-background-size: cover;
                   -moz-background-size: cover;
@@ -129,13 +129,20 @@ class ContextProviderComponent extends React.Component {
                 p, h1, h2, h3, h4, h5, span {
                   color: ${theme.primaryFontColor};
                 }
+                .rangeslider-horizontal .rangeslider__fill {
+                  background-color: ${theme.highlight};
+                }
               `}
             />
             <BlogContext.Provider value={{
               ...this.state,
               updateIsAdmin: this.updateIsAdmin,
               updateTheme: this.updateTheme,
+              updateBorderEnabled: this.updateBorderEnabled,
+              updateBorderWith: this.updateBorderWith,
               setAvatar: this.setAvatar,
+              borderEnabled,
+              themeBorderWidth,
               theme
             }}>
               {this.props.children}

@@ -48,6 +48,7 @@
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.1",
     "react-progressive-image": "^0.6.0",
+    "react-rangeslider": "^2.2.0",
     "react-simplemde-editor": "^4.1.0",
     "react-toastify": "^5.4.0",
     "react-typography": "^0.16.19",

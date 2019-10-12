@@ -12,7 +12,7 @@ const lightTheme = {
   secondaryFontColor: '#73737D',
   inverseFontColor: 'white',
   inverseButtonFontColor: 'white',
-  borderColor: 'rgba(0, 0, 0, .1)',
+  borderColor: 'rgba(0, 0, 0, .1)'
 }
 
 export default lightTheme
