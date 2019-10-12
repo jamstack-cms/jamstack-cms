@@ -11,9 +11,27 @@ function PostList ({
 }) {
   const { theme, theme: { highlight } } = context
 
+  const widthIndexes = posts.reduce((acc, next, index) => {
+    if (!acc.length) {
+      acc.push('wide')
+      return acc
+    }
+    if (acc[index - 1] === 'wide' && acc[index - 2] === 'wide') {
+      acc.push('small')
+    } else if (acc[index - 1] === 'wide' && acc[index - 2] === 'small') {
+      acc.push('wide') 
+    } else if (acc[index - 1] === 'small' && acc[index - 2] === 'small') {
+      acc.push('wide') 
+    } else {
+      acc.push('small') 
+    }
+    return acc
+  }, [])
+
   return (
     <div css={[postListContainer(isAdmin)]}>
-      {posts.map(post => {
+      {posts.map((post, index) => {
+        const widthType = widthIndexes[index]
         const cover_image = `./downloads/${getImageKey(post.cover_image)}`
         const signed_image = post.signedImage
         const title = post.title
@@ -21,8 +39,9 @@ function PostList ({
         if (isAdmin) {
           link = `/editpost/${post.id}/${link}`
         }
+
         return (
-          <div css={[postContainer(isAdmin)]} key={post.id}>
+          <div css={[postContainer(isAdmin, widthType)]} key={post.id}>
             {
               isAdmin && (
                 <div css={[sideButtonContainer]}>
@@ -63,6 +82,13 @@ function PostList ({
                           </div>
                         )
                       }
+                      {
+                        !isAdmin && (
+                          <div>
+                            <p css={dateStyle}>{format(new Date(post.createdAt), 'MMMM dd yyyy')}</p>
+                          </div>
+                        )
+                      }
                     </header>
                   </div>
                 </div>
@@ -85,13 +111,20 @@ export default function PostListWithContext(props) {
   )
 }
 
+const dateStyle = css`
+  font-weight: 500;
+  color: #d1d1d1;
+  margin-top: 11px;
+  margin-bottom:0px;
+`
+
 const postListContainer = isAdmin => css`
   display: ${isAdmin ? 'inline' : 'flex'};
   flex-wrap: wrap;
 `
 
 const coverImageContainer = isAdmin => css`
-  height: ${isAdmin ? '250px' : '280px'};
+  height: ${isAdmin ? '250px' : '290px'};
   overflow: hidden;
   margin-bottom: 40px;
   text-align:center;
@@ -144,14 +177,23 @@ const publishButton = (theme) => css`
 `
 
 const sideButtonContainer = css`
+  margin-top: 100px;
   min-width: 100px;
 `
 
-const postContainer = isAdmin => css`
+const postContainer = (isAdmin, widthType) => {
+  let width
+  if (isAdmin) {
+    width = '770px'
+  } else {
+    width = widthType === 'small' ? '40%' : '53%'
+  }
+  return css`
   display: flex;
-  width: ${isAdmin ? '100%': '570px'};
+  width: ${width};
   margin: 20px;
 `
+}
 
 const postDescription =  ({ baseFontWeight, secondaryFontColor, fontFamily }) => css`
   font-weight: ${baseFontWeight};
@@ -171,13 +213,13 @@ const postDate = ({ fontFamily }) => css`
   font-family: ${fontFamily} !important;
 `
 
-const postStyle = () => css`
-  margin-bottom: 50px;
+const postStyle = (theme) => css`
+  
 `
 
 const postContentStyle = css`
   margin: 10px auto 0px;
-  padding: 10px 0px 20px;
+  padding: 10px 0px 0px;
 `
 
 const titleStyle = (theme, isAdmin) => css`

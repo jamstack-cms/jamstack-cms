@@ -38,7 +38,7 @@ type Settings @model @auth(rules: [
   categories: [String]
   adminGroups: [String]
   theme: String
-  border: Boolean
+  border: String
   borderWidth: Int
 }
 

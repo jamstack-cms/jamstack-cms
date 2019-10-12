@@ -93,6 +93,7 @@ class ContextProviderComponent extends React.Component {
           let {allThemeInfo: { edges: [{ node: { data: {
             border: borderEnabled, borderWidth: themeBorderWidth, theme: savedTheme
           } } }] }} = themeData
+
           let theme = getThemeInfo(savedTheme)
           borderEnabled = borderEnabled === 'none' ? 'enabled' : borderEnabled
           themeBorderWidth = themeBorderWidth === 'none' ? 12 : themeBorderWidth

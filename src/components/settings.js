@@ -24,6 +24,7 @@ class Settings extends React.Component {
       try {
         await amplifyDeploy()
         this.setState({ isDeploying: false})
+        toast('Successfully deployed new build!')
       } catch (err) {
         console.log('Error triggering webook: ', err)
       }
@@ -69,6 +70,7 @@ class Settings extends React.Component {
       id: 'jamstack-cms-theme-info',
       border: borderEnabled
     }
+    console.log('input: ', input)
     this.updateSettings(input, 'border')
   }
   updateBorder = width => {
@@ -78,7 +80,7 @@ class Settings extends React.Component {
     this.rangeTimeout = setTimeout(() => {
       const input = {
         id: 'jamstack-cms-theme-info',
-        borborderWidthder: width
+        borderWidth: width
       }
       this.updateSettings(input, 'border width')
       console.log('updated setting in the api')

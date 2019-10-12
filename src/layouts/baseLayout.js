@@ -87,20 +87,20 @@ const logoStyle = css`
 
 const linkContainer = css`
   box-shadow: none;
-  color: black;
-  opacity: 1;
-  &:hover {
-    opacity: .8;
-  }
 `
 
-const link = ({ fontFamily, baseFontWeight }) => css`
+const link = ({ fontFamily, baseFontWeight, primaryFontColor, primaryLightFontColor }) => css`
   margin-bottom: 0px;
   margin-top: 0px;
   margin-left: 15px;
   padding-top: 5px;
   font-family: ${fontFamily}, sans-serif;
   font-weight: ${baseFontWeight};
+  color: ${primaryLightFontColor};
+  transition: all .35s;
+  &:hover {
+    color: ${primaryFontColor};
+  }
 `
 
 const menu = css`
