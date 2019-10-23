@@ -12,6 +12,13 @@ export const createPost = `mutation CreatePost($input: CreatePostInput!) {
     published
     previewEnabled
     categories
+    author {
+      id
+      name
+      username
+      avatarUrl
+      owner
+    }
   }
 }
 `;
@@ -26,6 +33,13 @@ export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
     published
     previewEnabled
     categories
+    author {
+      id
+      name
+      username
+      avatarUrl
+      owner
+    }
   }
 }
 `;
@@ -40,6 +54,13 @@ export const deletePost = `mutation DeletePost($input: DeletePostInput!) {
     published
     previewEnabled
     categories
+    author {
+      id
+      name
+      username
+      avatarUrl
+      owner
+    }
   }
 }
 `;
@@ -78,6 +99,7 @@ export const createSettings = `mutation CreateSettings($input: CreateSettingsInp
     theme
     border
     borderWidth
+    description
   }
 }
 `;
@@ -89,6 +111,7 @@ export const updateSettings = `mutation UpdateSettings($input: UpdateSettingsInp
     theme
     border
     borderWidth
+    description
   }
 }
 `;
@@ -100,6 +123,7 @@ export const deleteSettings = `mutation DeleteSettings($input: DeleteSettingsInp
     theme
     border
     borderWidth
+    description
   }
 }
 `;
@@ -142,6 +166,8 @@ export const deletePreview = `mutation DeletePreview($input: DeletePreviewInput!
 export const createUser = `mutation CreateUser($input: CreateUserInput!) {
   createUser(input: $input) {
     id
+    name
+    username
     avatarUrl
     owner
   }
@@ -150,6 +176,8 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
 export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
   updateUser(input: $input) {
     id
+    name
+    username
     avatarUrl
     owner
   }
@@ -158,6 +186,8 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
 export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
   deleteUser(input: $input) {
     id
+    name
+    username
     avatarUrl
     owner
   }

@@ -27,9 +27,12 @@ class Profile extends React.Component {
         username: userInfo.username,
         sub
       })
-      const graphqlData = { id: sub }
+      let graphqlData = { id: sub }
       const user = await API.graphql(graphqlOperation(getUser, graphqlData))
       if (!user.data.getUser) {
+        graphqlData = {
+          ...graphqlData, username: userInfo.username
+        }
         await API.graphql(graphqlOperation(createUser, { input: graphqlData }))
         console.log('user created!')
       } else {

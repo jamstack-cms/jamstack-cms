@@ -19,7 +19,7 @@ function getMarkdownText(markdown) {
 }
 
 function PostComponent({
-  content, createdAt, description, title, cover_image, context
+  content, createdAt, description, title, cover_image, context, authorAvatar, authorName
 }) {
   let date
   if (createdAt) {
@@ -30,6 +30,11 @@ function PostComponent({
   return (
     <div css={postContainer}>
       <h1 css={[titleStyle(theme)]}>{title}</h1>
+      <div css={authorContainerStyle}>
+        { authorAvatar && <img css={authorAvatarStyle} src={authorAvatar} />}
+        <p css={authorNameStyle(theme)}>{authorName}</p>
+        { createdAt && <p css={[dateStyle(theme)]}>{date}</p>}
+      </div>
       { cover_image && (
         <ProgressiveImage src={cover_image} placeholder={placeholder}>
           {(src, loading) => {
@@ -45,7 +50,6 @@ function PostComponent({
           <h2 css={[descriptionStyle(theme)]}>{description}</h2>
         )}
         <div className="blog-post">
-          { createdAt && <p css={[dateStyle(theme)]}>{date}</p>}
           <PostContent content={content} />
         </div>
       </div>
@@ -65,6 +69,27 @@ function PostComponentWithContext(props) {
 
 export default PostComponentWithContext
 
+const authorContainerStyle = css`
+  width: 680px;
+  margin: 0 auto 60px;
+  display: flex;
+  align-items: center;
+`
+
+const authorAvatarStyle = css`
+  width: 34px;
+  height: 34px;
+  border-radius: 18px;
+  margin-right: 10px;
+  border: 2px solid white;
+`
+
+const authorNameStyle = ({ secondaryFontColor }) => css`
+  color: ${secondaryFontColor};
+  font-weight: 500;
+  margin-right: 20px;
+`
+
 const imageStyle = css`
   box-shadow: 0 30px 60px -10px rgba(0,0,0,0.22), 0 18px 36px -18px rgba(0,0,0,0.25);
 `
@@ -83,7 +108,7 @@ const titleStyle = ({ scriptFamily }) => css`
   font-weight: 500;
   font-family: ${scriptFamily};
   font-size: 46px;
-  margin: 90px auto 80px;
+  margin: 90px auto 30px;
   width: 680px;
 `
 

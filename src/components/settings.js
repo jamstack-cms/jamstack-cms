@@ -14,9 +14,11 @@ import 'react-rangeslider/lib/index.css'
 
 class Settings extends React.Component {
   state = {
-    isDeploying: false
+    isDeploying: false,
+    description: this.props.context.siteDescription
   }
   rangeTimeout = null
+  descriptionTimeout = null
   deploy = async () => {
     this.setState({
         isDeploying: true
@@ -39,7 +41,7 @@ class Settings extends React.Component {
         console.log(`${type} already set.... Updating ${type}.`)
         try {
           await API.graphql(graphqlOperation(updateSettings, { input }))
-          console.log(`updated ${type}...`)
+          console.log(`${type} successfully updated...`)
         } catch (err) {
           console.log(`error updating ${type}: `, err)
         }
@@ -83,12 +85,27 @@ class Settings extends React.Component {
         borderWidth: width
       }
       this.updateSettings(input, 'border width')
-      console.log('updated setting in the api')
     }, 1000)
   }
-
+  updateDescription = event => {
+    clearTimeout(this.descriptionTimeout)
+    const { updateDescription } = this.props.context
+    const description = event.target.value
+    this.setState({
+      description
+    })
+    this.descriptionTimeout = setTimeout(() => {
+      const input = {
+        id: 'jamstack-cms-theme-info',
+        description
+      }
+      this.updateSettings(input, 'description')
+      updateDescription(description)
+    }, 1000)
+  }
   render() {
     const { theme, themeBorderWidth } = this.props.context
+    console.log('context: ', this.props.context)
     const {
       highlight, baseFontWeight, primaryFontColor, inverseButtonFontColor
     } = theme
@@ -147,6 +164,15 @@ class Settings extends React.Component {
               max={50}
             />
           </div>
+          <div css={[settingContainer]}>
+            <p css={[heading, themedHeading]}>Site description</p>
+            <textarea
+              placeholder="Your blog description"
+              css={blogDescriptionStyle}
+              onChange={this.updateDescription}
+              value={this.state.description}
+            />
+          </div>
         </div>
       </Layout>
     )
@@ -162,6 +188,13 @@ export default function SettingsWthContext(props) {
     </BlogContext.Consumer>
   )
 }
+
+const blogDescriptionStyle = css`
+  outline: none;
+  border: 1px solid #ededed;
+  padding: 20px;
+  width: 100%;
+`
 
 const widthInput = ({ primaryFontColor }) => css`
   outline: none;

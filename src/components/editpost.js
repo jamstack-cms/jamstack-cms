@@ -1,5 +1,5 @@
 import React from 'react'
-import { Storage, API, graphqlOperation } from 'aws-amplify'
+import { Storage, API, Auth, graphqlOperation } from 'aws-amplify'
 import { css } from "@emotion/core"
 
 import MainLayout from '../layouts/mainLayout'
@@ -9,7 +9,7 @@ import FormComponent from './formComponent'
 import ImageLinkOverlay from './imageLinkOverlay'
 import FileInput from './input'
 import { updatePost } from '../graphql/mutations'
-import { getPost } from '../graphql/queries'
+import { getPost, getUser } from '../graphql/queries'
 import { BlogContext } from '../context/mainContext'
 import getSignedUrls from '../utils/getSignedUrls'
 import getUnsignedUrls from '../utils/getUnsignedUrls'
@@ -27,6 +27,8 @@ const initialPostState = {
     createdAt: '',
     previewEnabled: false,
     published: false,
+    authorName: '',
+    authorAvatar: null
   }
 }
 
@@ -48,14 +50,17 @@ class EditPost extends React.Component {
   }
   async componentDidMount() {
     const { id } = this.props
-    let wildcard = this.props["*"]
-    
+    let wildcard = this.props["*"]    
     if (wildcard === 'edit') {
       this.setState({ isEditing: true })
     }
     try {
+      let authorAvatar
       const postData = await API.graphql(graphqlOperation(getPost, { id }))
       const { getPost: post } = postData.data
+      if (post.author.avatarUrl) {
+        authorAvatar = await Storage.get(post.author.avatarUrl)
+      }
       if (wildcard !== 'edit') {
         const updatedContent = await getSignedUrls(post.content)
         post['content'] = updatedContent
@@ -64,7 +69,10 @@ class EditPost extends React.Component {
         const coverImage = await Storage.get(getKeyWithPath(post['cover_image']))
         post['cover_image'] = coverImage
       }
-      this.setState({ post, isLoading: false })
+      this.setState({
+        authorName: post.author.username,
+        post, isLoading: false,
+        authorAvatar: authorAvatar ? authorAvatar : null })
     } catch (err) { console.log({ err })}
   }
   setPost = (key, value) => {
@@ -200,8 +208,8 @@ class EditPost extends React.Component {
   }
   render() {
     const { window } = this.props.context
-    const { isEditing, isLoading, hasChanged, showOverlay,
-    isSaving, isGeneratingPreview, isUploadingImage, isPublishing } = this.state
+    const { isEditing, isLoading, hasChanged, showOverlay, authorName,
+    isSaving, isGeneratingPreview, isUploadingImage, isPublishing, authorAvatar } = this.state
     const { title, content, createdAt, cover_image, previewEnabled, description, published } = this.state.post
     const { theme } = this.props.context
     if (isLoading) return <p css={loading(theme)}>Loading...</p>
@@ -296,6 +304,8 @@ class EditPost extends React.Component {
                 content={content}
                 cover_image={cover_image}
                 createdAt={new Date(createdAt)}
+                authorAvatar={authorAvatar}
+                authorName={authorName}
               />
             </>
           )

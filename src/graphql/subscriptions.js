@@ -12,6 +12,13 @@ export const onCreatePost = `subscription OnCreatePost {
     published
     previewEnabled
     categories
+    author {
+      id
+      name
+      username
+      avatarUrl
+      owner
+    }
   }
 }
 `;
@@ -26,6 +33,13 @@ export const onUpdatePost = `subscription OnUpdatePost {
     published
     previewEnabled
     categories
+    author {
+      id
+      name
+      username
+      avatarUrl
+      owner
+    }
   }
 }
 `;
@@ -40,6 +54,13 @@ export const onDeletePost = `subscription OnDeletePost {
     published
     previewEnabled
     categories
+    author {
+      id
+      name
+      username
+      avatarUrl
+      owner
+    }
   }
 }
 `;
@@ -78,6 +99,7 @@ export const onCreateSettings = `subscription OnCreateSettings {
     theme
     border
     borderWidth
+    description
   }
 }
 `;
@@ -89,6 +111,7 @@ export const onUpdateSettings = `subscription OnUpdateSettings {
     theme
     border
     borderWidth
+    description
   }
 }
 `;
@@ -100,6 +123,7 @@ export const onDeleteSettings = `subscription OnDeleteSettings {
     theme
     border
     borderWidth
+    description
   }
 }
 `;
@@ -142,6 +166,8 @@ export const onDeletePreview = `subscription OnDeletePreview {
 export const onCreateUser = `subscription OnCreateUser($owner: String) {
   onCreateUser(owner: $owner) {
     id
+    name
+    username
     avatarUrl
     owner
   }
@@ -150,6 +176,8 @@ export const onCreateUser = `subscription OnCreateUser($owner: String) {
 export const onUpdateUser = `subscription OnUpdateUser($owner: String) {
   onUpdateUser(owner: $owner) {
     id
+    name
+    username
     avatarUrl
     owner
   }
@@ -158,6 +186,8 @@ export const onUpdateUser = `subscription OnUpdateUser($owner: String) {
 export const onDeleteUser = `subscription OnDeleteUser($owner: String) {
   onDeleteUser(owner: $owner) {
     id
+    name
+    username
     avatarUrl
     owner
   }

@@ -10,7 +10,10 @@ const theme = {
 }
 
 const styledAuthenticator = Component => withAuthenticator(Component, {
-  theme
+  theme,
+  signUpConfig: {
+    hiddenDefaults: ['phone_number']
+  }
 })
 
 export default styledAuthenticator

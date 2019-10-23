@@ -57,29 +57,6 @@ export const listPreviews = `query ListPreviews(
   }
 }
 `;
-export const getUser = `query GetUser($id: ID!) {
-  getUser(id: $id) {
-    id
-    avatarUrl
-    owner
-  }
-}
-`;
-export const listUsers = `query ListUsers(
-  $filter: ModelUserFilterInput
-  $limit: Int
-  $nextToken: String
-) {
-  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
-    items {
-      id
-      avatarUrl
-      owner
-    }
-    nextToken
-  }
-}
-`;
 export const getPost = `query GetPost($id: ID!) {
   getPost(id: $id) {
     id
@@ -91,6 +68,13 @@ export const getPost = `query GetPost($id: ID!) {
     published
     previewEnabled
     categories
+    author {
+      id
+      name
+      username
+      avatarUrl
+      owner
+    }
   }
 }
 `;
@@ -110,6 +94,13 @@ export const listPosts = `query ListPosts(
       published
       previewEnabled
       categories
+      author {
+        id
+        name
+        username
+        avatarUrl
+        owner
+      }
     }
     nextToken
   }
@@ -123,6 +114,7 @@ export const getSettings = `query GetSettings($id: ID!) {
     theme
     border
     borderWidth
+    description
   }
 }
 `;
@@ -139,8 +131,36 @@ export const listSettingss = `query ListSettingss(
       theme
       border
       borderWidth
+      description
     }
     nextToken
+  }
+}
+`;
+export const listUsers = `query ListUsers(
+  $filter: ModelUserFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      username
+      avatarUrl
+      owner
+    }
+    nextToken
+  }
+}
+`;
+export const getUser = `query GetUser($id: ID!) {
+  getUser(id: $id) {
+    id
+    name
+    username
+    avatarUrl
+    owner
   }
 }
 `;

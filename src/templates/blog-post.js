@@ -18,7 +18,8 @@ class BlogPostTemplate extends React.Component {
   render() {
     const { isAdmin, theme } = this.props.context
     const { title, description, createdAt  } = this.props.data.appsync.getPost
-    const { pageContext: { content, local_cover_image } } = this.props
+    const { pageContext: { content, local_cover_image, author, authorAvatar } } = this.props
+    console.log('content: ', content)
 
     return (
       <div>
@@ -36,6 +37,8 @@ class BlogPostTemplate extends React.Component {
           content={content}
           cover_image={local_cover_image}
           createdAt={new Date(createdAt)}
+          authorAvatar={authorAvatar}
+          authorName={author}
         />
       </div>
     )

@@ -15,6 +15,7 @@ type Post @model
   published: Boolean
   previewEnabled: Boolean
   categories: [String]
+  author: User @connection
 }
 
 type Comment @model @auth(
@@ -40,6 +41,7 @@ type Settings @model @auth(rules: [
   theme: String
   border: String
   borderWidth: Int
+  description: String
 }
 
 type Preview @model
@@ -60,10 +62,13 @@ type Preview @model
 
 type User @model
   @auth(rules: [
-    { allow: owner, operations: [create, update, delete] },
-    { allow: groups, groups: ["Admin"]}
+    { allow: owner },
+    { allow: groups, groups: ["Admin"]},
+    { allow: public, operations: [read] }
   ])
 {
   id: ID!
+  name: String
+  username: String
   avatarUrl: String
 }

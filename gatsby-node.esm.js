@@ -41,6 +41,10 @@ exports.createPages = async ({ graphql, actions }) => {
           published
           title
           cover_image
+          author {
+            username
+            avatarUrl
+          }
         }
       }
     }
@@ -112,10 +116,8 @@ exports.createPages = async ({ graphql, actions }) => {
       }
 
       let updatedContent = content.replace(urlRegex(), (url) => {
-
         if(url.includes(bucket)) {
           const chosenUrl = rawPaths[urlIndex]
-         
           const split = chosenUrl.split('/')
           const relativeUrl = `../downloads/${split[split.length - 1]}`
           urlIndex++
@@ -125,6 +127,14 @@ exports.createPages = async ({ graphql, actions }) => {
         }
       })
       post['content'] = updatedContent
+
+      if (post.author.avatarUrl) {
+        const image = post.author.avatarUrl
+        const signedImage = await Storage.get(image)
+        await downloadImage(signedImage)
+        const key = getImageKey(image)
+        post['authorAvatar'] = `../downloads/${key}`
+      }
       
       const previous = index === blogPosts.length - 1 ? null : blogPosts[index + 1].node
       const next = index === 0 ? null : blogPosts[index - 1]
@@ -140,6 +150,8 @@ exports.createPages = async ({ graphql, actions }) => {
           cover_image: post.cover_image,
           local_cover_image: coverImage,
           description: post.description,
+          author: post.author.username,
+          authorAvatar: post.authorAvatar ? post.authorAvatar : null,
           slug: slugify(post.title),
           type: "appsyncData",
           previous,
@@ -165,6 +177,7 @@ exports.onCreatePage = async ({ page, actions }) => {
 exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {
   const { createNode } = actions
   const imageKeys = []
+  let authorImages = []
   
   const getSettingsData = await axios({
     url: config.aws_appsync_graphqlEndpoint,
@@ -178,14 +191,15 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
     }
   })
 
-  const { theme, categories, adminGroups, border, borderWidth } = getSettingsData.data.data.getSettings
+  const { theme, categories, adminGroups, border, borderWidth, description } = getSettingsData.data.data.getSettings
 
   const themeInfo = {
     theme: theme || 'light',
     categories: categories || 'none',
     adminGroups: adminGroups || 'none',
     borderWidth: borderWidth || 'none',
-    border: border || 'none'
+    border: border || 'none',
+    description: description || 'none'
   }
 
   const data = {
@@ -218,6 +232,9 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
           published
           title
           cover_image
+          author {
+            avatarUrl
+          }
         }
       }
     }
@@ -254,26 +271,55 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
         const keyWithPath = `images/${cleanedKey}`
         imageKeys.push(keyWithPath)
       }
+      if (post.author.avatarUrl) {
+        const key = getImageKey(post.author.avatarUrl)
+        authorImages.push(key)
+      }
     })
+    if (authorImages.length) {
+      authorImages = [...new Set(authorImages)]
+      authorImages = authorImages.map(avatar => `../downloads/${avatar}`)
+    }
 
-    const data = {
+    // create main image key array for media resources
+    const imageData = {
       key: 'image-keys',
       data: imageKeys.length ? imageKeys : 'none'
     }
-    const nodeContent = JSON.stringify(data)
-    const nodeMeta = {
-      id: createNodeId(`my-data-${data.key}`),
+    const imageNodeContent = JSON.stringify(imageData)
+    const imageNodeMeta = {
+      id: createNodeId(`my-data-${imageData.key}`),
       parent: null,
       children: [],
       internal: {
         type: `ImageKeys`,
         mediaType: `text/html`,
-        content: nodeContent,
-        contentDigest: createContentDigest(data)
+        content: imageNodeContent,
+        contentDigest: createContentDigest(imageData)
       }
     }
-    const node = Object.assign({}, data, nodeMeta)
-    createNode(node)
+    const imageNode = Object.assign({}, imageData, imageNodeMeta)
+    createNode(imageNode)
+
+    // create author image array for displaying author avatars
+    const authorImageData = {
+      key: 'author-images',
+      data: authorImages.length ? authorImages : 'none'
+    }
+    const authorImageNodeContent = JSON.stringify(authorImageData)
+    const authorImageNodeMeta = {
+      id: createNodeId(`my-data-${authorImageData.key}`),
+      parent: null,
+      children: [],
+      internal: {
+        type: `AuthorImages`,
+        mediaType: `text/html`,
+        content: authorImageNodeContent,
+        contentDigest: createContentDigest(authorImageData)
+      }
+    }
+    const authorImageNode = Object.assign({}, authorImageData, authorImageNodeMeta)
+    createNode(authorImageNode)
   } catch(error) {
     console.log('error creating image keys.. :', error)
   }

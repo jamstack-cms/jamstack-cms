@@ -27,7 +27,7 @@ function PostList ({
     }
     return acc
   }, [])
-
+  console.log('rendering...')
   return (
     <div css={[postListContainer(isAdmin)]}>
       {posts.map((post, index) => {

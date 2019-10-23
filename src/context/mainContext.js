@@ -20,6 +20,7 @@ const themeQuery = graphql`
             categories
             border
             borderWidth
+            description
           }
         }
       }
@@ -55,9 +56,9 @@ class ContextProviderComponent extends React.Component {
           this.updateIsAdmin(true)
         }
       })
-      .catch(err => console.log(err));
-      window.addEventListener("resize", this.onResize);
-      this.onResize()
+      .catch(err => console.log(err))
+    window.addEventListener("resize", this.onResize)
+    this.onResize()
   }
 
   updateTheme = theme => {
@@ -70,6 +71,10 @@ class ContextProviderComponent extends React.Component {
   }
   updateBorderWith = borderWidth => {
     window.JAMSTACKTHEME_BORDER_WIDTH = borderWidth
+    this.forceUpdate()
+  }
+  updateDescription = description => {
+    window.JAMSTACKCMS_DESCRIPTION = description
     this.forceUpdate()
   }
 
@@ -90,13 +95,15 @@ class ContextProviderComponent extends React.Component {
     return (
       <StaticQuery query={themeQuery}>
         { themeData => {
+
           let {allThemeInfo: { edges: [{ node: { data: {
-            border: borderEnabled, borderWidth: themeBorderWidth, theme: savedTheme
+            border: borderEnabled, borderWidth: themeBorderWidth, theme: savedTheme, description: baseDescription
           } } }] }} = themeData
 
           let theme = getThemeInfo(savedTheme)
           borderEnabled = borderEnabled === 'none' ? 'enabled' : borderEnabled
           themeBorderWidth = themeBorderWidth === 'none' ? 12 : themeBorderWidth
+          baseDescription = baseDescription === 'none' ? 'Edit description in settings' : baseDescription
 
           if (typeof window !== 'undefined') {
             if (window.JAMSTACKTHEME) {
@@ -107,6 +114,9 @@ class ContextProviderComponent extends React.Component {
             }
             if (window.JAMSTACKTHEME_BORDER_WIDTH) {
               themeBorderWidth = window.JAMSTACKTHEME_BORDER_WIDTH
+            }
+            if (window.JAMSTACKCMS_DESCRIPTION) {
+              baseDescription = window.JAMSTACKCMS_DESCRIPTION
             }
           }
           
@@ -142,8 +152,10 @@ class ContextProviderComponent extends React.Component {
               updateBorderEnabled: this.updateBorderEnabled,
               updateBorderWith: this.updateBorderWith,
               setAvatar: this.setAvatar,
+              updateDescription: this.updateDescription,
               borderEnabled,
               themeBorderWidth,
+              siteDescription: baseDescription,
               theme
             }}>
               {this.props.children}
