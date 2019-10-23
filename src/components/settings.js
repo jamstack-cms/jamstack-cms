@@ -2,12 +2,12 @@ import React from "react"
 // import { graphql } from "gatsby"
 import Layout from '../layouts/mainLayout'
 import Button from '../components/button'
+import SolidButton from '../components/SolidButton'
 import { css } from '@emotion/core'
 import { BlogContext } from '../context/mainContext'
 import { API, graphqlOperation } from 'aws-amplify'
 import { updateSettings, createSettings } from '../graphql/mutations'
 import { toast } from 'react-toastify'
-import Loader from '../components/loadingIndicator'
 import amplifyDeploy from '../providers/webhookProviders/amplifyDeploy'
 import Slider from 'react-rangeslider'
 import 'react-rangeslider/lib/index.css'
@@ -122,12 +122,12 @@ class Settings extends React.Component {
     return (
       <Layout noPadding>
         <div css={launchButtonContainer}>
-          <button onClick={this.deploy} css={[baseButton(theme), deployButton()]}>
-            {
-              isDeploying && <Loader customLoadingCss={[loadingIndicator]} />
-            }
-            Deploy
-            </button>
+          <SolidButton
+            onClick={this.deploy}
+            isLoading={isDeploying}
+            customCss={[deployButton()]}
+            title="Deploy"
+          />
         </div>
         <div>
           <p css={[heading, themedHeading]}>Theme</p>
@@ -150,9 +150,10 @@ class Settings extends React.Component {
           </div>
           <div css={[settingContainer]}>
             <p css={[heading, themedHeading]}>Border</p>
-            <button onClick={this.toggleBorder} css={[baseButton(theme)]}>
-              Toggle Border
-            </button>
+            <SolidButton
+              onClick={this.toggleBorder}
+              title="Toggle Border"
+            />
           </div>
           <div css={[settingContainer]}>
             <p css={[heading, themedHeading]}>Border Width - {themeBorderWidth}</p>
@@ -179,7 +180,7 @@ class Settings extends React.Component {
   }
 }
 
-export default function SettingsWthContext(props) {
+export default function SettingsWithContext(props) {
   return (
     <BlogContext.Consumer>
         {
@@ -207,28 +208,8 @@ const settingContainer = css`
   margin-top: 25px;
 `
 
-const loadingIndicator = css`
-  margin-right: 7px;
-`
-
 const launchButtonContainer = css`
   position: relative;
-`
-
-const baseButton = ({ highlight, inverseButtonFontColor }) => css`
-  background-color: ${highlight};
-  color: ${inverseButtonFontColor};
-  padding: 6px 32px;
-  border-radius: 4px;
-  outline: none;
-  border: none;
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, .2);
-  cursor: pointer;
-  transition: all .3s;
-  display: flex;
-  &:hover {
-    opacity: .8;
-  }
 `
 
 const deployButton = () => css`

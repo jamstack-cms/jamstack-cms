@@ -13,9 +13,9 @@ const lightTheme = {
   codeBackgroundColor: '#ededed',
   toastBackgroundColor: 'white',
   // font families
-  fontFamily: 'Montserrat',
+  fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Ubuntu, Roboto, Noto, "Segoe UI", Arial, sans-serif',
   scriptFamily: 'EB Garamond',
-  baseFontWeight: '400',
+  baseFontWeight: '300',
 }
 
 export default lightTheme

@@ -72,19 +72,31 @@ const authorInfoStyle = () => css`
   display: flex;
   margin: 0 30px;
   align-items: center;
+  position: relative;
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.2);
+  }
 `
 
 const authorImageStyle = () => css`
-  width: 34px;
-  border-radius: 17px;
+  width: 50px;
+  border-radius: 25px;
   margin-right: 25px;
+  border: 4px solid white;
 `
 
 const siteDescriptionStyle = ({ secondaryFontColor }) => css`
   max-width: 50%;
   color: ${secondaryFontColor};
   font-size: 14px;
-  line-height: 22px;
+  line-height: 1.35;
 `
 
 const mainContainer = css`

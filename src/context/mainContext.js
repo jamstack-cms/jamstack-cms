@@ -174,6 +174,7 @@ export {
 }
 
 const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
+  console.log('type!!!: ', type)
   const isDark = type === 'dark'
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
@@ -197,12 +198,13 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
     font-family: ${fontFamily}, serif;
     font-size: 18px;
     margin: 0px 0px 35px;
-    line-height: 34px;
-    font-weight: ${isDark ? 200 : 400};
+    line-height: 1.756;
+    font-weight: ${isDark ? 200 : 300};
     color: ${primaryFontColor};
   }
 
   .blog-post li {
+    color: ${primaryFontColor};
     font-family: ${fontFamily}, serif;
     margin-bottom: 7px;
     line-height: 28px;
@@ -245,7 +247,7 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
   }
 
   .blog-post a {
-    color: black;
+    color: ${primaryFontColor};
   }
 
   .blog-post img {

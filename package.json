@@ -45,6 +45,8 @@
     "marked": "^0.7.0",
     "prismjs": "^1.17.1",
     "react": "^16.9.0",
+    "react-dnd": "^9.4.0",
+    "react-dnd-html5-backend": "^9.4.0",
     "react-dom": "^16.9.0",
     "react-helmet": "^5.2.1",
     "react-progressive-image": "^0.6.0",
