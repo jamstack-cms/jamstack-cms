@@ -146,7 +146,8 @@ class EditPost extends React.Component {
     }
   }
   updatePost = async publishedState => {
-    const input = {...this.state.post}
+    const { author, ...input } = this.state.post
+    
     if (!publishedState) {
       this.setState({ isSaving: true })
       if (this.state.file && this.state.file.name) {

@@ -33,13 +33,6 @@ export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
     published
     previewEnabled
     categories
-    author {
-      id
-      name
-      username
-      avatarUrl
-      owner
-    }
   }
 }
 `;

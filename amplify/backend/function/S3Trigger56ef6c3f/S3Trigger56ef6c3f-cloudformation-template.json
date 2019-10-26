@@ -28,12 +28,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"S3Trigger23b3f8e4",
+						"S3Trigger56ef6c3f",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"S3Trigger23b3f8e4",
+									"S3Trigger56ef6c3f",
 									"-",
 									{
 										"Ref": "env"
@@ -56,11 +56,11 @@
 						"Arn"
 					]
 				},
-				"Runtime": "nodejs8.10",
+				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "blog-amplified-local-20190913122951-deployment",
-					"S3Key": "amplify-builds/S3Trigger23b3f8e4-6569466b366c6c556a72-build.zip"
+					"S3Key": "amplify-builds/S3Trigger56ef6c3f-705256696d3938453378-build.zip"
 				}
 			}
 		},
@@ -70,12 +70,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"S3Trigger23b3f8e4LambdaRole23b3f8e4",
+						"S3Trigger56ef6c3fLambdaRole56ef6c3f",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"S3Trigger23b3f8e4LambdaRole23b3f8e4",
+									"S3Trigger56ef6c3fLambdaRole56ef6c3f",
 									"-",
 									{
 										"Ref": "env"
