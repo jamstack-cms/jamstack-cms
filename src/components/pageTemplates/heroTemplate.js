@@ -14,6 +14,14 @@ class HeroTemplate extends React.Component {
   state = {
     components: []
   }
+  updateContent = (content, index) => {
+    const components = [...this.state.components]
+    components[index].content = content
+    this.setState(() => ({
+      components
+    }))
+  }
+  
   deleteComponent = index => {
     let components = [...this.state.components]
     components.splice(index, 1)
@@ -67,33 +75,34 @@ class HeroTemplate extends React.Component {
     return (
       <DndProvider backend={HTML5Backend}>
         <div css={[container, dynamicWidthStyle]}>
-        <div css={[componentCreatorContainerStyle()]}>
-          <p onClick={() => this.createComponent('header')} css={componentCreatorStyle(theme)}>Header</p>
-          <p onClick={() => this.createComponent('subheading')} css={componentCreatorStyle(theme)}>Subheading</p>
-          <p onClick={() => this.createComponent('image')} css={componentCreatorStyle(theme)}>Image</p>
-          <p onClick={() => this.createComponent('paragraph')} css={componentCreatorStyle(theme)}>Paragraph</p>
-          <p onClick={() => this.createComponent('pwithimage')} css={componentCreatorStyle(theme, true)}>Paragraph with Image</p>
-        </div>
-          {
-            components.map((item, index) => (
-              <Draggable
-                component={item.component}
-                moveCard={this.moveComponent}
-                id={item.id}
-                index={index}
-                key={item.id}
-                theme={theme}
-                deleteComponent={item.deleteComponent}
-              />
-            ))
-          }
+          <div css={[componentCreatorContainerStyle()]}>
+            <p onClick={() => this.createComponent('header')} css={componentCreatorStyle(theme)}>Header</p>
+            <p onClick={() => this.createComponent('subheading')} css={componentCreatorStyle(theme)}>Subheading</p>
+            <p onClick={() => this.createComponent('image')} css={componentCreatorStyle(theme)}>Image</p>
+            <p onClick={() => this.createComponent('paragraph')} css={componentCreatorStyle(theme)}>Paragraph</p>
+            <p onClick={() => this.createComponent('pwithimage')} css={componentCreatorStyle(theme, true)}>Paragraph with Image</p>
+          </div>
+            {
+              components.map((item, index) => (
+                <Draggable
+                  component={item.component}
+                  moveCard={this.moveComponent}
+                  id={item.id}
+                  index={index}
+                  key={item.id}
+                  theme={theme}
+                  deleteComponent={item.deleteComponent}
+                  updateContent={content => this.updateContent(content, index)}
+                />
+              ))
+            }
         </div>
       </DndProvider>
     )
   }
 }
 
-function Draggable({ component: Component, id, deleteComponent, index, moveCard, theme }) {
+function Draggable({ updateContent, component: Component, id, deleteComponent, index, moveCard, theme }) {
   const ref = useRef(null)
   const [, drop] = useDrop({
     accept: 'COMPONENT',
@@ -149,6 +158,7 @@ function Draggable({ component: Component, id, deleteComponent, index, moveCard,
       <Component
          deleteComponent={deleteComponent}
          index={index}
+         updateContent={updateContent}
        />
     </div>
   )
@@ -176,13 +186,8 @@ const textStyle = ({ primaryFontColor }) => css`
   color: ${primaryFontColor};
 `
 
-const headerTitle = css`
-  margin-top: 15px;
-`
-
 const container = css`
   margin: 0 auto;
-  margin-top: 15px;
 `
 
 const headerImage = css`

@@ -88,7 +88,7 @@ class MediaView extends React.Component {
             labelStyle={[toggleViewButton(theme), uploadButton]}
             onChange={this.uploadImage}
           />
-          <select css={[selectMenu]} value={this.state.dataType} onChange={this.updateDataType}>
+          <select css={[selectMenu(theme)]} value={this.state.dataType} onChange={this.updateDataType}>
             <option value="all">All Images</option>
             <option value="in-use">Images in use</option>
             <option value="not-in-use">Images not in use</option>

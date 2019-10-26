@@ -340,21 +340,7 @@ const initialValue = {
           },
           {
             "object": "text",
-            "text": " text, "
-          },
-          {
-            "object": "text",
-            "text": "much",
-            "marks": [{ "type": "italic" }]
-          },
-          {
-            "object": "text",
-            "text": " better than a "
-          },
-          {
-            "object": "text",
-            "text": "<textarea>",
-            "marks": [{ "type": "code" }]
+            "text": " text"
           },
           {
             "object": "text",
@@ -399,7 +385,7 @@ const initialValue = {
         "nodes": [
           {
             "object": "text",
-            "text": "Try it out for yourself!"
+            "text": "Try it out!"
           }
         ]
       },

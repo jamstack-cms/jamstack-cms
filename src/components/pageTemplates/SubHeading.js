@@ -1,21 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { css } from '@emotion/core'
 import { BlogContext } from '../../context/mainContext'
 
 import EditOptions from './EditOptions'
 
-function SubHeading({ index, deleteComponent, context: { theme }}) {
-  const [editable, updateIsEditable] = useState(false)
+function SubHeading({ updateContent, index, deleteComponent, context: { theme }}) {
+  const [editable, updateIsEditable] = useState(true)
+  const [html, updateHtml] = useState('This is a subheader.')
+  const h3ref = useRef(null)
+
+  useEffect(() => {
+    updateAndSave(false)
+  }, [])
+
+  function updateAndSave() {
+    updateIsEditable(!editable)
+    const newHtml = h3ref.current.innerHTML;
+    updateHtml(newHtml)
+    const content = `<h3>${newHtml}</h3>`
+    updateContent(content)
+  }
+
   return (
     <div css={headerTemplateStyle}>
       <h3
         contentEditable={editable}
         suppressContentEditableWarning
         css={[headingStyle(theme), editable ? editingStyle() : null]}
-      >Hello from SubHeader</h3>
+        ref={h3ref}
+        dangerouslySetInnerHTML={{__html: html }}
+      />
       <EditOptions
         editable={editable}
-        updateIsEditable={() => updateIsEditable(!editable)}
+        updateIsEditable={updateAndSave}
         theme={theme}
         deleteComponent={() => deleteComponent(index)}
       />

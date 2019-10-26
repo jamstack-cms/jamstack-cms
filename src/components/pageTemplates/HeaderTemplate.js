@@ -1,22 +1,39 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { css } from '@emotion/core'
 import { BlogContext } from '../../context/mainContext'
 
 import EditOptions from './EditOptions'
 
-function Header({ deleteComponent, index, context: { theme }}) {
-  const [editable, updateIsEditable] = useState(false)
-  console.log('editable: ', editable)
+function Header({ updateContent, deleteComponent, index, context: { theme }}) {
+  const [editable, updateIsEditable] = useState(true)
+  const [html, updateHtml] = useState('This is a header.')
+  const h1ref = useRef(null)
+
+  useEffect(() => {
+    updateAndSave()
+  }, [])
+
+  function updateAndSave() {
+    updateIsEditable(!editable)
+    let newHtml = h1ref.current.innerHTML
+    newHtml = newHtml.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "")
+    updateHtml(newHtml)
+    const content = `<h1>${newHtml}</h1>`
+    updateContent(content)
+  }
+
   return (
     <div css={headerTemplateStyle(editable)}>
       <h1
         contentEditable={editable}
         suppressContentEditableWarning
         css={[headingStyle(theme), editable ? editingStyle() : null]}
-      >Hello from Header</h1>
+        ref={h1ref}
+        dangerouslySetInnerHTML={{__html: html }}
+      />
       <EditOptions
         editable={editable}
-        updateIsEditable={() => updateIsEditable(!editable)}
+        updateIsEditable={updateAndSave}
         theme={theme}
         deleteComponent={() => deleteComponent(index)}
       />

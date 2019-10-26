@@ -60,6 +60,20 @@ type Preview @model
   categories: [String]
 }
 
+type Page @model(subscriptions: null)
+  @auth (
+      rules: [
+        { allow: groups, groups: ["Admin"] },
+        { allow: private, operations: [read] },
+        { allow: public, operations: [read] }
+      ]
+  )
+{
+  id: ID!
+  name: String!
+  content: String!
+}
+
 type User @model
   @auth(rules: [
     { allow: owner },
