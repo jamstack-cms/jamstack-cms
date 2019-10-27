@@ -21,15 +21,11 @@ export const Menu = React.forwardRef(({ className, ...props }, ref) => (
     {...props}
     ref={ref}
     css={css`
-    cursor: pointer;
     & > * {
       display: inline-block;
     }
     & > * + * {
       margin-left: 15px;
-    }
-    &:hover {
-      background-color: #f0f0f0;
     }
   `}
   />

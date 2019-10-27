@@ -33,6 +33,13 @@ export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
     published
     previewEnabled
     categories
+    author {
+      id
+      name
+      username
+      avatarUrl
+      owner
+    }
   }
 }
 `;
@@ -153,6 +160,36 @@ export const deletePreview = `mutation DeletePreview($input: DeletePreviewInput!
     cover_image
     createdAt
     categories
+  }
+}
+`;
+export const createPage = `mutation CreatePage($input: CreatePageInput!) {
+  createPage(input: $input) {
+    id
+    name
+    slug
+    content
+    components
+  }
+}
+`;
+export const updatePage = `mutation UpdatePage($input: UpdatePageInput!) {
+  updatePage(input: $input) {
+    id
+    name
+    slug
+    content
+    components
+  }
+}
+`;
+export const deletePage = `mutation DeletePage($input: DeletePageInput!) {
+  deletePage(input: $input) {
+    id
+    name
+    slug
+    content
+    components
   }
 }
 `;

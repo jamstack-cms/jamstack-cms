@@ -4,11 +4,12 @@ import styledAuthenticator from '../components/styledAuthenticator'
 import NewPost from '../components/newPost'
 import NewPage from '../components/newPage'
 import Layout from '../layouts/mainLayout'
-import { listPosts } from '../graphql/queries'
+import { listPosts, listPages } from '../graphql/queries'
 import { deletePost, updatePost } from '../graphql/mutations'
 import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
 import PostList from '../components/postList'
+import PageList from '../components/PageList'
 import MediaView from '../components/mediaView'
 import Settings from '../components/settings'
 import getImageKey from '../utils/getImageKey'
@@ -33,6 +34,7 @@ class Admin extends React.Component {
   async componentDidMount() {
     this.mounted = true
     this.fetchPosts()
+    this.fetchPages()
     try {
       const media = await Storage.list('')
       const images = media.map(k => Storage.get(k.key))
@@ -53,6 +55,25 @@ class Admin extends React.Component {
   }
   componentWillUnmount(){
     this.mounted = false;
+  }
+  fetchPages = async () => {
+    try {
+      const pageData = await API.graphql(graphqlOperation(listPages))
+      const { items: pages } = pageData.data.listPages
+      if (this.mounted) {
+        this.setState({ pages })
+      }
+      // const postsWithSignedImages = await Promise.all(posts.map(async post => {
+      //   const signedImage = await getSignedImage(post.cover_image)
+      //   post['signedImage'] = signedImage
+      //   return post
+      // }))
+      // if (this.mounted) {
+      //   this.setState({ posts, isLoading: false })
+      // }
+    } catch (err) {
+      console.log('error fetching posts:', err)
+    }
   }
   fetchPosts = async () => {
     try {
@@ -163,13 +184,17 @@ class Admin extends React.Component {
                 css={[adminButtonStyle(theme), highlightButton('listPosts')]}
               >View Posts</button>
               <button
+                css={[adminButtonStyle(theme), highlightButton('createPost')]}
+                onClick={() => this.toggleViewState('createPost')}
+              >New Post</button>
+              <button
                 onClick={() => this.toggleViewState('media')}
                 css={[adminButtonStyle(theme), highlightButton('media')]}
               >View Media</button>
               <button
-                css={[adminButtonStyle(theme), highlightButton('createPost')]}
-                onClick={() => this.toggleViewState('createPost')}
-              >New Post</button>
+                css={[adminButtonStyle(theme), highlightButton('listPages')]}
+                onClick={() => this.toggleViewState('listPages')}
+              >List Pages</button>
               <button
                 css={[adminButtonStyle(theme), highlightButton('createPage')]}
                 onClick={() => this.toggleViewState('createPage')}
@@ -247,6 +272,17 @@ class Admin extends React.Component {
                   removeImage={this.removeImage}
                 />
               </div>
+            )
+          }
+          {
+            viewState === 'listPages' && (
+              (
+                <Layout noPadding>
+                  <PageList
+                    pages={this.state.pages}
+                  />
+                </Layout>
+              )
             )
           }
           {

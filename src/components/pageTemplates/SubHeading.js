@@ -15,7 +15,8 @@ function SubHeading({ updateContent, index, deleteComponent, context: { theme }}
 
   function updateAndSave() {
     updateIsEditable(!editable)
-    const newHtml = h3ref.current.innerHTML;
+    let newHtml = h3ref.current.innerHTML
+    newHtml = newHtml.replace(/<\/?("[^"]*"|'[^']*'|[^>])*(>|$)/g, "")
     updateHtml(newHtml)
     const content = `<h3>${newHtml}</h3>`
     updateContent(content)

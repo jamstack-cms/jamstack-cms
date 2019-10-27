@@ -137,6 +137,33 @@ export const listSettingss = `query ListSettingss(
   }
 }
 `;
+export const getPage = `query GetPage($id: ID!) {
+  getPage(id: $id) {
+    id
+    name
+    slug
+    content
+    components
+  }
+}
+`;
+export const listPages = `query ListPages(
+  $filter: ModelPageFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listPages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      slug
+      content
+      components
+    }
+    nextToken
+  }
+}
+`;
 export const listUsers = `query ListUsers(
   $filter: ModelUserFilterInput
   $limit: Int

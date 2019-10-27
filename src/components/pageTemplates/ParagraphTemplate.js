@@ -6,6 +6,8 @@ import { Value } from 'slate'
 import isUrl from 'is-url'
 import { isKeyHotkey } from 'is-hotkey'
 import { Button, Icon, Toolbar } from './components'
+import Html from 'slate-html-serializer'
+import rules from './slateRules'
 
 import EditOptions from './EditOptions'
 
@@ -28,7 +30,11 @@ function unwrapLink(editor) {
   editor.unwrapInline('link')
 }
 
-function Paragraph({ index, deleteComponent, context: { theme }}) {
+const html = new Html({
+  rules
+})
+
+function Paragraph({ updateContent, index, deleteComponent, context: { theme }}) {
   const [value, updateValue] = useState(Value.fromJSON(initialValue))
   const [editable, updateIsEditable] = useState(false)
   const editorRef = useRef(null);
@@ -41,6 +47,8 @@ function Paragraph({ index, deleteComponent, context: { theme }}) {
   }
   function onChange({ value }){
     updateValue(value)
+    const html = getSerialized()
+    updateContent(html)
   }
   function hasLinks() {
     return value.inlines.some(inline => inline.type === 'link')
@@ -244,7 +252,12 @@ function Paragraph({ index, deleteComponent, context: { theme }}) {
         return next()
     }
   }
-  
+
+  function getSerialized() {
+    const finalHtml = html.serialize(value)
+    return finalHtml
+  }
+
   return (
     <div css={paragraphTemplateStyle}>
       <div css={editorContainerStyle()}>

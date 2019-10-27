@@ -5,7 +5,7 @@ import Loader from './loadingIndicator'
 import { BlogContext } from '../context/mainContext'
 
 function FileInput(props) {
-  const { onChange, customCss = [], placeholder, labelStyle = [],
+  const { onChange, placeholder, labelStyle = [],
     isLoading, customLoadingCss = [], context } = props
   const { theme } = context
   const id = `file-upload-${uuid()}`
@@ -15,7 +15,7 @@ function FileInput(props) {
       <input
         type='file'
         placeholder={placeholder}
-        css={[buttonStyle, ...customCss]}
+        css={[buttonStyle]}
         onChange={onChange}
         name="file"
         id={id}

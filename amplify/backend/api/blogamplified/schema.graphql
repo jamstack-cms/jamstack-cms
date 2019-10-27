@@ -71,7 +71,9 @@ type Page @model(subscriptions: null)
 {
   id: ID!
   name: String!
+  slug: String!
   content: String!
+  components: String
 }
 
 type User @model

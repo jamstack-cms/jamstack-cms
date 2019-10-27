@@ -172,6 +172,10 @@ exports.onCreatePage = async ({ page, actions }) => {
     page.matchPath = '/previewpost/*'
     createPage(page)
   }
+  if (page.path.match(/^\/editpage/)) {
+    page.matchPath = '/editpage/*'
+    createPage(page)
+  }
 }
 
 exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => {

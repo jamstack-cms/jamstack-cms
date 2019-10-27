@@ -194,6 +194,92 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
     font-family: ${fontFamily}, sans-serif;
     text-transform: none;
   }
+
+  .hero-page-content p {
+    font-family: ${fontFamily}, serif;
+    font-size: 18px;
+    font-weight: ${isDark ? 200 : 300};
+    color: ${primaryFontColor};
+  }
+
+  .hero-page-content li {
+    color: ${primaryFontColor};
+    font-family: ${fontFamily}, serif;
+    margin-bottom: 7px;
+    line-height: 28px;
+    font-size: 18px;
+    font-weight: ${isDark ? 200 : 400};
+  }
+
+  .hero-page-content h1 {
+    font-family: ${fontFamily}, serif;
+    margin: 25px auto 18px;
+    font-size: 36px;
+    line-height: 42px;
+    outline: none;
+    border: none;
+  }
+
+  .hero-page-content h2 {
+    font-family: ${fontFamily}, serif;
+    line-height: 30px;
+    font-size: 32px;
+    margin: 25px auto 18px;
+  }
+
+  .hero-page-content h3 {
+    margin: 20px auto 10px;
+    font-family: ${fontFamily}, serif;
+  }
+
+  .hero-page-content h4 {
+    font-family: ${fontFamily}, serif;
+    margin: 25px 0px 0px;
+  }
+
+  .hero-page-content h5 {
+    font-family: ${fontFamily}, serif;
+  }
+
+  .hero-page-content code {
+    font-size: 16px;
+    color: ${primaryFontColor};
+  }
+
+  .hero-page-content a {
+    color: ${primaryFontColor};
+  }
+
+  .hero-page-content img {
+    border-radius: 5px;
+    margin: 15px auto 15px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 60px -10px, rgba(0, 0, 0, 0.22) 0px 18px 36px -18px;
+  }
+
+  .hero-page-content pre {
+    background-color: ${codeBackgroundColor};
+    padding: 20px;
+    font-weight: 400;
+    font-family: 'Courier New', Courier, monospace;
+    overflow-x: scroll;
+    margin: 15px auto 50px;
+  }
+
+  .hero-page-content p code {
+    background-color: ${codeBackgroundColor};
+    font-family: 'Courier New', Courier, monospace;
+    padding: 2px 5px;
+    color: ${primaryFontColor};
+  }
+
+  .hero-page-content pre code {
+    font-size: 16px;
+  }
+
+  .hero-page-content blockquote {
+    border-left: 1px solid ${isDark ? highlight : 'black'};
+  }
+
   .blog-post p {
     font-family: ${fontFamily}, serif;
     font-size: 18px;
