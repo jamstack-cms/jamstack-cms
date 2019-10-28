@@ -5,7 +5,7 @@ import { Editor, getEventTransfer } from 'slate-react'
 import { Value } from 'slate'
 import isUrl from 'is-url'
 import { isKeyHotkey } from 'is-hotkey'
-import { Button, Icon, Toolbar } from './components'
+import { Button, Icon, Toolbar } from './Components'
 import Html from 'slate-html-serializer'
 import rules from './slateRules'
 
