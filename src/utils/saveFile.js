@@ -12,7 +12,7 @@ function saveFile(file) {
   return new Promise(async(resolve) => {
     const { name: fileName, type: mimeType } = file
     const cleanedFileName = getCleanedFileName(fileName)
-    const key = `images/${uuid()}_${cleanedFileName}`      
+    const key = `images/${uuid()}_${cleanedFileName}`
     const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
     try {
       await Storage.put(key, file, {

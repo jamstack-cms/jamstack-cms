@@ -174,7 +174,6 @@ export {
 }
 
 const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
-  console.log('type!!!: ', type)
   const isDark = type === 'dark'
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
@@ -252,7 +251,7 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
 
   .hero-page-content img {
     border-radius: 5px;
-    margin: 15px auto 15px;
+    margin: 15px auto 30px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 60px -10px, rgba(0, 0, 0, 0.22) 0px 18px 36px -18px;
   }
 

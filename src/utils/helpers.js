@@ -46,12 +46,20 @@ function getCleanedFileName (fileName) {
   return newFileName
 }
 
+function getImageSource(imageInfo) {
+  const tmp = document.createElement('div')
+  tmp.innerHTML = imageInfo
+  const src = tmp.querySelector('img').getAttribute('src')
+  return src
+}
+
 const helpers = {
   slugify,
   generatePreviewLink,
   copyToClipboard,
   getTrimmedKey,
-  getCleanedFileName
+  getCleanedFileName,
+  getImageSource
 }
 
 module.exports = helpers

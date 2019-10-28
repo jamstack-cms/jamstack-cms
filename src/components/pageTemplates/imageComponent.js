@@ -2,19 +2,14 @@ import React, { useEffect } from 'react'
 import ProgressiveImage from 'react-progressive-image'
 import placeholder from '../../images/placeholder.jpg'
 import Input from '../input'
+import Button from '../button'
 import { css } from '@emotion/core'
-
-function getFileSource(imageInfo) {
-  const tmp = document.createElement('div')
-  tmp.innerHTML = imageInfo
-  const src = tmp.querySelector('img').getAttribute('src')
-  return src
-}
+import { getImageSource } from '../../utils/helpers'
 
 function ImageComponent({
-  onClick, updateContent, currentView, content
+  onClick, updateContent, currentView, content, deleteComponent, index
 }) {
-
+  console.log('content: ', content)
   function setFile(event) {
     if (!event.target.files[0]) return
     const file = URL.createObjectURL(event.target.files[0])
@@ -23,20 +18,19 @@ function ImageComponent({
         src="${file}" alt="page-image"
       />
     `
-    updateContent(imageHtml)
+    updateContent({
+      src: event.target.files[0],
+      imageHtml
+    })
   }
-
-  console.log('content1: ', content)
-  
-  if (content) {
-    content = getFileSource(content)
+  let imageSource = ''
+  if (content.imageHtml) {
+    imageSource = getImageSource(content.imageHtml)
   }
-
-  console.log('content2: ', content)
-
+  console.log('imageSource: ', imageSource)
   return (
     <>
-    <ProgressiveImage src={content} placeholder={placeholder}>
+    <ProgressiveImage src={imageSource} placeholder={placeholder}>
       {(src, loading) => {
         return (
           <img
@@ -47,14 +41,25 @@ function ImageComponent({
         )
       }}
     </ProgressiveImage>
-    {
-      currentView === 'editing' && <Input placeholder="Set image" onChange={setFile} />
-    }
+    <div css={buttonContainer()}>
+      {
+        currentView === 'editing' && <Input placeholder="Set image" onChange={setFile} />
+      }
+      <Button
+        title="Delete image"
+        onClick={() => deleteComponent(index)}
+      />
+    </div>
     </>
   )
 }
 
 export default ImageComponent
+
+const buttonContainer = () => css`
+  display: flex;
+  margin-bottom: 20px;
+`
 
 const imageStyle = css`
   margin: 30px 10px;

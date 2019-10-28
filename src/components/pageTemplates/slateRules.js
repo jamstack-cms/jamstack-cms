@@ -16,7 +16,6 @@ const MARK_TAGS = {
 const rules = [
   {
     deserialize(el, next) {
-      console.log('el: ', el)
       const type = BLOCK_TAGS[el.tagName.toLowerCase()]
       if (type) {
         return {
@@ -30,7 +29,6 @@ const rules = [
       }
     },
     serialize(obj, children) {
-      console.log('obj from serializer:', obj)
       if (obj.object == 'block') {
         switch (obj.type) {
           case 'code':

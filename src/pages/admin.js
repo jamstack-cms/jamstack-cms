@@ -5,7 +5,7 @@ import NewPost from '../components/newPost'
 import NewPage from '../components/newPage'
 import Layout from '../layouts/mainLayout'
 import { listPosts, listPages } from '../graphql/queries'
-import { deletePost, updatePost } from '../graphql/mutations'
+import { deletePost, updatePost, deletePage } from '../graphql/mutations'
 import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
 import PostList from '../components/postList'
@@ -24,6 +24,7 @@ class Admin extends React.Component {
     isLoading: true,
     viewState: 'listPosts',
     posts: [],
+    pages: [],
     images: [],
     imageKeys: [],
     imagesInUse: [],
@@ -167,6 +168,15 @@ class Admin extends React.Component {
       }
     }
   }
+  deletePage = async id => {
+    try {
+      const pages = [...this.state.pages].filter(page => page.id !== id)
+      this.setState({ pages })
+      await API.graphql(graphqlOperation(deletePage, { input: { id }}))
+    } catch (err) {
+      console.log('error deleting page...: ', err)
+    }
+  }
   render() {
     const { viewState, isLoading, pageTemplate } = this.state
     const { theme, theme: { borderColor, primaryFontColor, highlight }} = this.props.context
@@ -194,7 +204,7 @@ class Admin extends React.Component {
               <button
                 css={[adminButtonStyle(theme), highlightButton('listPages')]}
                 onClick={() => this.toggleViewState('listPages')}
-              >List Pages</button>
+              >View Pages</button>
               <button
                 css={[adminButtonStyle(theme), highlightButton('createPage')]}
                 onClick={() => this.toggleViewState('createPage')}
@@ -280,6 +290,8 @@ class Admin extends React.Component {
                 <Layout noPadding>
                   <PageList
                     pages={this.state.pages}
+                    deletePage={this.deletePage}
+                    fetchPages={this.fetchPages}
                   />
                 </Layout>
               )

@@ -1,27 +1,28 @@
 import React from 'react'
-import HeroPage from './pageTemplates/heroPage'
+import HeroTemplate from './pageTemplates/heroTemplate'
 import { API, graphqlOperation } from 'aws-amplify'
 import { getPage } from '../graphql/queries'
 
 class EditPage extends React.Component {
   state = {
     page: {},
-    isLoading: true
+    isLoading: true,
+    components: []
   }
   async componentDidMount() {
     const { id } = this.props
     try {
       const pageData = await API.graphql(graphqlOperation(getPage, { id }))
-      console.log('pageData: ', pageData)
       const page = pageData.data.getPage
-      this.setState({
-        page, isLoading: false
-      })
+      page.components = JSON.parse(page.components)
+      this.setState({ page })
     } catch (err) { console.log({ err })}
   }
   render() {
     return (
-      <div />
+      <HeroTemplate
+        pageData={this.state.page}
+      />
     )
   }
 }

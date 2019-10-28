@@ -5,30 +5,93 @@ import { useDrag, useDrop } from 'react-dnd'
 import { DndProvider } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import uuid from 'uuid/v4'
-import HeroPage from './HeroPage'
+import HeroPage from './heroPage'
 import Button from '../button'
 
 import Header from './HeaderTemplate'
 import Paragraph from './ParagraphTemplate'
 import SubHeading from './SubHeading'
 import ImageComponent from './imageComponent'
-import { API, graphqlOperation } from 'aws-amplify'
-import { createPage } from '../../graphql/mutations'
-import { slugify } from '../../utils/helpers'
+import { API, graphqlOperation, Storage } from 'aws-amplify'
+import { createPage, updatePage } from '../../graphql/mutations'
+import { slugify, getImageSource } from '../../utils/helpers'
+import saveFile from '../../utils/saveFile'
+import getKeyWithPath from '../../utils/getKeyWithPath'
+
+function getPageHtml(components) {
+  const pageHtml = components.reduce((acc, next) => {
+    let newHtml = `${acc}${next.content}`
+    if (next.type === 'image') {
+      newHtml = `${acc}${next.content.imageHtml}`
+    }
+    return newHtml
+  }, ``)
+  return pageHtml
+}
 
 class HeroTemplate extends React.Component {
   state = {
     components: [],
+    pageId: null,
     currentView: 'editing',
     pageHtml: '',
     pageTitle: '',
     isSaving: false,
-    slug: ''
+    slug: '',
+    isLoading: false,
+    pageData: {}
+  }
+  async componentDidUpdate() {
+    const { pageData } = this.props
+    if (pageData && pageData.components) {
+      if (!this.state.isLoading) return
+      let { components } = pageData
+      components = components.reduce((acc, next)  => {
+        const component = createComponent(next.type, next.content)
+        acc.push(component)
+        return acc
+      }, [])
+
+      await Promise.all(components.map(async component => {
+        if (component.type === 'image') {
+          const imageSource = getImageSource(component.content.imageHtml)
+          const key = getKeyWithPath(imageSource)
+          const signedImage = await Storage.get(key)
+          component.content.imageHtml = `<img src="${signedImage}" />`
+        }
+      }))
+      this.setState({
+        components,
+        isLoading: false,
+        slug: pageData.slug,
+        pageTitle: pageData.name,
+        pageId: pageData.id
+      })
+    } else {
+      return null
+    }
+    
+  }
+  static getDerivedStateFromProps(props) {
+    const { pageData } = props
+    if (pageData && !pageData.components) {
+      return {
+        isLoading: true
+      }
+    } else {
+      return null
+    }
+    
   }
   updateContent = (content, index) => {
     const components = [...this.state.components]
     components[index].content = content
     this.setState(() => ({ components }), this.updatePageHtml)
+  }
+
+  updatePageHtml = () => {
+    const pageHtml = getPageHtml(this.state.components)
+    this.setState(() => ({ pageHtml }))
   }
 
   updatePageTitle = event => {
@@ -39,9 +102,24 @@ class HeroTemplate extends React.Component {
 
   save = async () => {
     try {
-      const { pageTitle, pageHtml, components } = this.state
+      let operation = createPage
+      let { pageTitle, pageHtml, components, pageId } = this.state
       if (!pageTitle || !pageHtml) return
       this.setState({ isSaving: true })
+
+      components = await Promise.all(components.map(async component => {
+        if (component.type === 'image') {
+          if (component.content.imageHtml.includes('blob:http')) {
+            const fileInfo = await saveFile(component.content.src)
+            const url = fileInfo.url
+            component.content.imageHtml = `<img src="${url}" />`
+          }
+        }
+        return component
+      }))
+
+      pageHtml = getPageHtml(components)
+
       const slug = slugify(pageTitle)
       const input = {
         name: pageTitle,
@@ -49,20 +127,26 @@ class HeroTemplate extends React.Component {
         content: pageHtml,
         components: JSON.stringify(components)
       }
-      await API.graphql(graphqlOperation(createPage, { input }))
-      this.setState({ isSaving: false })
+      if (pageId) {
+        operation = updatePage
+        input['id'] = pageId
+      }
+      await API.graphql(graphqlOperation(operation, { input }))
+      components = await Promise.all(components.map(async component => {
+        if (component.type === 'image') {
+          const imageSource = getImageSource(component.content.imageHtml)
+          const key = getKeyWithPath(imageSource)
+          const signedImage = await Storage.get(key)
+          component.content.imageHtml = `<img src="${signedImage}" />`
+        }
+        return component
+      }))
+
+      this.setState({ isSaving: false, components })
     } catch (err) {
       console.log('error saving page...:', err)
       this.setState({ isSaving: false })
     }
-  }
-
-  updatePageHtml = () => {
-    const pageHtml = this.state.components.reduce((acc, next) => {
-      const newHtml = `${acc}${next.content}`
-      return newHtml
-    }, ``)
-    this.setState(() => ({ pageHtml }))
   }
   
   deleteComponent = index => {
@@ -77,50 +161,22 @@ class HeroTemplate extends React.Component {
     components.splice(hoverIndex, 0, component)
     this.setState(() => ({ components }), this.updatePageHtml)
   }
-  createComponent = (component) => {
-    let newComponent = {
-      id: uuid()
-    }
-    switch(component) {
-      case 'header':
-        newComponent = {
-          ...newComponent,
-          component: Header,
-          deleteComponent: this.deleteComponent,
-          content: ''
-        }
-        break
-      case 'paragraph':
-        newComponent = {
-          ...newComponent,
-          component: Paragraph,
-          deleteComponent: this.deleteComponent,
-          content: ''
-        }
-        break
-      case 'subheading':
-        newComponent = {
-          ...newComponent,
-          component: SubHeading,
-          deleteComponent: this.deleteComponent,
-          content: ''
-        }
-        break
-      case 'image':
-        newComponent = {
-          ...newComponent,
-          component: ImageComponent,
-          deleteComponent: this.deleteComponent,
-          content: '',
-        }
-        break
-      default:
-        return null
-    }
-    const components = [...this.state.components, newComponent]
+  createComponent = type => {
+    const component = createComponent(type)
+    const components = [...this.state.components, component]
     this.setState({ components })
   }
   toggleView = view => {
+    const { components } = this.state
+    // components.forEach((component) => {
+    //   if (component.type === 'image') {
+    //     if (component.content) {
+    //       if (component.content.includes('blob')) {
+    //         console.log('image content: ', component.content)
+    //       } 
+    //     }
+    //   } 
+    // })
     this.setState({ currentView: view })
   }
   render() {
@@ -129,7 +185,6 @@ class HeroTemplate extends React.Component {
     const dynamicWidthStyle = css`
       width: ${width ? width : '1000px'};
     `
-
     return (
       <DndProvider backend={HTML5Backend}>
         <div css={[container, dynamicWidthStyle]}>
@@ -180,7 +235,7 @@ class HeroTemplate extends React.Component {
                   index={index}
                   key={item.id}
                   theme={theme}
-                  deleteComponent={item.deleteComponent}
+                  deleteComponent={this.deleteComponent}
                   updateContent={content => this.updateContent(content, index)}
                   currentView={currentView}
                   content={item.content}
@@ -192,6 +247,49 @@ class HeroTemplate extends React.Component {
       </DndProvider>
     )
   }
+}
+
+function createComponent(type, content) {
+  let component = {
+    id: uuid()
+  }
+  switch(type) {
+    case 'header':
+        component = {
+        ...component,
+        component: Header,
+        content: content ? content : '',
+        type: 'header'
+      }
+      break
+    case 'paragraph':
+        component = {
+        ...component,
+        component: Paragraph,
+        content: content ? content : '',
+        type: 'paragraph'
+      }
+      break
+    case 'subheading':
+        component = {
+        ...component,
+        component: SubHeading,
+        content: content ? content : '',
+        type: 'subheading'
+      }
+      break
+    case 'image':
+        component = {
+        ...component,
+        component: ImageComponent,
+        content: content ? content : '',
+        type: 'image'
+      }
+      break
+    default:
+      return null
+  }
+  return component
 }
 
 function Draggable({ content, updateContent, currentView, component: Component, id, deleteComponent, index, moveCard, theme }) {
