@@ -9,7 +9,7 @@ import HeroPage from './heroPage'
 import Button from '../button'
 
 import Header from './HeaderTemplate'
-import Paragraph from './paragraphTemplate'
+import Paragraph from './ParagraphTemplate'
 import SubHeading from './SubHeading'
 import ImageComponent from './imageComponent'
 import { API, graphqlOperation, Storage } from 'aws-amplify'
