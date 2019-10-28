@@ -2,7 +2,7 @@ import React from "react"
 // import { graphql } from "gatsby"
 import Layout from '../layouts/mainLayout'
 import Button from '../components/button'
-import SolidButton from '../components/SolidButton'
+import SolidButton from '../components/solidButton'
 import { css } from '@emotion/core'
 import { BlogContext } from '../context/mainContext'
 import { API, graphqlOperation } from 'aws-amplify'

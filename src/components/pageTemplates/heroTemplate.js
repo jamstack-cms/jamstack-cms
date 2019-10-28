@@ -9,14 +9,21 @@ import HeroPage from './heroPage'
 import Button from '../button'
 
 import Header from './HeaderTemplate'
-import Paragraph from './ParagraphTemplate'
+import Paragraph from './paragraphTemplate'
 import SubHeading from './SubHeading'
 import ImageComponent from './imageComponent'
 import { API, graphqlOperation, Storage } from 'aws-amplify'
 import { createPage, updatePage } from '../../graphql/mutations'
 import { slugify, getImageSource } from '../../utils/helpers'
+import getKeyWithFullPath from '../../utils/getKeyWithFullPath'
 import saveFile from '../../utils/saveFile'
 import getKeyWithPath from '../../utils/getKeyWithPath'
+
+import config from '../../aws-exports'
+
+const {
+  aws_user_files_s3_bucket: bucket
+} = config
 
 function getPageHtml(components) {
   const pageHtml = components.reduce((acc, next) => {
@@ -113,6 +120,11 @@ class HeroTemplate extends React.Component {
             const fileInfo = await saveFile(component.content.src)
             const url = fileInfo.url
             component.content.imageHtml = `<img src="${url}" />`
+          }
+          if (component.content.imageHtml.includes(bucket)) {
+            const imageSource = getImageSource(component.content.imageHtml)
+            const imageUrl = getKeyWithFullPath(imageSource)
+            component.content.imageHtml = `<img src="${imageUrl}" />`
           }
         }
         return component

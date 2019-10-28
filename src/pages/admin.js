@@ -9,7 +9,7 @@ import { deletePost, updatePost, deletePage } from '../graphql/mutations'
 import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
 import PostList from '../components/postList'
-import PageList from '../components/PageList'
+import PageList from '../components/pageList'
 import MediaView from '../components/mediaView'
 import Settings from '../components/settings'
 import getImageKey from '../utils/getImageKey'
