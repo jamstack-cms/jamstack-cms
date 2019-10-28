@@ -19,7 +19,7 @@ import getKeyWithFullPath from '../../utils/getKeyWithFullPath'
 import saveFile from '../../utils/saveFile'
 import getKeyWithPath from '../../utils/getKeyWithPath'
 
-import config from '../../aws-exports'
+import config from '../../../jamstack-config'
 
 const {
   aws_user_files_s3_bucket: bucket
