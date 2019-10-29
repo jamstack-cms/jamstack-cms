@@ -148,10 +148,10 @@ const deleteButtonContainer = css`
   }
 `
 
-const selectMenu = ({ inverseFontColor }) => css`
+const selectMenu = ({ fontColor }) => css`
   margin-left: 15px;
   outline: none;
-  color: ${inverseFontColor};
+  color: ${fontColor};
 `
 
 const uploadButton = css`

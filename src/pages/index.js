@@ -29,9 +29,7 @@ class BlogIndex extends React.Component {
     const posts = this.props.data.appsync.listPosts.items.filter(post => post.published)
     let authorImages = checkNodeData(this.props.data.allAuthorImages)
     if (authorImages) {
-      authorImages = this.props.data.allAuthorImages.edges.map(edge => {
-        return edge.node.data[0]
-      })
+      authorImages = this.props.data.allAuthorImages.edges[0].node.data
     }
     const { theme, siteDescription } = this.props.context
     return (

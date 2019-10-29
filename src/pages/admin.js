@@ -64,14 +64,6 @@ class Admin extends React.Component {
       if (this.mounted) {
         this.setState({ pages })
       }
-      // const postsWithSignedImages = await Promise.all(posts.map(async post => {
-      //   const signedImage = await getSignedImage(post.cover_image)
-      //   post['signedImage'] = signedImage
-      //   return post
-      // }))
-      // if (this.mounted) {
-      //   this.setState({ posts, isLoading: false })
-      // }
     } catch (err) {
       console.log('error fetching posts:', err)
     }
@@ -86,7 +78,7 @@ class Admin extends React.Component {
         return post
       }))
       if (this.mounted) {
-        this.setState({ posts, isLoading: false })
+        this.setState({ posts: postsWithSignedImages, isLoading: false })
       }
     } catch (err) {
       console.log('error fetching posts:', err)
@@ -99,9 +91,7 @@ class Admin extends React.Component {
     })
   }
   setImagesInUse = () => {
-    let imageKeys = this.props.data.allImageKeys.edges.map(edge => {
-      return edge.node.data[0]
-    })
+    let imageKeys = this.props.data.allImageKeys.edges[0].node.data
     const signedImages = this.state.images
     const imagesInUse = []
     const imagesNotInUse = []
