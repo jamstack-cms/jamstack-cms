@@ -5,7 +5,7 @@ import NewPost from '../components/newPost'
 import NewPage from '../components/newPage'
 import Layout from '../layouts/mainLayout'
 import { listPosts, listPages } from '../graphql/queries'
-import { deletePost, updatePost, deletePage } from '../graphql/mutations'
+import { deletePost, updatePost, deletePage, updatePage } from '../graphql/mutations'
 import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
 import PostList from '../components/postList'
@@ -146,8 +146,8 @@ class Admin extends React.Component {
     }
   }
   unPublishPost = async ({ id }) => {
-    const shouldUnPublish = window.confirm("Are you sure you'd like to unpublish this post?");
-    if (shouldUnPublish) {
+    const shouldUnpublish = window.confirm("Are you sure you'd like to unpublish this post?");
+    if (shouldUnpublish) {
       const posts = [...this.state.posts]
       const postIndex = posts.findIndex(post => post.id === id)
       posts[postIndex]['published'] = false
@@ -160,16 +160,51 @@ class Admin extends React.Component {
       }
     }
   }
+  publishPage = async ({ id }) => {
+    const shouldPublish = window.confirm("Are you sure you'd like to publish this page?");
+    if (shouldPublish) {
+      const pages = [...this.state.pages]
+      const pageIndex = pages.findIndex(page => page.id === id)
+      pages[pageIndex]['published'] = true
+      try {
+        await API.graphql(graphqlOperation(updatePage, { input: { id, published: true }}))
+        toast(`🔥 Page successfully published!`)
+        this.setState({ pages })
+      } catch (err) {
+        console.log('error publishing page..:', err)
+      }
+    }
+  }
+  unpublishPage = async ({ id }) => {
+    const shouldUnpublish = window.confirm("Are you sure you'd like to unpublish this page?");
+    if (shouldUnpublish) {
+      const pages = [...this.state.pages]
+      const pageIndex = pages.findIndex(page => page.id === id)
+      pages[pageIndex]['published'] = false
+      try {
+        await API.graphql(graphqlOperation(updatePage, { input: { id, published: false }}))
+        toast(`Page successfully unpublished!`)
+        this.setState({ pages })
+      } catch (err) {
+        console.log('error unpublishing page..:', err)
+      }
+    }
+  }
   deletePage = async id => {
-    try {
-      const pages = [...this.state.pages].filter(page => page.id !== id)
-      this.setState({ pages })
-      await API.graphql(graphqlOperation(deletePage, { input: { id }}))
-    } catch (err) {
-      console.log('error deleting page...: ', err)
+    const shouldDelete = window.confirm("Are you sure you'd like to delete this page?");
+    if (shouldDelete) {
+      try {
+        const pages = [...this.state.pages].filter(page => page.id !== id)
+        this.setState({ pages })
+        await API.graphql(graphqlOperation(deletePage, { input: { id }}))
+        toast("Page successfully deleted.")
+      } catch (err) {
+        console.log('error deleting page...: ', err)
+      }
     }
   }
   render() {
+    console.log('rerendering...')
     const { viewState, isLoading, pageTemplate } = this.state
     const { theme, theme: { borderColor, primaryFontColor, highlight }} = this.props.context
     const highlightButton = state => css`
@@ -284,6 +319,8 @@ class Admin extends React.Component {
                     pages={this.state.pages}
                     deletePage={this.deletePage}
                     fetchPages={this.fetchPages}
+                    publishPage={this.publishPage}
+                    unpublishPage={this.unpublishPage}
                   />
                 </Layout>
               )
@@ -332,6 +369,16 @@ const adminButtonStyle = ({ fontFamily }) => css`
 const container = css`
 `
 
+// function AdminWithContext(props) {
+//   return (
+//     <BlogContext.Consumer>
+//       {
+//         context => <Admin {...props} context={context} />
+//       }
+//     </BlogContext.Consumer>
+//   )
+// }
+
 function AdminWithContext(props) {
   return (
     <BlogContext.Consumer>
@@ -342,8 +389,10 @@ function AdminWithContext(props) {
   )
 }
 
-export const themeQuery = graphql`
-  query themeQuery {
+export default styledAuthenticator(AdminWithContext)
+
+export const adminQuery = graphql`
+  query adminQuery {
     allImageKeys {
       edges {
         node {
@@ -363,5 +412,3 @@ export const themeQuery = graphql`
     }
   }
 `
-
-export default styledAuthenticator(AdminWithContext)

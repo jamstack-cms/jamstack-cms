@@ -3,7 +3,8 @@ import path from 'path'
 
 function getRawPath(url, pathName = 'downloads') {
   let reqPath = path.join(__dirname, '../..')
-  const key = getImageKey(url)
+  let key = getImageKey(url)
+  key = key.replace(/%/g, "")
   const rawPath = `${reqPath}/public/${pathName}/${key}`
   return rawPath
 }

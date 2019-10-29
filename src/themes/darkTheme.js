@@ -8,7 +8,7 @@ const darkTheme = {
   inverseFontColor: 'white',
   inverseButtonFontColor: 'white',
   highlight: '#3bbcbd',
-  borderColor: 'rgba(0, 0, 0, .1)',
+  borderColor: 'rgba(255, 255, 255, .1)',
   backgroundColor: '#111215',
   codeBackgroundColor: '#48464a',
   toastBackgroundColor: '#111111',

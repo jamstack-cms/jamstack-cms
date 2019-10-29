@@ -18,6 +18,7 @@ import { slugify, getImageSource } from '../../utils/helpers'
 import getKeyWithFullPath from '../../utils/getKeyWithFullPath'
 import saveFile from '../../utils/saveFile'
 import getKeyWithPath from '../../utils/getKeyWithPath'
+import { toast } from 'react-toastify'
 
 import config from '../../../jamstack-config'
 
@@ -46,7 +47,10 @@ class HeroTemplate extends React.Component {
     isSaving: false,
     slug: '',
     isLoading: false,
-    pageData: {}
+    pageData: {},
+    isPublished: false,
+    isPublishing: false,
+    isUnpublishing: false
   }
   async componentDidUpdate() {
     const { pageData } = this.props
@@ -72,12 +76,13 @@ class HeroTemplate extends React.Component {
         isLoading: false,
         slug: pageData.slug,
         pageTitle: pageData.name,
-        pageId: pageData.id
+        pageId: pageData.id,
+        isPublished: pageData.published
       })
     } else {
+      console.log('not about to update')
       return null
     }
-    
   }
   static getDerivedStateFromProps(props) {
     const { pageData } = props
@@ -88,7 +93,6 @@ class HeroTemplate extends React.Component {
     } else {
       return null
     }
-    
   }
   updateContent = (content, index) => {
     const components = [...this.state.components]
@@ -107,54 +111,99 @@ class HeroTemplate extends React.Component {
     this.setState({ pageTitle, slug })
   }
 
-  save = async () => {
+  save = async (publishingState) => {
+    if (this.state.isSaving) return
     try {
       let operation = createPage
-      let { pageTitle, pageHtml, components, pageId } = this.state
+      let { pageTitle, pageHtml, pageId } = this.state
       if (!pageTitle || !pageHtml) return
-      this.setState({ isSaving: true })
-
-      components = await Promise.all(components.map(async component => {
-        if (component.type === 'image') {
-          if (component.content.imageHtml.includes('blob:http')) {
-            const fileInfo = await saveFile(component.content.src)
-            const url = fileInfo.url
-            component.content.imageHtml = `<img src="${url}" />`
-          }
-          if (component.content.imageHtml.includes(bucket)) {
-            const imageSource = getImageSource(component.content.imageHtml)
-            const imageUrl = getKeyWithFullPath(imageSource)
-            component.content.imageHtml = `<img src="${imageUrl}" />`
-          }
-        }
-        return component
-      }))
-
-      pageHtml = getPageHtml(components)
-
-      const slug = slugify(pageTitle)
-      const input = {
-        name: pageTitle,
-        slug,
-        content: pageHtml,
-        components: JSON.stringify(components)
+      if (!publishingState) {
+        this.setState({ isSaving: true })
       }
-      if (pageId) {
-        operation = updatePage
-        input['id'] = pageId
+      if (publishingState === 'publish') {
+        this.setState({ isPublishing: true })
       }
-      await API.graphql(graphqlOperation(operation, { input }))
-      components = await Promise.all(components.map(async component => {
-        if (component.type === 'image') {
-          const imageSource = getImageSource(component.content.imageHtml)
-          const key = getKeyWithPath(imageSource)
-          const signedImage = await Storage.get(key)
-          component.content.imageHtml = `<img src="${signedImage}" />`
-        }
-        return component
-      }))
+      if (publishingState === 'unpublish') {
+        this.setState({ isUnpublishing: true })
+      }
+      setImmediate(async() => {
+        let newComponents = [...this.state.components].filter(component => (component.content))
+        let baseComponents = JSON.stringify(this.state.components.filter(component => (component.content)))
+        newComponents = await Promise.all(newComponents.map(async component => {
+          if (component.type === 'image') {
+            if (component.content.imageHtml.includes('blob:http')) {
+              const fileInfo = await saveFile(component.content.src)
+              const url = fileInfo.url
+              component.content.imageHtml = `<img src="${url}" />`
+            }
+            if (component.content.imageHtml.includes(bucket)) {
+              const imageSource = getImageSource(component.content.imageHtml)
+              const imageUrl = getKeyWithFullPath(imageSource)
+              component.content.imageHtml = `<img src="${imageUrl}" />`
+            }
+          }
+          return component
+        }))
 
-      this.setState({ isSaving: false, components })
+        pageHtml = getPageHtml(newComponents)
+
+        const slug = slugify(pageTitle)
+        const input = {
+          name: pageTitle,
+          slug,
+          content: pageHtml,
+          components: JSON.stringify(newComponents),
+          published: publishingState === 'publish' ? true : false
+        }
+        if (pageId) {
+          operation = updatePage
+          input['id'] = pageId
+        }
+
+        const newPageData = await API.graphql(graphqlOperation(operation, { input }))
+        const { createPage } = newPageData.data
+
+        baseComponents = JSON.parse(baseComponents)
+
+        // worst hack ever. couldn't figure another way, so for now doing this:
+        // stringifying state, then parsing and updating because state was being mutated somehow.
+        baseComponents = baseComponents.map((c, i) => {
+          c.component = newComponents[i].component
+          if (c.type === 'image') {
+            c.content = {
+              ...c.content,
+              src: newComponents[i].content.src
+            }
+          } else {
+            c.content = newComponents[i].content
+          }
+          return c
+        })
+        console.log('baseComponents1;' , baseComponents)
+        debugger
+        baseComponents = await Promise.all(baseComponents.map(async component => {
+          if (component.type === 'image') {
+            if (
+              (!component.content.imageHtml.includes('blob:http')) &&
+              (!component.content.imageHtml.includes('&X-Amz-SignedHeaders=host'))
+            ) {              
+              const imageSource = getImageSource(component.content.imageHtml)
+              const key = getKeyWithPath(imageSource)
+              const signedImage = await Storage.get(key)
+              component.content.imageHtml = `<img src="${signedImage}" />`
+            }
+          }
+          return component
+        }))
+        console.log('baseComponents;' , baseComponents)
+
+
+        this.setState({
+          pageId: createPage ? createPage.id : this.state.pageId,
+          isPublished: publishingState === 'publish' ? true : this.state.isPublished,
+          isPublishing: false, isUnpublishing: false, isSaving: false, components: baseComponents
+        })
+      })
     } catch (err) {
       console.log('error saving page...:', err)
       this.setState({ isSaving: false })
@@ -174,32 +223,21 @@ class HeroTemplate extends React.Component {
     this.setState(() => ({ components }), this.updatePageHtml)
   }
   createComponent = type => {
+    this.setState({ currentView: 'editing' })
     const component = createComponent(type)
     const components = [...this.state.components, component]
     this.setState({ components })
   }
   toggleView = view => {
-    const { components } = this.state
-    // components.forEach((component) => {
-    //   if (component.type === 'image') {
-    //     if (component.content) {
-    //       if (component.content.includes('blob')) {
-    //         console.log('image content: ', component.content)
-    //       } 
-    //     }
-    //   } 
-    // })
     this.setState({ currentView: view })
   }
   render() {
     const { width, theme } = this.props.context
-    const { slug, components, currentView, pageHtml, pageTitle, isSaving } = this.state
-    const dynamicWidthStyle = css`
-      width: ${width ? width : '1000px'};
-    `
+    const { slug, components, currentView, pageHtml, pageTitle, isSaving, isPublished, isPublishing, isUnpublishing } = this.state
+    const location = window.location.pathname.includes('/editpage') ? 'edit' : 'main'
     return (
       <DndProvider backend={HTML5Backend}>
-        <div css={[container, dynamicWidthStyle]}>
+        <div css={[container(theme, width, location)]}>
           <div css={inputContainerStyle(theme)}>
             <input
               onChange={this.updatePageTitle}
@@ -220,15 +258,37 @@ class HeroTemplate extends React.Component {
             {
               pageHtml && (
                 <>
-                <Button
-                  onClick={() => this.toggleView(currentView === 'preview' ? 'editing' : 'preview')}
-                  title={currentView === 'editing' ? 'Preview' : 'Edit'}
-                />
-                <Button
-                  onClick={this.save}
-                  title="Save"
-                  isLoading={isSaving}
-                />
+                  <Button
+                    onClick={() => this.toggleView(currentView === 'preview' ? 'editing' : 'preview')}
+                    title={currentView === 'editing' ? 'Preview' : 'Edit'}
+                    customCss={[buttonStyle(theme)]}
+                  />
+                  <Button
+                    onClick={() => this.save()}
+                    title="Save"
+                    isLoading={isSaving}
+                    customCss={[buttonStyle(theme)]}
+                    customLoadingCss={[loadingStyle(theme)]}
+                  />
+                  {
+                    isPublished ? (
+                      <Button
+                        onClick={() => this.save('unpublish')}
+                        title="Unpublish"
+                        isLoading={isUnpublishing}
+                        customCss={[buttonStyle(theme)]}
+                        customLoadingCss={[loadingStyle(theme)]}
+                      />
+                    ) : (
+                      <Button
+                        onClick={() => this.save('publish')}
+                        title="Publish"
+                        isLoading={isPublishing}
+                        customCss={[buttonStyle(theme)]}
+                        customLoadingCss={[loadingStyle(theme)]}
+                    />
+                    )
+                  }
                 </>
               )
             }
@@ -368,6 +428,16 @@ function Draggable({ content, updateContent, currentView, component: Component, 
   )
 }
 
+const buttonStyle = () => css`
+  padding-left: 8px;
+  font-size: 14px;
+`
+
+const loadingStyle = ({ primaryFontColor }) => css`
+  margin-top: 4px;
+  color: ${primaryFontColor};
+`
+
 const inputContainerStyle = () => css`
   margin: 0px 24px;
   display: flex;
@@ -401,8 +471,10 @@ const componentCreatorStyle = (theme, lastItem) => {
   `
 }
 
-const container = css`
+const container = (theme, width, location) => css`
+  width: ${width ? width : '1000px'};
   margin: 0 auto;
+  margin-top: ${location === 'edit' ? '50px' : '0px'};
 `
 
 const inputStyle = ({ primaryFontColor }) => css`

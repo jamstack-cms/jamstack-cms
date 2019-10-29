@@ -19,7 +19,6 @@ class BlogPostTemplate extends React.Component {
     const { isAdmin, theme } = this.props.context
     const { title, description, createdAt  } = this.props.data.appsync.getPost
     const { pageContext: { content, local_cover_image, author, authorAvatar } } = this.props
-    console.log('content: ', content)
 
     return (
       <div>
@@ -84,18 +83,6 @@ export const pageQuery = graphql`
         description
         content
         cover_image
-      }
-    },
-    file(relativePath: {eq: "logo.png"}) {
-      childImageSharp {
-        resize(width: 44) {
-          tracedSVG
-          aspectRatio
-          originalName
-          height
-          width
-          src
-        }
       }
     }
   }

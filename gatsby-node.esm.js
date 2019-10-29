@@ -9,6 +9,7 @@ import config from './jamstack-config'
 import { getSettings } from './src/graphql/queries'
 
 const blogPost = require.resolve(`./src/templates/blog-post.js`)
+const heroPage = require.resolve(`./src/templates/hero-page.js`)
 
 let APPSYNC_KEY
 if(process.env.APPSYNC_KEY) {
@@ -32,7 +33,7 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const postData = await graphql(` {
     appsync {
-      listPosts {
+      listPosts(limit: 500) {
         items {
           content
           createdAt
@@ -50,9 +51,117 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   }`)
 
+  const pageData = await graphql(` {
+    appsync {
+      listPages(limit: 500) {
+        items {
+         id
+          name
+          slug
+          content
+          components
+          published
+        }
+      }
+    }
+  }`)
+  const webPages = pageData.data.appsync.listPages.items.filter(page => page.published)
   const blogPosts = postData.data.appsync.listPosts.items.filter(post => post.published)
   const images = await Storage.list('images/')
   const imageKeys = images.map(i => i.key)
+
+  // create web pages
+  await Promise.all(
+    webPages.map(async(page, index) => {
+      console.log('webPages: ', webPages)
+
+      if (!page) return
+      if (!fs.existsSync(`${__dirname}/public/downloads`)){
+        fs.mkdirSync(`${__dirname}/public/downloads`);
+      }
+      const content = page.content
+      const contentUrls = content.match(urlRegex())
+      let images = []
+      if (contentUrls) {
+        contentUrls.forEach(url => {
+          if(url.includes(bucket)) {
+            const key = getImageKey(url)
+            const keyWithPath = `images/${key}`
+            if (imageKeys.indexOf(keyWithPath) !== -1) {
+              const image = Storage.get(keyWithPath)
+              images.push(image)
+            }
+          }
+        })
+      }
+      let signedUrls = []
+      if (images.length) {
+        try {
+          signedUrls = await Promise.all(images)
+        } catch (err) {
+          console.log('error getting signed urls::::', err)
+        }
+      }
+      console.log('signedUrls: ', signedUrls)
+      let urlIndex = 0
+      const pathsToDownload = []
+      const rawPaths = []
+
+      // create array of raw local image URLs (rawPaths)
+      // we use these raw paths locally to reference the downloaded images.
+      signedUrls.forEach(url => rawPaths.push(`${getRawPath(url)}`))
+      // create array of images with signed paths so we can download them in the next step
+      signedUrls.forEach(signedUrl => pathsToDownload.push(downloadImage(signedUrl)))
+
+      if (pathsToDownload.length) {
+        // if there are any images, we download them to the local file system
+        try {
+          await Promise.all(pathsToDownload)
+        } catch (err) {
+          console.log('error downloading images to file system...', err)
+        }
+      }
+
+      let updatedContent = content.replace(urlRegex(), (url) => {
+        if(url.includes(bucket)) {
+          console.log('rawPaths; ', rawPaths)
+          console.log('rawPaths[urlIndex]: ', rawPaths[urlIndex])
+          const chosenUrl = rawPaths[urlIndex]
+          const split = chosenUrl.split('/')
+          const relativeUrl = `../downloads/${split[split.length - 1]}`
+          urlIndex++
+          return relativeUrl
+        } else {
+          return url
+        }
+      })
+
+      page['content'] = updatedContent
+
+      const previous = index === webPages.length - 1 ? null : webPages[index + 1].node
+      const next = index === 0 ? null : webPages[index - 1]
+
+      console.log('page to be created: ', page)
+      createPage({
+        path: page.slug,
+        component: heroPage,
+        context: {
+          id: page.id,
+          content: page.content,
+          title: page.title,
+          published: page.published,
+          createdAt: page.createdAt,
+          slug: page.slug,
+          type: "appsyncData",
+          previous,
+          next,
+        },
+      })
+
+    })
+  )
+
+  // create blog post pages
   await Promise.all(
     blogPosts.map(async(post, index) => {
       if (!post) return
@@ -243,6 +352,58 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       }
     }
   `)
+
+  const listPagesQuery = graphqltag(`
+    query listPages {
+      listPages(limit: 500) {
+        items {
+          id
+          name
+          slug
+          content
+          components
+          published
+        }
+      }
+    }
+  `)
+
+  try {
+    const listPagesData = await axios({
+      url: config.aws_appsync_graphqlEndpoint,
+      method: 'post',
+      headers: {
+        'x-api-key': APPSYNC_KEY
+      },
+      data: {
+        query: print(listPagesQuery)
+      }
+    })
+    let pages = listPagesData.data.data.listPages.items
+    pages = pages.filter(page => page.published)
+    const slugs = pages.map(page => page.slug)
+
+    const slugData = {
+      key: 'page-slugs',
+      data: slugs.length ? slugs : 'none'
+    }
+    const slugNodeContent = JSON.stringify(slugData)
+    const slugNodeMeta = {
+      id: createNodeId(`my-data-${slugData.key}`),
+      parent: null,
+      children: [],
+      internal: {
+        type: `Slugs`,
+        mediaType: `text/html`,
+        content: slugNodeContent,
+        contentDigest: createContentDigest(slugData)
+      }
+    }
+    const slugNode = Object.assign({}, slugData, slugNodeMeta)
+    createNode(slugNode)
+  } catch (err) {
+    console.log('error fetching data..:', err)
+  }
   
   try {
     const listPostsData = await axios({

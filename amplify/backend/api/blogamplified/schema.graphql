@@ -74,6 +74,7 @@ type Page @model(subscriptions: null)
   slug: String!
   content: String!
   components: String
+  published: Boolean
 }
 
 type User @model

@@ -9,7 +9,6 @@ import { getImageSource } from '../../utils/helpers'
 function ImageComponent({
   onClick, updateContent, currentView, content, deleteComponent, index
 }) {
-  console.log('content: ', content)
   function setFile(event) {
     if (!event.target.files[0]) return
     const file = URL.createObjectURL(event.target.files[0])
@@ -27,7 +26,6 @@ function ImageComponent({
   if (content.imageHtml) {
     imageSource = getImageSource(content.imageHtml)
   }
-  console.log('imageSource: ', imageSource)
   return (
     <>
     <ProgressiveImage src={imageSource} placeholder={placeholder}>

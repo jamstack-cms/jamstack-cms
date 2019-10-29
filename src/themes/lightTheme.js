@@ -8,7 +8,7 @@ const lightTheme = {
   inverseFontColor: 'white',
   inverseButtonFontColor: 'white',
   highlight: '#3bbcbd',
-  borderColor: 'rgba(0, 0, 0, .1)',
+  borderColor: 'rgba(8,8,11,0.15)',
   backgroundColor: '#fafafa',
   codeBackgroundColor: '#ededed',
   toastBackgroundColor: 'white',

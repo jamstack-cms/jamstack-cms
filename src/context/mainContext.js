@@ -10,8 +10,8 @@ import config from '../../jamstack-config.js'
 Amplify.configure(config)
 toast.configure()
 
-const themeQuery = graphql`
-  query ThemeQuery {
+const mainQuery = graphql`
+  query MainQuery {
     allThemeInfo {
       edges {
         node {
@@ -22,6 +22,13 @@ const themeQuery = graphql`
             borderWidth
             description
           }
+        }
+      }
+    },
+    allSlugs {
+      edges {
+        node {
+          data
         }
       }
     }
@@ -93,12 +100,12 @@ class ContextProviderComponent extends React.Component {
 
   render() {
     return (
-      <StaticQuery query={themeQuery}>
-        { themeData => {
-
+      <StaticQuery query={mainQuery}>
+        { queryData => {
+          const slugs = queryData.allSlugs.edges[0].node.data
           let {allThemeInfo: { edges: [{ node: { data: {
             border: borderEnabled, borderWidth: themeBorderWidth, theme: savedTheme, description: baseDescription
-          } } }] }} = themeData
+          } } }] }} = queryData
 
           let theme = getThemeInfo(savedTheme)
           borderEnabled = borderEnabled === 'none' ? 'enabled' : borderEnabled
@@ -156,7 +163,8 @@ class ContextProviderComponent extends React.Component {
               borderEnabled,
               themeBorderWidth,
               siteDescription: baseDescription,
-              theme
+              theme,
+              slugs
             }}>
               {this.props.children}
             </BlogContext.Provider>
@@ -173,7 +181,7 @@ export {
   ContextProviderComponent
 }
 
-const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
+const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
   const isDark = type === 'dark'
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
@@ -187,6 +195,18 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
     font-family: ${fontFamily}, sans-serif;
     text-decoration: none;
     box-sizing: border-box;
+  }
+
+  footer, footer p {
+    font-family: ${fontFamily};
+    color: ${primaryLightFontColor};
+  }
+
+  footer a {
+    font-family: ${fontFamily};
+    text-decoration: none;
+    box-shadow: none;
+    color: ${primaryLightFontColor};
   }
 
   h4 {
@@ -361,8 +381,26 @@ const blogPostStyle = ({ codeBackgroundColor, toastFontColor, primaryFontColor, 
     font-size: 16px;
   }
 
-  .blog-post blockquote {
-    border-left: 1px solid ${isDark ? highlight : 'black'};
+  blockquote {
+    margin-left: -50px;
+  }
+
+  .blog-post blockquote p {
+    padding-right: 100px;
+    padding-bottom: 0px;
+    width: 100%;
+    font-family: ${scriptFamily};
+    font-size: 36px;
+    line-height: 1.32;
+    font-weight: bold;
+  }
+  .blog-post blockquote p a {
+    padding-bottom: 0px;
+    width: 100%;
+    font-family: ${scriptFamily};
+    font-size: 36px;
+    line-height: 1.32;
+    font-weight: bold;
   }
   .editor-toolbar button.active, .editor-toolbar button:hover {
     background-color: transparent;

@@ -159,7 +159,9 @@ function ProfileWithContext(props) {
   )
 }
 
-export default styledAuthenticator(ProfileWithContext)
+const ProfileWithAuth = styledAuthenticator(ProfileWithContext)
+
+export default ProfileWithAuth
 
 export const pageQuery = graphql`
   query {

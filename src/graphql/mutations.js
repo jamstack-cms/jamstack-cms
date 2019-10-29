@@ -170,6 +170,7 @@ export const createPage = `mutation CreatePage($input: CreatePageInput!) {
     slug
     content
     components
+    published
   }
 }
 `;
@@ -180,6 +181,7 @@ export const updatePage = `mutation UpdatePage($input: UpdatePageInput!) {
     slug
     content
     components
+    published
   }
 }
 `;
@@ -190,6 +192,7 @@ export const deletePage = `mutation DeletePage($input: DeletePageInput!) {
     slug
     content
     components
+    published
   }
 }
 `;

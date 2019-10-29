@@ -144,6 +144,7 @@ export const getPage = `query GetPage($id: ID!) {
     slug
     content
     components
+    published
   }
 }
 `;
@@ -159,6 +160,7 @@ export const listPages = `query ListPages(
       slug
       content
       components
+      published
     }
     nextToken
   }

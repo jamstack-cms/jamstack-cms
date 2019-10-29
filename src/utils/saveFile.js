@@ -13,12 +13,12 @@ function saveFile(file) {
     const { name: fileName, type: mimeType } = file
     const cleanedFileName = getCleanedFileName(fileName)
     const key = `images/${uuid()}_${cleanedFileName}`
-    const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`
     try {
-      await Storage.put(key, file, {
+      const imageInfo = await Storage.put(key, file, {
         contentType: mimeType
       })
-      resolve({ key, url }) 
+      const url = `https://${bucket}.s3.${region}.amazonaws.com/public/${imageInfo.key}`
+      resolve({ key: imageInfo.key, url }) 
     } catch (err) {
       console.log('error: ', err)
     }

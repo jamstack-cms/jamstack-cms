@@ -6,7 +6,7 @@ function EditOptions({ updateIsEditable, editable, deleteComponent, theme, hideE
     <div css={[editOptionsStyle(theme)]}>
       {!hideEdit && (
         <p css={editButtonTextStyle(theme)} onClick={updateIsEditable}>
-          {editable ? 'Save' : 'Edit'}
+          {editable ? 'Set' : 'Edit'}
         </p>
       )}
       {!hideDelete && (
@@ -18,12 +18,13 @@ function EditOptions({ updateIsEditable, editable, deleteComponent, theme, hideE
 
 const editOptionsStyle = () => css`
   position: absolute;
-  left: -100px;
-  top: 0;
+  left: -70px;
+  top: 5px;
 `
 
 const editButtonTextStyle = ({ primaryFontColor, primaryLightFontColor }) => css`
   cursor: pointer;
+  font-size: 14px;
   margin-right: 15px;
   margin-bottom: 0px;
   margin-top: 0px;

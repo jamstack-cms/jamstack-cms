@@ -4,64 +4,120 @@ import {
   ContextProviderComponent, BlogContext
 } from '../context/mainContext'
 import { Link } from 'gatsby'
+import { Auth, Hub } from 'aws-amplify'
 import logo from '../images/logo.png'
 import logoLight from '../images/logoLight.png'
 import logoDank from '../images/logoDank.png'
 import "easymde/dist/easymde.min.css"
 import 'react-toastify/dist/ReactToastify.css'
 
-function BaseLayout(props) {
-  const { theme, window: { height }, isAdmin } = props.context
-  const { borderColor } = theme
-  let { type: themeType } = theme
+const titleCase = str =>
+  str
+    .split('-')
+    .map(str => {
+      const word = str.toLowerCase()
+      return word.charAt(0).toUpperCase() + word.slice(1)
+    })
+    .join(' ')
 
-  const dynamicContainerHeight = css`
-    min-height: calc(${height}px - 157px);
-  `
+class BaseLayout extends React.Component {
+  state = {
+    user: null
+  }
+  componentDidMount() {
+    this.setUser()
+    Hub.listen('auth', hubData => {
+      const { payload: { event } } = hubData;
+      if (event === 'signOut') {
+        this.setState({ user: null })
+      }
+      if (event === 'signIn') {
+        this.setUser()
+      }
+    })
+  }
+  async setUser() {
+    try {
+      const user = await Auth.currentAuthenticatedUser()
+      this.setState({ user })
+     } catch (err) {
+       console.log('user not signed in...')
+     }
+  }
+  render() {
+    const { user } = this.state
+    let { theme, window: { height }, isAdmin, slugs } = this.props.context
+    let { type: themeType } = theme
 
-  let mainLogo
-  if (themeType === 'light') mainLogo = logo
-  if (themeType === 'dark') mainLogo = logoLight
-  if (themeType === 'dank') mainLogo = logoDank
-  return ( 
-    <div>
-      <div css={[headerStyle]}>
-        <div css={[headerContainerStyle]}>
-          <Link to="/" css={linkContainer}>
-            <img alt='logo' css={logoStyle} src={mainLogo} />
-          </Link>
-          <div css={menu}>
+    slugs = slugs === 'none' ? [] : slugs
+
+    const dynamicContainerHeight = css`
+      min-height: calc(${height}px - 157px);
+    `
+
+    let mainLogo = logo
+    if (themeType === 'dark') mainLogo = logoLight
+    if (themeType === 'dank') mainLogo = logoDank
+    return ( 
+      <div>
+        <div css={[headerStyle]}>
+          <nav css={[headerContainerStyle]}>
             <Link to="/" css={linkContainer}>
-              <p css={[link(theme)]}>Blog</p>
+              <img alt='logo' css={logoStyle} src={mainLogo} />
             </Link>
-            <Link to="/about" css={linkContainer}>
-              <p css={[link(theme)]}>About Me</p>
-            </Link>
-            <Link to="/profile" css={linkContainer}>
-              <p css={[link(theme)]}>Profile</p>
-            </Link>
-            {
-              isAdmin && (
-                <Link to="/admin" css={linkContainer}>
-                  <p css={[link(theme)]}>Admin</p>
+            <div css={menu}>
+              <Link to="/" css={linkContainer}>
+                <p css={[link(theme)]}>Blog</p>
+              </Link>
+              <Link to="/about" css={linkContainer}>
+                <p css={[link(theme)]}>About Me</p>
+              </Link>
+              {
+                isAdmin && (
+                  <Link to="/admin" css={linkContainer}>
+                    <p css={[link(theme)]}>Admin</p>
+                  </Link>
+                )
+              }
+              {
+                slugs.length > Number(0) && slugs.map((slug) => (
+                  <Link to={`/${slug}`} css={linkContainer}>
+                    <p css={[link(theme)]}>{titleCase(slug)}</p>
+                  </Link>
+                ))
+              }
+            </div>
+          </nav>
+        </div>
+        <main css={[dynamicContainerHeight]}>{this.props.children}</main>
+        <footer css={footerContainer(theme)}>
+          <div css={footer}>
+           <div css={footerLeft}>
+             © {new Date().getFullYear()}&nbsp;
+             <a css={footerLink(theme)} target="_blank" rel="noopener noreferrer" href="https://github.com/jamstack-cms" >JAMstack CMS</a>
+             <div css={footerRight}>
+                <div>
+                  <a
+                  css={footerLink(theme)}
+                  target="_blank"
+                  href="https://twitter.com/jamstackcms">Twitter</a>
+                </div>
+                <div>
+                  <a
+                  css={footerLink(theme)}
+                  target="_blank"
+                  href="https://github.com/jamstack-cms">GitHub</a>
+                </div>
+                <Link to="/profile" css={footerLink(theme)}>
+                  { user ? "Profile" : "Sign In" }
                 </Link>
-              )
-            }
+             </div>
+           </div>
           </div>
-        </div>
+        </footer>
       </div>
-      <main css={[dynamicContainerHeight]}>{props.children}</main>
-      <footer css={footerContainer}>
-        <div css={footer}>
-          © {new Date().getFullYear()}, Built with
-          {` `}
-          <a target="_blank" rel="noopener noreferrer" href="https://www.gatsbyjs.org" css={[footerLink(theme)]}>Gatsby</a>
-          {` `}&{` `}
-          <a target="_blank" rel="noopener noreferrer" href="https://aws-amplify.github.io" css={[footerLink(theme)]}>AWS Amplify</a>
-        </div>
-      </footer>
-    </div>
-  )
+    )
+  }
 }
 
 function BaseLayoutWithContext(props) {
@@ -76,8 +132,25 @@ function BaseLayoutWithContext(props) {
   )
 }
 
-const footerLink = ({ highlight }) => `
-  color: ${highlight};
+const footerLink = ({ primaryFontColor, primaryLightFontColor }) => css`
+  color: ${primaryLightFontColor};
+  transition: all .25s;
+  margin-right: 10px;
+  &:hover {
+    color: ${primaryFontColor};
+  }
+`
+
+const footerLeft = css`
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+`
+
+const footerRight = css`
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
 `
 
 const logoStyle = css`
@@ -126,16 +199,22 @@ const headerContainerStyle = css`
   }
 `
 
-const footerContainer = css`
-  width: 100%;
+const footerContainer = ({ borderColor }) => css`
+  width: 900px;
+  margin: 0 auto;
+  margin-top: 100px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  border-top: 1px solid ${borderColor};
 `
 
 const footer = css`
-  width: 1200px;
   margin: 0 auto;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  @media (max-width: 1200px) {
+  display: flex;
+  &a: {
+    text-decoration: none;
+  }
+  @media (max-width: 900px) {
     width: 100%;
     padding: 9px 20px 0px;
   }
