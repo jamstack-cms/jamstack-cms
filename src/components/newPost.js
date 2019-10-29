@@ -6,7 +6,7 @@ import FileInput from './input'
 import FormComponent from './formComponent'
 import { BlogContext } from '../context/mainContext'
 import { createPost } from '../graphql/mutations'
-import {  API, graphqlOperation } from 'aws-amplify'
+import { Auth, API, graphqlOperation } from 'aws-amplify'
 import format from 'date-fns/format'
 import { getTrimmedKey, copyToClipboard } from '../utils/helpers'
 import { toast } from 'react-toastify'
@@ -75,6 +75,9 @@ class NewPost extends React.Component {
   publish = async (isPublished) => {
     const { file, post, post: { title, content, description } } = this.state
     if (!title || !content) return
+    const user = await Auth.currentAuthenticatedUser()
+    const { payload: { sub } } = user.signInUserSession.idToken
+    post['postAuthorId'] = sub
     if (isPublished) {
       this.setState({ isPublishing: true })
     } else (

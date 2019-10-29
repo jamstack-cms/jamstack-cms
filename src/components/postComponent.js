@@ -91,6 +91,7 @@ const authorNameStyle = ({ secondaryFontColor }) => css`
 `
 
 const imageStyle = css`
+  border-radius: 5px;
   box-shadow: 0 30px 60px -10px rgba(0,0,0,0.22), 0 18px 36px -18px rgba(0,0,0,0.25);
 `
 

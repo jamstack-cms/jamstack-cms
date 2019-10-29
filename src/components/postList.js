@@ -7,9 +7,9 @@ import { BlogContext } from '../context/mainContext'
 import getImageKey from '../utils/getImageKey'
 
 function PostList ({
-  posts, isAdmin, deletePost, publishPost, unPublishPost, context
+  posts, isAdmin, deletePost, publishPost, unPublishPost, context, toggleViewState, fixedWidthImages
 }) {
-  const { theme, theme: { highlight } } = context
+  const { theme } = context
 
   const widthIndexes = posts.reduce((acc, next, index) => {
     if (!acc.length) {
@@ -27,13 +27,24 @@ function PostList ({
     }
     return acc
   }, [])
-  console.log('rendering...')
+  if (!posts.length) {
+    return (
+      <div>
+        No posts yet! Create your first post <span css={underline(theme)} onClick={() => toggleViewState('createPost')}>here</span>.
+      </div>
+    )
+  }
   return (
     <div css={[postListContainer(isAdmin)]}>
       {posts.map((post, index) => {
         const widthType = widthIndexes[index]
-        const cover_image = `./downloads/${getImageKey(post.cover_image)}`
-        const signed_image = post.signedImage
+        let cover_image = post.cover_image
+        let signed_image = null
+        if (cover_image) {
+          console.log('cover_image: ', cover_image)
+          cover_image = `./downloads/${getImageKey(post.cover_image)}`
+          signed_image = post.signedImage
+        }
         const title = post.title
         let link = slugify(post.title)
         if (isAdmin) {
@@ -41,10 +52,10 @@ function PostList ({
         }
 
         return (
-          <div css={[postContainer(isAdmin, widthType)]} key={post.id}>
+          <div css={[postContainer(widthType, fixedWidthImages)]} key={post.id}>
             {
               isAdmin && (
-                <div css={[sideButtonContainer]}>
+                <div css={[sideButtonContainer(cover_image)]}>
                   <p onClick={() => deletePost(post)} css={[sideButton(theme)]}>Delete</p>
                   {
                     post.published ? (
@@ -60,10 +71,14 @@ function PostList ({
               <article >
                 <div css={[postStyle(theme)]}>
                   <div css={postContentStyle}>
-                    <div css={(coverImageContainer(isAdmin))}>
-                      <div css={coverImage(isAdmin ? signed_image : cover_image)} />
-                      {/* <img src={isAdmin ? signed_image : cover_image} css={coverImage(isAdmin)} /> */}
-                    </div>
+                    {
+                      cover_image && (
+                        <div css={(coverImageContainer(isAdmin))}>
+                          <div css={coverImage(isAdmin ? signed_image : cover_image)} />
+                          {/* <img src={isAdmin ? signed_image : cover_image} css={coverImage(isAdmin)} /> */}
+                        </div>
+                      )
+                    }
                     <header>
                       <h3 css={[titleStyle(theme, isAdmin)]}>
                         {title}
@@ -111,6 +126,14 @@ export default function PostListWithContext(props) {
   )
 }
 
+const underline = ({ highlight }) => css`
+  color: ${highlight};
+  cursor: pointer;
+  &: hover {
+    text-decoration: underline;
+  }
+`
+
 const dateStyle = css`
   font-weight: 500;
   color: #d1d1d1;
@@ -136,12 +159,6 @@ const coverImageContainer = isAdmin => css`
     box-shadow: 0 45px 60px -15px rgba(0,0,0,0.2), 0 45px 36px -25px rgba(0,0,0,0.2);
   }
 `
-
-// const coverImage = (isAdmin) => css`
-//   height: ${isAdmin ? '250px' : '280px'};
-//   width: 100%;
-//   height: 100%;
-// `
 
 const coverImage = (cover_image) => css`
   background-image: url("${cover_image}");
@@ -176,14 +193,14 @@ const publishButton = (theme) => css`
   color: ${theme.highlight};
 `
 
-const sideButtonContainer = css`
-  margin-top: 100px;
+const sideButtonContainer = cover_image => css`
+  margin-top: ${cover_image ? "100px" : "50px"};
   min-width: 100px;
 `
 
-const postContainer = (isAdmin, widthType) => {
+const postContainer = (widthType, fixedWidthImages) => {
   let width
-  if (isAdmin) {
+  if (fixedWidthImages) {
     width = '770px'
   } else {
     width = widthType === 'small' ? '40%' : '53%'
@@ -238,4 +255,5 @@ const linkStyle = css`
   color: black;
   box-shadow: none;
   text-decoration: none;
+  width: 100%;
 `

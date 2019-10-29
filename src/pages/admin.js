@@ -73,6 +73,7 @@ class Admin extends React.Component {
       const postData = await API.graphql(graphqlOperation(listPosts))
       const { items: posts } = postData.data.listPosts
       const postsWithSignedImages = await Promise.all(posts.map(async post => {
+        if (!post.cover_image) return post
         const signedImage = await getSignedImage(post.cover_image)
         post['signedImage'] = signedImage
         return post
@@ -204,7 +205,6 @@ class Admin extends React.Component {
     }
   }
   render() {
-    console.log('rerendering...')
     const { viewState, isLoading, pageTemplate } = this.state
     const { theme, theme: { borderColor, primaryFontColor, highlight }} = this.props.context
     const highlightButton = state => css`
@@ -264,9 +264,11 @@ class Admin extends React.Component {
                     posts={this.state.posts}
                     highlight={highlight}
                     isAdmin={true}
+                    fixedWidthImages
                     deletePost={this.deletePost}
                     publishPost={this.publishPost}
                     unPublishPost={this.unPublishPost}
+                    toggleViewState={this.toggleViewState}
                   />
                 </Layout>
               )

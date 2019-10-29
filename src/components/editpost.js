@@ -57,6 +57,7 @@ class EditPost extends React.Component {
     try {
       let authorAvatar
       const postData = await API.graphql(graphqlOperation(getPost, { id }))
+      console.log('postData: ', postData)
       const { getPost: post } = postData.data
       if (post.author.avatarUrl) {
         authorAvatar = await Storage.get(post.author.avatarUrl)

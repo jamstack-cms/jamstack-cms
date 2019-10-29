@@ -389,18 +389,13 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
     padding-right: 100px;
     padding-bottom: 0px;
     width: 100%;
-    font-family: ${scriptFamily};
-    font-size: 36px;
-    line-height: 1.32;
-    font-weight: bold;
+    line-height: 30px;
+    font-family: ${fontFamily};
   }
   .blog-post blockquote p a {
     padding-bottom: 0px;
     width: 100%;
-    font-family: ${scriptFamily};
-    font-size: 36px;
-    line-height: 1.32;
-    font-weight: bold;
+    font-family: ${fontFamily};
   }
   .editor-toolbar button.active, .editor-toolbar button:hover {
     background-color: transparent;
