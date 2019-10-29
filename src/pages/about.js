@@ -12,17 +12,18 @@ class About extends React.Component {
       <Layout>
         <TitleComponent title='About Me' />
         <p css={paragraphStyle(theme)}>My name is Nader Dabit. I'm a full stack developer specializing in cross-platform and cloud-enabled application development.</p>
-        <p css={paragraphStyle(theme)}>Right now I am working at AWS on a team that is pushing the boundaries on what it means to be a full stack developer. We are laying the groundwork the next generation of developers that legerage the cloud.</p>
+        <p css={paragraphStyle(theme)}>Right now I am working at AWS on a team that is pushing the boundaries on what it means to be a full stack developer. We are laying the groundwork the next generation of developers that will leverage the cloud.</p>
         <img
           src={nader}
           css={imageStyle(theme)}
         />
+        <h2 css={subheaderStyle(theme)}>Learn More</h2>
         <p css={paragraphStyle(theme)}>This page was created using a custom component. If you'd like to learn more about me, follow me <a href="https://twitter.com/dabit3">on Twitter</a>. If you're interested in the causes that I support, check out the following:</p>
     
         <ul>
-          <li>Gaza Sky Geeks</li>
-          <li>Charity water</li>
-          <li>Laptops for developers</li>
+          <li css={liStyle(theme)}><a href="https://gazaskygeeks.com/">Gaza Sky Geeks</a></li>
+          <li css={liStyle(theme)}><a href="https://www.charitywater.org/">Charity water</a></li>
+          <li css={liStyle(theme)}><a href="https://twitter.com/dev_careers">Laptops f44or developers</a></li>
         </ul>
       </Layout>
     )
@@ -38,6 +39,16 @@ export default function AboutWithContext(props) {
     </BlogContext.Consumer>
   )
 }
+
+const liStyle = () => css`
+  margin-bottom: 0px;
+`
+
+const subheaderStyle = ({ fontFamily}) => css`
+  font-family: ${fontFamily};
+  font-weight: 300;
+  margin-top: 30px;
+`
 
 const imageStyle = () => css`
   border-radius: 5px;
