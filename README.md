@@ -34,7 +34,6 @@ This way you have the opportunity to test out new posts and web pages before dep
 
 3. Dynamic page - Similarly to creating a post, you can use the WYSYWIG editor and drag and dop interface to create web pages complete with rich text editing.
 
-
 ### This is a beta version!
 
 While the CMS is ready to deploy today as it is, this project is still in beta. There is quite a bit of work to do before I am ready to ship version 1. Here are some of the things I will be focusing on:
