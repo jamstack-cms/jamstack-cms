@@ -1,0 +1,27 @@
+@font-face {
+  font-family: "EB Garamond";
+  src: url("EBGaramond-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("EBGaramond-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("EBGaramond-SemiBold.ttf");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("EBGaramond-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
