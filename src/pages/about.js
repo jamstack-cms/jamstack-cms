@@ -67,6 +67,9 @@ const imageStyle = () => css`
   box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 60px -10px, rgba(0, 0, 0, 0.22) 0px 18px 36px -18px;
   max-width: 400px;
   margin-top: 30px;
+  @media (max-width: 900px) {
+    width: 100%;
+  }
 `
 
 const paragraphStyle = ({ primaryFontColor, fontFamily, highlight }) => css`
