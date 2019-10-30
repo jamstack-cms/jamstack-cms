@@ -62,12 +62,23 @@ $ npm install
 
 2. Configure admin emails
 
-Open *amplify/backend/function/blogamplifiedc9ee2ce6PostConfirmation/src/add-to-group.js* and update the admin emails for the users you'd like to add.
+Open *amplify/backend/function/blogamplifiedc9ee2ce6PostConfirmation/src/add-to-group.js* and update the admin emails for the users you'd like to add by adding them to the array of images.
 
 3. Initialize the Amplify project
 
 ```sh
 $ amplify init
+```
+
+During the initialization, you'll be prompted for the following
+
+```
+? Do you want to configure Lambda Triggers for Cognito? Y
+? Which triggers do you want to enable for Cognito
+❯◉ Post Confirmation
+? What functionality do you want to use for Post Confirmation
+❯◉ Create your own module
+? Enter the name of the group to which users will be added. Amin
 
 $ amplify push
 ```
