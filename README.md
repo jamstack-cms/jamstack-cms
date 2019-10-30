@@ -47,6 +47,7 @@ While the CMS is ready to deploy today as it is, this project is still in beta. 
 6. More page boilerplates
 7. Tests
 8. TypeScript
+9. Massive code cleanup 😅
 
 If you are interested in contributing to this project, please let me know!
 
