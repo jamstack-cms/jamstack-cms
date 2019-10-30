@@ -64,7 +64,7 @@
     "typeface-montserrat": "^0.0.75",
     "typography": "^0.16.19",
     "typography-theme-wordpress-2016": "^0.16.19",
-    "uglify-js": "1",
+    "uglify-js": "2",
     "url-regex": "^5.0.0",
     "uuid": "^3.3.3"
   },
