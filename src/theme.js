@@ -1,12 +1,12 @@
-// colors
-const highlight = '#3bbcbd'
+// // colors
+// const highlight = '#3bbcbd'
 
-// fonts
-const fontFamily = 'Nunito'
-const scriptFamily = 'Raleway'
+// // fonts
+// const fontFamily = 'Nunito'
+// const scriptFamily = 'Raleway'
 
-export {
-  highlight,
-  fontFamily,
-  scriptFamily
-}
+// export {
+//   highlight,
+//   fontFamily,
+//   scriptFamily
+// }

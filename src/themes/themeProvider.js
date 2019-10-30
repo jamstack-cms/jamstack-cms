@@ -1,6 +1,7 @@
 import lightTheme from './lightTheme'
 import darkTheme from './darkTheme'
 import dankTheme from './dankTheme'
+import reactiveTheme from './reactiveTheme'
 
 function getThemeInfo(theme) {
   switch(theme) {
@@ -10,6 +11,8 @@ function getThemeInfo(theme) {
       return darkTheme 
     case 'dank':
       return dankTheme
+    case 'reactive':
+      return reactiveTheme
     default:
       return null
   }

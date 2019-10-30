@@ -231,16 +231,20 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
   }
 
   .hero-page-content h1 {
-    font-family: ${fontFamily}, serif;
+    font-family: ${fontFamily};
+    color: ${primaryFontColor};
     margin: 25px auto 18px;
     font-size: 36px;
     line-height: 42px;
+    font-weight: 600;
     outline: none;
     border: none;
   }
 
   .hero-page-content h2 {
-    font-family: ${fontFamily}, serif;
+    font-family: ${fontFamily};
+    color: ${primaryFontColor};
+    font-weight: 600;
     line-height: 30px;
     font-size: 32px;
     margin: 25px auto 18px;
@@ -248,16 +252,20 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
 
   .hero-page-content h3 {
     margin: 20px auto 10px;
-    font-family: ${fontFamily}, serif;
+    font-family: ${fontFamily};
+    font-weight: 600;
+    color: ${primaryFontColor};
   }
 
   .hero-page-content h4 {
-    font-family: ${fontFamily}, serif;
+    font-family: ${fontFamily};
+    color: ${primaryFontColor};
     margin: 25px 0px 0px;
   }
 
   .hero-page-content h5 {
-    font-family: ${fontFamily}, serif;
+    font-family: ${fontFamily};
+    color: ${primaryFontColor};
   }
 
   .hero-page-content code {

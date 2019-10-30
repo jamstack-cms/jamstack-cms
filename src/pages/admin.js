@@ -132,33 +132,27 @@ class Admin extends React.Component {
     }
   }
   publishPost = async ({ id }) => {
-    const shouldPublish = window.confirm("Are you sure you'd like to publish this post?");
-    if (shouldPublish) {
-      const posts = [...this.state.posts]
-      const postIndex = posts.findIndex(post => post.id === id)
-      posts[postIndex]['published'] = true
-      try {
-        await API.graphql(graphqlOperation(updatePost, { input: { id, published: true }}))
-        toast(`🔥 Post successfully published!`)
-        this.setState({ posts })
-      } catch (err) {
-        console.log('error publishing post..:', err)
-      }
+    const posts = [...this.state.posts]
+    const postIndex = posts.findIndex(post => post.id === id)
+    posts[postIndex]['published'] = true
+    try {
+      await API.graphql(graphqlOperation(updatePost, { input: { id, published: true }}))
+      toast(`🔥 Post successfully published!`)
+      this.setState({ posts })
+    } catch (err) {
+      console.log('error publishing post..:', err)
     }
   }
   unPublishPost = async ({ id }) => {
-    const shouldUnpublish = window.confirm("Are you sure you'd like to unpublish this post?");
-    if (shouldUnpublish) {
-      const posts = [...this.state.posts]
-      const postIndex = posts.findIndex(post => post.id === id)
-      posts[postIndex]['published'] = false
-      try {
-        await API.graphql(graphqlOperation(updatePost, { input: { id, published: false }}))
-        toast(`Post successfully unpublished!`)
-        this.setState({ posts })
-      } catch (err) {
-        console.log('error unpublishing post..:', err)
-      }
+    const posts = [...this.state.posts]
+    const postIndex = posts.findIndex(post => post.id === id)
+    posts[postIndex]['published'] = false
+    try {
+      await API.graphql(graphqlOperation(updatePost, { input: { id, published: false }}))
+      toast(`Post successfully unpublished!`)
+      this.setState({ posts })
+    } catch (err) {
+      console.log('error unpublishing post..:', err)
     }
   }
   publishPage = async ({ id }) => {
@@ -206,7 +200,7 @@ class Admin extends React.Component {
   }
   render() {
     const { viewState, isLoading, pageTemplate } = this.state
-    const { theme, theme: { borderColor, primaryFontColor, highlight }} = this.props.context
+    const { theme, theme: { primaryFontColor, highlight }} = this.props.context
     const highlightButton = state => css`
       color: ${state === viewState ? highlight: primaryFontColor};
     `
@@ -244,7 +238,6 @@ class Admin extends React.Component {
                 viewState === 'createPage' && (
                   <select css={selectMenu} value={pageTemplate} onChange={this.updatePageTemplate}>
                     <option value='hero'>Hero</option>
-                    <option value='sidebar'>Sidebar</option>
                   </select>
                 )
               }

@@ -12,11 +12,11 @@ function TitleComponent({ title, customStyles, context }) {
 }
 
 const titleStyle = ({ fontFamily }) => css`
-  font-family: ${fontFamily}, sans-serif;
-  font-size: 32px;
-  font-weight: 200;
+  font-family: ${fontFamily};
+  font-size: 34px;
+  font-weight: 600;
   margin-top: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
 `
 
 export default function TitleComponentWithContext(props) {

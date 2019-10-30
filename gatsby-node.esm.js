@@ -73,8 +73,6 @@ exports.createPages = async ({ graphql, actions }) => {
   // create web pages
   await Promise.all(
     webPages.map(async(page, index) => {
-      console.log('webPages: ', webPages)
-
       if (!page) return
       if (!fs.existsSync(`${__dirname}/public/downloads`)){
         fs.mkdirSync(`${__dirname}/public/downloads`);
@@ -102,7 +100,6 @@ exports.createPages = async ({ graphql, actions }) => {
           console.log('error getting signed urls::::', err)
         }
       }
-      console.log('signedUrls: ', signedUrls)
       let urlIndex = 0
       const pathsToDownload = []
       const rawPaths = []
@@ -124,8 +121,6 @@ exports.createPages = async ({ graphql, actions }) => {
 
       let updatedContent = content.replace(urlRegex(), (url) => {
         if(url.includes(bucket)) {
-          console.log('rawPaths; ', rawPaths)
-          console.log('rawPaths[urlIndex]: ', rawPaths[urlIndex])
           const chosenUrl = rawPaths[urlIndex]
           const split = chosenUrl.split('/')
           const relativeUrl = `../downloads/${split[split.length - 1]}`
@@ -141,7 +136,6 @@ exports.createPages = async ({ graphql, actions }) => {
       const previous = index === webPages.length - 1 ? null : webPages[index + 1].node
       const next = index === 0 ? null : webPages[index - 1]
 
-      console.log('page to be created: ', page)
       createPage({
         path: page.slug,
         component: heroPage,

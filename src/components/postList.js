@@ -223,9 +223,10 @@ const postDescription =  ({ baseFontWeight, secondaryFontColor, fontFamily }) =>
   margin-bottom: 6px;
 `
 
-const postDate = ({ fontFamily }) => css`
+const postDate = ({ fontFamily, highlight }) => css`
   color: rgba(0, 0, 0, .6);
   margin-bottom: 0px;
+  color: ${highlight};
   font-size: 14px;
   font-family: ${fontFamily} !important;
 `

@@ -8,6 +8,7 @@ import { Auth, Hub } from 'aws-amplify'
 import logo from '../images/logo.png'
 import logoLight from '../images/logoLight.png'
 import logoDank from '../images/logoDank.png'
+import logoReactive from '../images/logoReactive.png'
 import "easymde/dist/easymde.min.css"
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -58,6 +59,7 @@ class BaseLayout extends React.Component {
     let mainLogo = logo
     if (themeType === 'dark') mainLogo = logoLight
     if (themeType === 'dank') mainLogo = logoDank
+    if (themeType === 'reactive') mainLogo = logoReactive
     return ( 
       <div>
         <div css={[headerStyle]}>

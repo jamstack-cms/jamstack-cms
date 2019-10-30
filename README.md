@@ -1,6 +1,6 @@
 ![](jamstackcms.jpg)
 
-# JAMstack CMS
+# JAMstack CMS (beta)
 
 End to end serverless blogging & CMS system. Built with [Gatsby](https://www.gatsbyjs.org/) & [AWS Amplify](https://aws-amplify.github.io/).
 
@@ -12,6 +12,8 @@ JAMstack CMS is built to give you the ability to deploy a full stack serverless 
 - Database
 - API
 - Front end
+
+![](screens.jpg)
 
 #### Build time vs run time
 
@@ -29,7 +31,25 @@ This way you have the opportunity to test out new posts and web pages before dep
 
 2. Blog post - In the Admin panel you can create Blog posts that will be dynamically generated at build time. These posts will be queried at build time from the server and used to build the pages. Any images referenced from your image gallery will be downloaded and served locally from the public/downloads folder.
 
-3. Dynamic page - Similarly to creating a 
+3. Dynamic page - Similarly to creating a post, you can use the WYSYWIG editor and drag and dop interface to create web pages complete with rich text editing.
+
+
+### This is a beta version!
+
+While the CMS is ready to deploy to day as is, this is still in beta. There is quite a bit of work to do before I am ready to ship version 1. Here are some of the things I will be focusing on:
+
+1. Accessibility
+2. Performance
+3. Comment feature
+4. Native Gatsby theming
+5. Enabling other cloud providers
+6. More page boilerplates
+7. Tests
+8. TypeScript
+
+If you are interested in contributing to this project, please let me know!
+
+---
 
 ### Context
 

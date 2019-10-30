@@ -147,6 +147,11 @@ class Settings extends React.Component {
               title="Dank"
               customCss={[dynamicHighlight('dank')]}
             />
+            <Button
+              onClick={() => this.updateTheme('reactive')}
+              title="Reactive"
+              customCss={[dynamicHighlight('reactive')]}
+            />
           </div>
           <div css={[settingContainer]}>
             <p css={[heading, themedHeading]}>Border</p>

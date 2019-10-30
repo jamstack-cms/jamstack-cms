@@ -1,5 +1,5 @@
-const darkTheme = {
-  type: 'dark',
+const reactiveTheme = {
+  type: 'reactive',
   // colors
   primaryFontColor: 'white',
   primaryLightFontColor: '#88888a',
@@ -7,15 +7,15 @@ const darkTheme = {
   secondaryFontColor: '#73737D',
   inverseFontColor: 'white',
   inverseButtonFontColor: 'white',
-  highlight: '#3bbcbd',
+  highlight: '#64b687',
   borderColor: 'rgba(255, 255, 255, .1)',
-  backgroundColor: '#111215',
+  backgroundColor: '#17153b',
   codeBackgroundColor: '#48464a',
-  toastBackgroundColor: '#111111',
+  toastBackgroundColor: '#121d3a',
   // font families
   fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Ubuntu, Roboto, Noto, "Segoe UI", Arial, sans-serif',
   scriptFamily: 'EB Garamond',
   baseFontWeight: '300',
 }
 
-export default darkTheme
+export default reactiveTheme

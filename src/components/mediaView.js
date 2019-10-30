@@ -105,8 +105,8 @@ class MediaView extends React.Component {
                     onClick={() => copyToClipboard(getKeyWithFullPath(image))}
                     css={[imageOverlay]}>
                       <div css={[overlayLinkContainer]}>
-                        <div css={overlayLinkItems}>
-                          <FontAwesomeIcon css={faIcon} icon={faLink} />
+                        <div css={overlayLinkItems(theme)}>
+                          <FontAwesomeIcon css={faIcon(theme)} icon={faLink} />
                           <p css={[overlayLink(theme)]}>{getTrimmedKey(getKeyWithFullPath(image), 15)}</p>
                         </div>
                       </div>
@@ -168,10 +168,11 @@ const imageWrapper = css`
   margin: 5px 10px;
 `
 
-const faIcon = css`
+const faIcon = ({ primaryFontColor}) => css`
   font-size: 12px;
   margin-top: 7px;
-  margin-right: 4px;
+  color: ${primaryFontColor};
+  margin-right: 8px;
 `
 
 const viewTypeContainer = css`
@@ -220,17 +221,16 @@ const overlayLinkContainer = css`
   align-items: center;
 `
 
-const overlayLinkItems = css`
+const overlayLinkItems = ({ backgroundColor }) => css`
   margin-top: -4px;
-  background-color: rgba(255,255,255,.9);
-  color: black;
+  background-color: ${backgroundColor};
   display: flex;
   padding: 2px 20px;
   border-radius: 3px;
 `
 
-const overlayLink = ({ fontFamily, inverseFontColor }) => css`
-  color: ${inverseFontColor};
+const overlayLink = ({ fontFamily, primaryFontColor }) => css`
+  color: ${primaryFontColor};
   margin: 0;
   font-family: ${fontFamily};
 `

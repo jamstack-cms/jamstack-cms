@@ -31,16 +31,11 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-web-font-loader',
       options: {
-        google: {
-          families: [
-            'Raleway:100,200,300,400,500,600,700,800',
-            'Macbeth',
-            'EB Garamond:400,500,600,700',
-            'Nunito:200,300,400,600,700',
-            'Be Vietnam:300,400,500,600,700'
-          ]
-        }
-      }
+        custom: {
+          families: ["EB Garamond"],
+          urls: ["/fonts/fonts.css"],
+        },
+      },
     },
     {
       resolve: `gatsby-source-filesystem`,

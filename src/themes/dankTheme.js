@@ -1,8 +1,8 @@
 const dankTheme = {
   type: 'dank',
   highlight: '#ff004f',
-  fontFamily: 'Be Vietnam',
-  scriptFamily: 'Raleway',
+  fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", Helvetica, Ubuntu, Roboto, Noto, "Segoe UI", Arial, sans-serif',
+  scriptFamily: 'EB Garamond',
   baseFontWeight: '400',
   backgroundColor: '#141315',
   codeBackgroundColor: '#141315',
