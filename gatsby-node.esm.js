@@ -298,7 +298,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
     }
   })
 
-  const { theme, categories, adminGroups, border, borderWidth, description } = getSettingsData.data.data.getSettings
+  const { theme, categories, adminGroups, border, borderWidth, description } = getSettingsData.data.data.getSettings ? getSettingsData.data.data.getSettings : {}
 
   const themeInfo = {
     theme: theme || 'light',
