@@ -18,6 +18,7 @@ const regex = /<(\w+)\b(?:\s+[\w\-.:]+(?:\s*=\s*(?:"[^"]*"|"[^"]*"|[\w\-.:]+))?)
 const rules = [
   {
     deserialize(el, next) {
+      console.log('el: ', el)
       if (el.tagName.toLowerCase() === 'p') {
         if (el.innerHTML) {
           return {
@@ -134,6 +135,13 @@ const rules = [
           nodes: next(el.childNodes)
         }
       }
+      if (el.tagName.toLowerCase() === 'code') {
+        return {
+          kind: 'inline',
+          type: 'code',
+          nodes: next(el.childNodes)
+        }
+      }
     },
     serialize(obj, children) {
       if (obj.object == 'mark') {
@@ -144,6 +152,12 @@ const rules = [
             return <>{children}</>
           case 'italic':
             return <em>{children}</em>
+          case 'code':
+            return (
+              <pre>
+                <code>{children}</code>
+              </pre>
+            )
         }
       }
       if (obj.type === 'link') {
