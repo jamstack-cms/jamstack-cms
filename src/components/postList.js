@@ -27,7 +27,7 @@ function PostList ({
     }
     return acc
   }, [])
-  if (!posts.length) {
+  if (isAdmin && !posts.length) {
     return (
       <div>
         No posts yet! Create your first post <span css={underline(theme)} onClick={() => toggleViewState('createPost')}>here</span>.
