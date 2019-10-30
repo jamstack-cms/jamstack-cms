@@ -95,7 +95,7 @@ To deploy to Amplify Console or Netlify, you'll need to set the environment vari
 
 #### Webhook
 
-Once deployed, you can configure the webhook url by running the following commands:
+Once deployed, you can configure the webhook url by running the following command:
 
 ```sh
 node configureWebhook
