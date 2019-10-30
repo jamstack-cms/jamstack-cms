@@ -62,7 +62,7 @@ $ npm install
 
 2. Configure admin emails
 
-Open *amplify/backend/function/blogamplifiedc9ee2ce6PostConfirmation/src/add-to-group.js* and update the admin emails for the users you'd like to add by adding them to the array of images.
+Open *amplify/backend/function/blogamplifiedc9ee2ce6PostConfirmation/src/add-to-group.js* and update the admin emails for the users you'd like to add by adding them to the array of emails.
 
 3. Initialize the Amplify project
 
