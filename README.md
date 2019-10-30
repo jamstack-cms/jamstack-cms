@@ -6,7 +6,7 @@ End to end serverless blogging & CMS system. Built with [Gatsby](https://www.gat
 
 ### Philosophy
 
-JAMstack CMS is built to give you the ability to deploy a full stack serverless website in just a few minutes. JAMstack includes the following features built in:
+JAMstack CMS is built to give you the ability to deploy a full stack serverless website in just a few minutes. JAMstack CMS includes the following features built in:
 
 - Authentication & authorization for admin users
 - Database with secure API access
