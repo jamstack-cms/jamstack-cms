@@ -49,6 +49,34 @@ While the CMS is ready to deploy to day as is, this is still in beta. There is q
 
 If you are interested in contributing to this project, please let me know!
 
+## Deploying the CMS
+
+1. Clone the repository
+
+```sh
+$ git clone https://github.com/jamstack-cms/jamstack-cms.git
+
+$ npm install
+```
+
+2. Configure admin emails
+
+Open *amplify/backend/function/blogamplifiedc9ee2ce6PostConfirmation/src/add-to-group.js* and update the admin emails for the users you'd like to add.
+
+3. Initialize the Amplify project
+
+```sh
+$ amplify init
+
+$ amplify push
+```
+
+4. Run the project
+
+```sh
+npm run jamstack-develop
+```
+
 ---
 
 ### Context
