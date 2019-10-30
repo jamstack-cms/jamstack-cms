@@ -18,10 +18,13 @@ class BlogIndex extends React.Component {
   componentDidMount() {
     Auth.currentAuthenticatedUser()
       .then(user => {
-        const groups = user.signInUserSession.idToken.payload['cognito:groups']
-        if (groups.includes("Admin")) {
-          this.setState({ isAdmin: true })
+        if  (user.signInUserSession.idToken.payload['cognito:groups']) {
+          const groups = user.signInUserSession.idToken.payload['cognito:groups']
+          if (groups.includes("Admin")) {
+            this.setState({ isAdmin: true })
+          }
         }
+        
       })
       .catch(err => console.log(err));
   }

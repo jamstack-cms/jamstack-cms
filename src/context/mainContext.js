@@ -50,7 +50,7 @@ class ContextProviderComponent extends React.Component {
       const { payload: { event, data } } = hubData;
       if (event === 'signIn') {
         const { signInUserSession: { idToken: { payload } } } = data
-        if (payload['cognito:groups'].includes('Admin')) {
+        if (payload['cognito:groups'] && payload['cognito:groups'].includes('Admin')) {
           this.updateIsAdmin(true)
         }
       }
