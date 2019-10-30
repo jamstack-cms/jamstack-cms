@@ -78,7 +78,7 @@ During the initialization, you'll be prompted for the following
 ❯◉ Post Confirmation
 ? What functionality do you want to use for Post Confirmation
 ❯◉ Create your own module
-? Enter the name of the group to which users will be added. Amin
+? Enter the name of the group to which users will be added. Admin
 
 $ amplify push
 ```
