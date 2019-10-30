@@ -8,7 +8,12 @@ function SolidButton({ onClick, context: { theme }, title, customCss = [], isLoa
   return (
     <button onClick={onClick} css={[baseButton(theme), ...customCss]}>
       {
-        isLoading && <Loader customLoadingCss={[loadingIndicator(theme)]} />
+        isLoading && (
+          <Loader
+            customLoadingCss={[loadingIndicator]}
+            customSpinnerStyle={[customSpinnerStyle(theme)]}
+          />
+        )
       }
       {title}
     </button>
@@ -25,9 +30,12 @@ export default function SolidButtonWithContext(props) {
   )
 }
 
-const loadingIndicator = ({ primaryFontColor }) => css`
+const loadingIndicator = css`
   margin-right: 7px;
-  color: primaryFontColor;
+`
+
+const customSpinnerStyle = ({ inverseFontColor }) => css`
+  color: ${inverseFontColor};
 `
 
 const baseButton = ({ highlight, inverseButtonFontColor }) => css`
