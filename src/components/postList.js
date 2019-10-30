@@ -41,7 +41,6 @@ function PostList ({
         let cover_image = post.cover_image
         let signed_image = null
         if (cover_image) {
-          console.log('cover_image: ', cover_image)
           cover_image = `./downloads/${getImageKey(post.cover_image)}`
           signed_image = post.signedImage
         }
@@ -209,6 +208,9 @@ const postContainer = (widthType, fixedWidthImages) => {
   display: flex;
   width: ${width};
   margin: 20px;
+  @media (max-width: 800px) {
+    width: 100%;
+  }
 `
 }
 

@@ -230,7 +230,7 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
     font-weight: ${isDark ? 200 : 400};
   }
 
-  .hero-page-content h1 {
+  .hero-page-content h1  {
     font-family: ${fontFamily};
     color: ${primaryFontColor};
     margin: 25px auto 18px;
@@ -391,6 +391,9 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
 
   blockquote {
     margin-left: -50px;
+    @media (max-width: 700px) {
+      margin-left: 0px;
+    }
   }
 
   .blog-post blockquote p {

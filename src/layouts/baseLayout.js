@@ -97,24 +97,24 @@ class BaseLayout extends React.Component {
            <div css={footerLeft}>
              © {new Date().getFullYear()}&nbsp;
              <a css={footerLink(theme)} target="_blank" rel="noopener noreferrer" href="https://github.com/jamstack-cms" >JAMstack CMS</a>
-             <div css={footerRight}>
-                <div>
-                  <a
-                  css={footerLink(theme)}
-                  target="_blank"
-                  href="https://twitter.com/jamstackcms">Twitter</a>
-                </div>
-                <div>
-                  <a
-                  css={footerLink(theme)}
-                  target="_blank"
-                  href="https://github.com/jamstack-cms">GitHub</a>
-                </div>
-                <Link to="/profile" css={footerLink(theme)}>
-                  { user ? "Profile" : "Sign In" }
-                </Link>
-             </div>
            </div>
+           <div css={footerRight}>
+              <div>
+                <a
+                css={footerLink(theme)}
+                target="_blank"
+                href="https://twitter.com/jamstackcms">Twitter</a>
+              </div>
+              <div>
+                <a
+                css={footerLink(theme)}
+                target="_blank"
+                href="https://github.com/jamstack-cms">GitHub</a>
+              </div>
+              <Link to="/profile" css={footerLink(theme)}>
+                { user ? "Profile" : "Sign In" }
+              </Link>
+            </div>
           </div>
         </footer>
       </div>
@@ -146,13 +146,17 @@ const footerLink = ({ primaryFontColor, primaryLightFontColor }) => css`
 const footerLeft = css`
   display: flex;
   flex: 1;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `
 
 const footerRight = css`
   display: flex;
   flex: 1;
   justify-content: flex-end;
+  @media (max-width: 900px) {
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
 `
 
 const logoStyle = css`
@@ -176,6 +180,10 @@ const link = ({ fontFamily, baseFontWeight, primaryFontColor, primaryLightFontCo
   &:hover {
     color: ${primaryFontColor};
   }
+  @media (max-width: 800px) {
+    margin-left: 0px;
+    margin-right: 10px;
+  }
 `
 
 const menu = css`
@@ -183,6 +191,9 @@ const menu = css`
   flex: 1;
   justify-content: flex-end;
   padding-top: 9px;
+  @media (max-width: 800px) {
+    justify-content: flex-start;
+  }
 `
 
 const headerStyle = css`
@@ -199,6 +210,9 @@ const headerContainerStyle = css`
     width: 100%;
     padding: 9px 20px 0px;
   }
+  @media (max-width: 800px) {
+    flex-direction: column;
+  }
 `
 
 const footerContainer = ({ borderColor }) => css`
@@ -208,6 +222,9 @@ const footerContainer = ({ borderColor }) => css`
   padding-top: 40px;
   padding-bottom: 40px;
   border-top: 1px solid ${borderColor};
+  @media (max-width: 900px) {
+    width: 100%;
+  }
 `
 
 const footer = css`
@@ -219,6 +236,7 @@ const footer = css`
   @media (max-width: 900px) {
     width: 100%;
     padding: 9px 20px 0px;
+    flex-direction: column;
   }
 `
 

@@ -13,30 +13,79 @@ const MARK_TAGS = {
   u: 'underline',
 }
 
+const regex = /<(\w+)\b(?:\s+[\w\-.:]+(?:\s*=\s*(?:"[^"]*"|"[^"]*"|[\w\-.:]+))?)*\s*\/?>\s*<\/\1\s*>/gim
+
 const rules = [
   {
     deserialize(el, next) {
-      const type = BLOCK_TAGS[el.tagName.toLowerCase()]
-      if (type) {
+      if (el.tagName.toLowerCase() === 'p') {
+        if (el.innerHTML) {
+          return {
+            kind: 'block',
+            type: 'paragraph',
+            data: {},
+            nodes: next(el.childNodes)
+          }
+        }
+      }
+      if (el.tagName.toLowerCase() === 'h1') {
         return {
-          object: 'block',
-          type: type,
-          data: {
-            className: el.getAttribute('class'),
-          },
-          nodes: next(el.childNodes),
+          kind: 'block',
+          type: 'heading-one',
+          data: {},
+          nodes: next(el.childNodes)
+        }
+      }
+      if (el.tagName.toLowerCase() === 'h2') {
+        return {
+          kind: 'block',
+          type: 'heading-two',
+          data: {},
+          nodes: next(el.childNodes)
+        }
+      }
+      if (el.tagName.toLowerCase() === 'em') {
+        return {
+          kind: 'block',
+          type: 'italic',
+          data: {},
+          nodes: next(el.childNodes)
+        }
+      }
+      if (el.tagName.toLowerCase() === 'code') {
+        return {
+          kind: 'block',
+          type: 'code',
+          data: {},
+          nodes: next(el.childNodes)
+        }
+      }
+      if (el.tagName.toLowerCase() === 'block-quote') {
+        return {
+          kind: 'block',
+          type: 'block-quote',
+          data: {},
+          nodes: next(el.childNodes)
         }
       }
     },
     serialize(obj, children) {
       if (obj.object == 'block') {
         switch (obj.type) {
+          case 'italic':
+            return <em>{children}</em>
+          case 'em':
+              return <em>{children}</em>
           case 'code':
             return (
               <pre>
                 <code>{children}</code>
               </pre>
             )
+          case "heading-one":
+            return <h1>{children}</h1>;
+          case "heading-two":
+            return <h2>{children}</h2>;
           case 'block-quote':
             return (
               <blockquote>
@@ -54,13 +103,35 @@ const rules = [
   // Add a new rule that handles marks...
   {
     deserialize(el, next) {
-      console.log('el: ', el)
-      const type = MARK_TAGS[el.tagName.toLowerCase()]
-      if (type) {
+      if (el.tagName.toLowerCase() === 'a') {
         return {
-          object: 'mark',
-          type: type,
-          nodes: next(el.childNodes),
+          kind: 'inline',
+          type: 'link',
+          data: {
+            href: el.getAttribute('href')
+          },
+          nodes: next(el.childNodes)
+        }
+      }
+      if (el.tagName.toLowerCase() === 'bold') {
+        return {
+          kind: 'inline',
+          type: 'bold',
+          nodes: next(el.childNodes)
+        }
+      }
+      if (el.tagName.toLowerCase() === 'italic') {
+        return {
+          kind: 'inline',
+          type: 'italic',
+          nodes: next(el.childNodes)
+        }
+      }
+      if (el.tagName.toLowerCase() === 'em') {
+        return {
+          kind: 'inline',
+          type: 'italic',
+          nodes: next(el.childNodes)
         }
       }
     },
@@ -73,8 +144,6 @@ const rules = [
             return <>{children}</>
           case 'italic':
             return <em>{children}</em>
-          case 'underline':
-            return <u>{children}</u>
         }
       }
       if (obj.type === 'link') {

@@ -74,6 +74,11 @@ const authorContainerStyle = css`
   margin: 0 auto 60px;
   display: flex;
   align-items: center;
+  @media (max-width: 700px) {
+    width: 100%;
+    padding: 0px 25px
+  }
+  
 `
 
 const authorAvatarStyle = css`
@@ -103,6 +108,10 @@ const contentContainer = css`
   padding: 20px 0px;
   width: 680px;
   margin: 0 auto;
+  @media (max-width: 700px) {
+    width: 100%;
+    padding: 0px 25px
+  }
 `
 
 const titleStyle = ({ scriptFamily }) => css`
@@ -111,6 +120,11 @@ const titleStyle = ({ scriptFamily }) => css`
   font-size: 46px;
   margin: 90px auto 30px;
   width: 680px;
+  @media (max-width: 700px) {
+    width: 100%;
+    padding: 0px 25px;
+    margin-top: 50px;
+  }
 `
 
 const descriptionStyle = ({ primaryFontColor, scriptFamily }) =>  css`

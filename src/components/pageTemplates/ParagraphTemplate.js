@@ -34,8 +34,8 @@ const html = new Html({
   rules
 })
 
-function Paragraph({ updateContent, index, deleteComponent, context: { theme }}) {
-  const [value, updateValue] = useState(Value.fromJSON(initialValue))
+function Paragraph({ content, updateContent, index, deleteComponent, context: { theme }}) {
+  const [value, updateValue] = useState(content ? deserialize(content) : Value.fromJSON(initialValue))
   const [editable, updateIsEditable] = useState(false)
   const editorRef = useRef(null);
 
@@ -47,7 +47,7 @@ function Paragraph({ updateContent, index, deleteComponent, context: { theme }})
   }
   function onChange({ value }){
     updateValue(value)
-    const html = getSerialized()
+    let html = getSerialized()
     updateContent(html)
   }
   function hasLinks() {
@@ -159,6 +159,12 @@ function Paragraph({ updateContent, index, deleteComponent, context: { theme }})
     switch (node.type) {
       case 'block-quote':
         return <blockquote {...attributes}>{children}</blockquote>
+      case "code":
+          return (
+            <pre>
+              <code {...attributes}>{children}</code>
+            </pre>
+          );
       case 'bulleted-list':
         return <ul {...attributes}>{children}</ul>
       case 'heading-one':
@@ -169,6 +175,10 @@ function Paragraph({ updateContent, index, deleteComponent, context: { theme }})
         return <li {...attributes}>{children}</li>
       case 'numbered-list':
         return <ol {...attributes}>{children}</ol>
+      case "list-item":
+          return <li {...attributes}>{children}</li>;
+      case 'italic':
+          return <em {...attributes}>{children}</em>
       default:
         return next()
     }
@@ -240,7 +250,6 @@ function Paragraph({ updateContent, index, deleteComponent, context: { theme }})
   }
   function renderMark (props, editor, next) {
     const { children, mark, attributes } = props
-
     switch (mark.type) {
       case 'bold':
         return <strong {...attributes}>{children}</strong>
@@ -255,6 +264,15 @@ function Paragraph({ updateContent, index, deleteComponent, context: { theme }})
 
   function getSerialized() {
     const finalHtml = html.serialize(value)
+    return finalHtml
+  }
+  function getDeSerialized() {
+    const finalHtml = html.deserialize(value)
+    return finalHtml
+  }
+
+  function deserialize(baseHtml) {
+    const finalHtml = html.deserialize(baseHtml)
     return finalHtml
   }
 
@@ -313,6 +331,10 @@ const editorContainerStyle = () => css`
 
 const paragraphTemplateStyle = css`
   position: relative;
+  h1 {
+    font-weight: 600;
+    margin: 25px auto 18px;
+  }
 `
 
 const paragraphStyle = ({ fontFamily, primaryFontColor }) => css`

@@ -4,9 +4,9 @@ import { BlogContext } from '../../context/mainContext'
 
 import EditOptions from './EditOptions'
 
-function SubHeading({ updateContent, index, deleteComponent, context: { theme }}) {
+function SubHeading({ content, updateContent, index, deleteComponent, context: { theme }}) {
   const [editable, updateIsEditable] = useState(true)
-  const [html, updateHtml] = useState('This is a subheader.')
+  const [html, updateHtml] = useState(content ? content : 'This is a subheader.')
   const h3ref = useRef(null)
 
   useEffect(() => {
@@ -60,6 +60,7 @@ const headingStyle = ({ fontFamily }) => css`
   padding: 5px 10px;
   font-family: ${fontFamily};
   border: 1px solid transparent;
+  font-weight: 600;
 `
 
 const editingStyle = () => css`

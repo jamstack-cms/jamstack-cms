@@ -4,9 +4,9 @@ import { BlogContext } from '../../context/mainContext'
 
 import EditOptions from './EditOptions'
 
-function Header({ updateContent, deleteComponent, index, context: { theme }}) {
+function Header({ content, updateContent, deleteComponent, index, context: { theme }}) {
   const [editable, updateIsEditable] = useState(true)
-  const [html, updateHtml] = useState('This is a header.')
+  const [html, updateHtml] = useState(content ? content : 'This is a header.')
   const h1ref = useRef(null)
 
   useEffect(() => {
@@ -64,6 +64,7 @@ const headingStyle = ({ fontFamily }) => css`
   padding: 5px 10px;
   font-family: ${fontFamily};
   border: 1px solid transparent;
+  font-weight: 600;
 `
 
 const editingStyle = () => css`

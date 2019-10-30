@@ -8,7 +8,7 @@ function SolidButton({ onClick, context: { theme }, title, customCss = [], isLoa
   return (
     <button onClick={onClick} css={[baseButton(theme), ...customCss]}>
       {
-        isLoading && <Loader customLoadingCss={[loadingIndicator]} />
+        isLoading && <Loader customLoadingCss={[loadingIndicator(theme)]} />
       }
       {title}
     </button>
@@ -25,8 +25,9 @@ export default function SolidButtonWithContext(props) {
   )
 }
 
-const loadingIndicator = css`
+const loadingIndicator = ({ primaryFontColor }) => css`
   margin-right: 7px;
+  color: primaryFontColor;
 `
 
 const baseButton = ({ highlight, inverseButtonFontColor }) => css`

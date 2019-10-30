@@ -14,6 +14,10 @@ export default function HeroPage(props) {
 const container = css`
   width: 900px;
   margin: 50px auto;
+  @media (max-width: 900px) {
+    width: 100%;
+    padding: 0px 20px;
+  }
 `
 
 export const pageQuery = graphql`

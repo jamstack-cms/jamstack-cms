@@ -36,7 +36,7 @@ class BlogIndex extends React.Component {
       <SiteContainer {...this.props}> 
           <SEO title="All posts" />
           <div css={mainContainer}>
-            <h1 css={heading(theme)}>Welcome to the first full stack CMS built for the modern age.</h1>
+            <h1 css={heading(theme)}>Welcome to the full stack CMS built for the modern age.</h1>
             <div css={authorInfoStyle(theme)}>
               {
                 authorImages && authorImages.map((image, index) => (
@@ -97,11 +97,17 @@ const siteDescriptionStyle = ({ secondaryFontColor }) => css`
   color: ${secondaryFontColor};
   font-size: 14px;
   line-height: 1.35;
+  @media (max-width: 900px) {
+    max-width: 100%;
+  }
 `
 
 const mainContainer = css`
   width: 1220px;
   margin: 0 auto;
+  @media (max-width: 1200px) {
+    width: 100%;
+  }
 `
 
 const heading = ({ fontFamily }) => css`
@@ -110,6 +116,10 @@ const heading = ({ fontFamily }) => css`
   font-size: 44px;
   margin: 110px 30px;
   font-weight: 600;
+  @media (max-width: 900px) {
+    width: 80%;
+    font-size: 34px;
+  }
 `
 
 export const pageQuery = graphql`

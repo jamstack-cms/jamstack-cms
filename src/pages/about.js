@@ -10,6 +10,7 @@ class About extends React.Component {
     const { theme } = this.props.context
     return (
       <Layout>
+        <div css={containerStyle}>
         <TitleComponent title='About Me' />
         <p css={paragraphStyle(theme)}>My name is Nader Dabit. I'm a full stack developer specializing in cross-platform and cloud-enabled application development.</p>
         <p css={paragraphStyle(theme)}>Right now I am working at AWS on a team that is pushing the boundaries on what it means to be a full stack developer. We are laying the groundwork the next generation of developers that will leverage the cloud.</p>
@@ -25,6 +26,7 @@ class About extends React.Component {
           <li css={liStyle(theme)}><a href="https://www.charitywater.org/">Charity water</a></li>
           <li css={liStyle(theme)}><a href="https://twitter.com/dev_careers">Laptops f44or developers</a></li>
         </ul>
+        </div>
       </Layout>
     )
   }
@@ -40,23 +42,38 @@ export default function AboutWithContext(props) {
   )
 }
 
-const liStyle = () => css`
+const containerStyle = css`
+  @media (max-width: 900px) {
+    width: 100%;
+    padding: 0px 20px;
+  }
+`
+
+const liStyle = ({ highlight }) => css`
   margin-bottom: 0px;
+  a {
+    color: ${highlight};
+  }
 `
 
 const subheaderStyle = ({ fontFamily}) => css`
   font-family: ${fontFamily};
   font-weight: 300;
-  margin-top: 30px;
+  margin-top: 20px;
 `
 
 const imageStyle = () => css`
   border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 30px 60px -10px, rgba(0, 0, 0, 0.22) 0px 18px 36px -18px;
   max-width: 400px;
+  margin-top: 30px;
 `
 
-const paragraphStyle = ({ primaryFontColor, fontFamily }) => css`
+const paragraphStyle = ({ primaryFontColor, fontFamily, highlight }) => css`
   color: ${primaryFontColor};
   font-family: ${fontFamily};
+  margin-bottom: 15px;
+  a {
+    color: ${highlight};
+  }
 `

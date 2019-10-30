@@ -70,6 +70,9 @@ const editPostButton = ({ baseFontWeight, primaryFontColor, fontFamily }) => css
   margin-bottom: 20px;
   outline: none;
   font-family: ${fontFamily};
+  @media (max-width: 800px) {
+    display: none;
+  }
 `
 
 

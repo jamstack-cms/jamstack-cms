@@ -35,4 +35,7 @@ export default MainLayoutWithContext
 const mainContent = css`
   margin: auto;
   width: 944px;
+  @media (max-width: 1000px) {
+    width: 100%;
+  }
 `

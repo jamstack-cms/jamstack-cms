@@ -50,7 +50,7 @@ class HeroTemplate extends React.Component {
     pageData: {},
     isPublished: false,
     isPublishing: false,
-    isUnpublishing: false
+    isUnpublishing: false,
   }
   async componentDidUpdate() {
     const { pageData } = this.props
@@ -71,6 +71,7 @@ class HeroTemplate extends React.Component {
           component.content.imageHtml = `<img src="${signedImage}" />`
         }
       }))
+      
       this.setState({
         components,
         isLoading: false,
@@ -84,7 +85,7 @@ class HeroTemplate extends React.Component {
       return null
     }
   }
-  static getDerivedStateFromProps(props) {
+  static getDerivedStateFromProps(props, state) {
     const { pageData } = props
     if (pageData && !pageData.components) {
       return {
@@ -179,8 +180,6 @@ class HeroTemplate extends React.Component {
           }
           return c
         })
-        console.log('baseComponents1;' , baseComponents)
-        debugger
         baseComponents = await Promise.all(baseComponents.map(async component => {
           if (component.type === 'image') {
             if (
@@ -195,8 +194,6 @@ class HeroTemplate extends React.Component {
           }
           return component
         }))
-        console.log('baseComponents;' , baseComponents)
-
 
         this.setState({
           pageId: createPage ? createPage.id : this.state.pageId,
@@ -216,6 +213,7 @@ class HeroTemplate extends React.Component {
     this.setState(() => ({ components }), this.updatePageHtml)
   }
   moveComponent = (dragIndex, hoverIndex) => {
+    console.log('moveComponent called: ')
     const component = this.state.components[dragIndex]
     let components = [...this.state.components]
     components.splice(dragIndex, 1)
@@ -223,21 +221,23 @@ class HeroTemplate extends React.Component {
     this.setState(() => ({ components }), this.updatePageHtml)
   }
   createComponent = type => {
-    this.setState({ currentView: 'editing' })
+    // this.setState({ currentView: 'editing' })
     const component = createComponent(type)
     const components = [...this.state.components, component]
     this.setState({ components })
   }
   toggleView = view => {
-    this.setState({ currentView: view })
+    const pageHtml = this.state.pageHtml
+    this.setState({ currentView: view, pageHtml })
   }
   render() {
     const { width, theme } = this.props.context
-    const { slug, components, currentView, pageHtml, pageTitle, isSaving, isPublished, isPublishing, isUnpublishing } = this.state
+    let { slug, components, currentView, pageHtml, pageTitle, isSaving, isPublished, isPublishing, isUnpublishing } = this.state
     const location = window.location.pathname.includes('/editpage') ? 'edit' : 'main'
+    
     return (
       <DndProvider backend={HTML5Backend}>
-        <div css={[container(theme, width, location)]}>
+        <div css={[container(theme, width, location)]} className="hero-template">
           <div css={inputContainerStyle(theme)}>
             <input
               onChange={this.updatePageTitle}
