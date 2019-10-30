@@ -89,6 +89,10 @@ $ amplify push
 npm run jamstack-develop
 ```
 
+### Deploying to Amplify Console or Netlify
+
+To deploy to Amplify Console or Netlify, you'll need to set the environment variable for `APPSYNC_KEY`. This value can be found in `jamstack-api-key.js`.
+
 ---
 
 ### Context
