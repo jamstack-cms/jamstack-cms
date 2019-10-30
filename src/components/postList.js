@@ -208,7 +208,7 @@ const postContainer = (widthType, fixedWidthImages) => {
   display: flex;
   width: ${width};
   margin: 20px;
-  @media (max-width: 800px) {
+  @media (max-width: 1200px) {
     width: 100%;
   }
 `
