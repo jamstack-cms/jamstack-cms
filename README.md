@@ -134,22 +134,17 @@ JAMstack CMS fills in this gap by giving you a customizable end to end solution 
 - Dynamic logo from Admin
 - Analytics dashboard
 - Post categories
-- WYSWYG option
-- Providers for AWS specific code
+- WYSWYG option for blog posts
+- Providers for non AWS specific services
 - Custom authentication flow
-- Profile with Avatar for Admins
 - Offline / caching of posts
 
 ### Tools
 
 Here are some of the tools used to build JAMstack CMS:
-- Gatsby -
-- Emotion - 
-- Date FNS - 
-- Marked - 
-- AWS Amplify -
-
-1. clone
-2. jamstack configure (add admin to email) (also can amplify init & amplify push)
-3. amplify init & amplify push ?
-4. jamstack develop
+- Gatsby
+- Emotion 
+- Date FNS 
+- Marked 
+- AWS Amplify
+- Slate
