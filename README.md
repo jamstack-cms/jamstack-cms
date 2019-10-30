@@ -93,6 +93,14 @@ npm run jamstack-develop
 
 To deploy to Amplify Console or Netlify, you'll need to set the environment variable for `APPSYNC_KEY`. This value can be found in `jamstack-api-key.js`.
 
+#### Webhook
+
+Once deployed, you can configure the webhook url by running the following commands:
+
+```sh
+node configureWebhook
+```
+
 ---
 
 ### Context
