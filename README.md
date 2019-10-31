@@ -24,7 +24,7 @@ The issue with dealing with server rendered applications in the traditional way 
 
 JAMstack CMS solves this issue by giving you two views at run time, including both the static build as well as a dynamic Admin view that allows you to manipulate content and preview pages before building.
 
-This way you have the opportunity to test out new posts and web pages before deploying them to your live environmnet.
+This way you have the opportunity to test out new posts and web pages before deploying them to your live environment.
 
 #### 3 Ways to build a page
 
