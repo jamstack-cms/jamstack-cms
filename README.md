@@ -93,7 +93,7 @@ $ npm run jamstack-develop
 
 6. Once signed in as an Admin, you will see the Admin link in the navigation. Click on the Admin link to begin creating posts and pages.
 
-7. Once you've created a post, run `npm run jamstack-develop` to run a build and see the new live post.
+7. Once you've created a post, run `npm run jamstack-develop` to create a new build and see the new live post.
 
 ### Deploying to Amplify Console or Netlify
 
