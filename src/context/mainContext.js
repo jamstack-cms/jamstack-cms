@@ -182,7 +182,7 @@ export {
 }
 
 const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
-  const isDark = type === 'dark'
+  const isDark = type === ('dark' || 'dank' || 'reactive')
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
   return css`
@@ -391,6 +391,7 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
 
   blockquote {
     margin-left: -50px;
+    border-color: ${primaryFontColor};
     @media (max-width: 700px) {
       margin-left: 0px;
     }
