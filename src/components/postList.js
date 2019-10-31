@@ -7,7 +7,7 @@ import { BlogContext } from '../context/mainContext'
 import getImageKey from '../utils/getImageKey'
 
 function PostList ({
-  posts, isAdmin, deletePost, publishPost, unPublishPost, context, toggleViewState, fixedWidthImages
+  posts, isAdmin, deletePost, publishPost, unPublishPost, context, toggleViewState, fixedWidthImages, isLoading
 }) {
   const { theme } = context
 
@@ -27,7 +27,7 @@ function PostList ({
     }
     return acc
   }, [])
-  if (isAdmin && !posts.length) {
+  if (isAdmin && !posts.length && !isLoading) {
     return (
       <div>
         No posts yet! Create your first post <span css={underline(theme)} onClick={() => toggleViewState('createPost')}>here</span>.

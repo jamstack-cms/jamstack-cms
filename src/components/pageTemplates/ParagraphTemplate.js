@@ -155,7 +155,6 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
   }
   function renderBlock (props, editor, next) {
     const { attributes, children, node } = props
-
     switch (node.type) {
       case 'block-quote':
         return <blockquote {...attributes}>{children}</blockquote>

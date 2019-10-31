@@ -113,6 +113,7 @@ class HeroTemplate extends React.Component {
   }
 
   save = async (publishingState) => {
+    console.log('publishingState: ', publishingState)
     if (this.state.isSaving) return
     try {
       let operation = createPage

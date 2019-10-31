@@ -262,6 +262,7 @@ class Admin extends React.Component {
                     publishPost={this.publishPost}
                     unPublishPost={this.unPublishPost}
                     toggleViewState={this.toggleViewState}
+                    isLoading={isLoading}
                   />
                 </Layout>
               )
