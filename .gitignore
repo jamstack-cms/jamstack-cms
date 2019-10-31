@@ -84,3 +84,6 @@ dist/
 node_modules/
 aws-exports.js
 awsconfiguration.json
+
+# editor Files
+.vscode
