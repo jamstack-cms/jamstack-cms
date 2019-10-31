@@ -86,7 +86,7 @@ $ amplify push
 4. Run the project
 
 ```sh
-npm run jamstack-develop
+$ npm run jamstack-develop
 ```
 
 ### Deploying to Amplify Console or Netlify
@@ -98,7 +98,7 @@ To deploy to Amplify Console or Netlify, you'll need to set the environment vari
 Once deployed, you can configure the webhook url by running the following command:
 
 ```sh
-node configureWebhook
+$ node configureWebhook
 ```
 
 ---
