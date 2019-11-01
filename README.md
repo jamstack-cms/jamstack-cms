@@ -70,6 +70,8 @@ Open *amplify/backend/function/blogamplifiedc9ee2ce6PostConfirmation/src/add-to-
 $ amplify init
 ```
 
+> When prompted for an environment name, please choose a globally unique name.
+
 During the initialization, you'll be prompted for the following
 
 ```
