@@ -253,7 +253,7 @@ class HeroTemplate extends React.Component {
             <p onClick={() => this.createComponent('subheading')} css={componentCreatorStyle(theme)}>Subheading</p>
             <p onClick={() => this.createComponent('image')} css={componentCreatorStyle(theme)}>Image</p>
             <p onClick={() => this.createComponent('paragraph')} css={componentCreatorStyle(theme)}>Paragraph</p>
-            <p onClick={() => this.createComponent('pwithimage')} css={componentCreatorStyle(theme, true)}>Paragraph with Image</p>
+            {/* <p onClick={() => this.createComponent('pwithimage')} css={componentCreatorStyle(theme, true)}>Paragraph with Image</p> */}
           </div>
           <div css={[pageContentButtonContainerStyle()]}>
             {
