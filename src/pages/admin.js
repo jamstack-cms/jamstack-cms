@@ -317,6 +317,7 @@ class Admin extends React.Component {
                     fetchPages={this.fetchPages}
                     publishPage={this.publishPage}
                     unpublishPage={this.unpublishPage}
+                    toggleViewState={this.toggleViewState}
                   />
                 </Layout>
               )

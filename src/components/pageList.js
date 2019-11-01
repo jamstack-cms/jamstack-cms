@@ -8,10 +8,18 @@ import { updatePage } from '../graphql/mutations'
 
 import { BlogContext } from '../context/mainContext'
 
-function PageList({ publishPage, unpublishPage, fetchPages, deletePage, pages, context: { theme } }) {
+function PageList({ publishPage, toggleViewState, unpublishPage, fetchPages, deletePage, pages, context: { theme } }) {
   useEffect(() => {
     fetchPages()
   }, [])
+
+  if (!pages.length) {
+    return (
+      <div>
+        No pages yet! Create your first post <span css={underline(theme)} onClick={() => toggleViewState('createPage')}>here</span>.
+      </div>
+    )
+  }
 
   return (
     <div>
@@ -70,6 +78,14 @@ function PageListWithContext(props) {
 }
 
 export default PageListWithContext
+
+const underline = ({ highlight }) => css`
+  color: ${highlight};
+  cursor: pointer;
+  &: hover {
+    text-decoration: underline;
+  }
+`
 
 const pageLinkContainer = css`
   position: relative;
