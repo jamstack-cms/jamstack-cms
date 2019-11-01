@@ -16,7 +16,7 @@ function PageList({ publishPage, toggleViewState, unpublishPage, fetchPages, del
   if (!pages.length) {
     return (
       <div>
-        No pages yet! Create your first post <span css={underline(theme)} onClick={() => toggleViewState('createPage')}>here</span>.
+        No pages yet! Create your first page <span css={underline(theme)} onClick={() => toggleViewState('createPage')}>here</span>.
       </div>
     )
   }
