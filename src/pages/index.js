@@ -40,7 +40,7 @@ class BlogIndex extends React.Component {
           <SEO title="All posts" />
           <div css={mainContainer}>
             <h1 css={heading(theme)}>Welcome to the full stack CMS built for the modern age.</h1>
-            <div css={authorInfoStyle(theme)}>
+            <div css={authorInfoStyle(theme, authorImages)}>
               {
                 authorImages && authorImages.map((image, index) => (
                   <img src={image} css={authorImageStyle(theme)} />
@@ -71,7 +71,7 @@ function BlogIndexWithContext(props) {
 
 export default BlogIndexWithContext
 
-const authorInfoStyle = () => css`
+const authorInfoStyle = (theme, authorImages) => css`
   display: flex;
   margin: 0 30px;
   align-items: center;
@@ -84,7 +84,7 @@ const authorInfoStyle = () => css`
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 1px solid rgba(0,0,0,0.2);
+    border: 1px solid ${authorImages ? 'rgba(0,0,0,0.2)' : 'transparent'};
   }
 `
 
