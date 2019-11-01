@@ -2,7 +2,7 @@
 
 # JAMstack CMS (beta)
 
-End to end serverless blogging & CMS system. Built with [Gatsby](https://www.gatsbyjs.org/) & [AWS Amplify](https://aws-amplify.github.io/).
+End to end serverless blogging & CMS system. Built with GraphQL, [Gatsby](https://www.gatsbyjs.org/) & [AWS Amplify](https://aws-amplify.github.io/).
 
 ### Philosophy
 

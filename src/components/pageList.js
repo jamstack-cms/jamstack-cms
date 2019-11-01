@@ -3,8 +3,6 @@ import React, { useEffect } from 'react'
 import { css } from '@emotion/core'
 import { Link } from 'gatsby'
 import Button from './button'
-import { API, graphqlOperation } from 'aws-amplify'
-import { updatePage } from '../graphql/mutations'
 
 import { BlogContext } from '../context/mainContext'
 
