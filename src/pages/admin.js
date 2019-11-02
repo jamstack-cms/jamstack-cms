@@ -93,6 +93,7 @@ class Admin extends React.Component {
   }
   setImagesInUse = () => {
     let imageKeys = this.props.data.allImageKeys.edges[0].node.data
+    if (imageKeys === 'none') return
     const signedImages = this.state.images
     const imagesInUse = []
     const imagesNotInUse = []
