@@ -52,7 +52,13 @@ If you are interested in contributing to this project, please let me know!
 
 ## Deploying the CMS
 
-1. Clone the repository
+1. Update the [Amplify CLI](https://aws-amplify.github.io/docs/) to the latest version
+
+```sh
+$ npm install -g @aws-amplify/cli
+```
+
+2. Clone the repository
 
 ```sh
 $ git clone https://github.com/jamstack-cms/jamstack-cms.git
@@ -60,11 +66,11 @@ $ git clone https://github.com/jamstack-cms/jamstack-cms.git
 $ npm install
 ```
 
-2. Configure admin emails
+3. Configure admin emails
 
 Open *amplify/backend/function/blogamplifiedc9ee2ce6PostConfirmation/src/add-to-group.js* and update the admin emails for the users you'd like to add by adding them to the array of emails.
 
-3. Initialize the Amplify project
+4. Initialize the Amplify project
 
 ```sh
 $ amplify init
@@ -85,17 +91,17 @@ During the initialization, you'll be prompted for the following
 $ amplify push
 ```
 
-4. Run the project
+5. Run the project
 
 ```sh
 $ npm run jamstack-develop
 ```
 
-5. Sign up and then sign in with an Admin email address by clicking on the __Profile__ link in the footer.
+6. Sign up and then sign in with an Admin email address by clicking on the __Profile__ link in the footer.
 
-6. Once signed in as an Admin, you will see the Admin link in the navigation. Click on the Admin link to begin creating posts and pages.
+7. Once signed in as an Admin, you will see the Admin link in the navigation. Click on the Admin link to begin creating posts and pages.
 
-7. Once you've created a post, run `npm run jamstack-develop` to create a new build and see the new live post.
+8. Once you've created a post, run `npm run jamstack-develop` to create a new build and see the new live post.
 
 ### Deploying to Amplify Console or Netlify
 
