@@ -87,6 +87,8 @@ During the initialization, you'll be prompted for the following
 ? Enter the name of the group to which users will be added. Admin
 
 $ npm run jamstack-push
+
+? Do you want to update code for your updated GraphQL API? No
 ```
 
 5. Run the project
