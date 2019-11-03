@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "blogamplifiedc9ee2ce6_identitypool_c9ee2ce6",
+    "identityPoolName": "jamstackcmsc9ee2ce6_identitypool_c9ee2ce6",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "blogamc9ee2ce6",
-    "userPoolName": "blogamplifiedc9ee2ce6_userpool_c9ee2ce6",
+    "resourceNameTruncated": "jamcmsc9ee2ce6",
+    "userPoolName": "jamstackcmsc9ee2ce6_userpool_c9ee2ce6",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,9 +28,9 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "blogamc9ee2ce6_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "jamcmsc9ee2ce6_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "blogamplifiedc9ee2ce6",
+    "resourceName": "jamstackcmsc9ee2ce6",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -48,7 +48,7 @@
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "blogamplifiedc9ee2ce6PostConfirmation",
+            "resourceName": "jamstackcmsc9ee2ce6PostConfirmation",
             "triggerProvider": "Cognito",
             "attributes": [
                 "Arn",

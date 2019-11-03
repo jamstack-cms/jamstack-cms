@@ -61,12 +61,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"blogamplifiedc9ee2ce6PostConfirmation",
+						"jamstackcmsc9ee2ce6PostConfirmation",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"blogamplifiedc9ee2ce6PostConfirmation",
+									"jamstackcmsc9ee2ce6PostConfirmation",
 									"-",
 									{
 										"Ref": "env"
@@ -101,8 +101,8 @@
 				"Runtime": "nodejs8.10",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "blog-amplified-local-20190913122951-deployment",
-					"S3Key": "amplify-builds/blogamplifiedc9ee2ce6PostConfirmation-52725337744330356770-build.zip"
+					"S3Bucket": "amplify-jamstack-cms-dev-20356-deployment",
+					"S3Key": "amplify-builds/jamstackcmsc9ee2ce6PostConfirmation-42497344787058563938-build.zip"
 				}
 			}
 		},
@@ -112,12 +112,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"blogamplifiedc9ee2ce6PostConfirmation",
+						"jamstackcmsc9ee2ce6PostConfirmation",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"blogamplifiedc9ee2ce6PostConfirmation",
+									"jamstackcmsc9ee2ce6PostConfirmation",
 									"-",
 									{
 										"Ref": "env"

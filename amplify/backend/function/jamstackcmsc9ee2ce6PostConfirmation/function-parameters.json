@@ -1,0 +1,14 @@
+{
+    "trigger": true,
+    "modules": [
+        "add-to-group"
+    ],
+    "parentResource": "jamstackcmsc9ee2ce6",
+    "functionName": "jamstackcmsc9ee2ce6PostConfirmation",
+    "parentStack": "auth",
+    "triggerEnvs": "[]",
+    "triggerTemplate": "PostConfirmation.json.ejs",
+    "roleName": "jamstackcmsc9ee2ce6PostConfirmation",
+    "skipEdit": true,
+    "resourceName": "jamstackcmsc9ee2ce6PostConfirmation"
+}

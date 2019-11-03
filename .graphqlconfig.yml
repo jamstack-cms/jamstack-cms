@@ -1,5 +1,5 @@
 projects:
-  blogamplified:
+  jamstackcms:
     schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js

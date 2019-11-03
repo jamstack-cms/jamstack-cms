@@ -1,12 +1,12 @@
 {
     "auth": {
-        "blogamplifiedc9ee2ce6": {
+        "jamstackcmsc9ee2ce6": {
             "service": "Cognito",
             "providerPlugin": "awscloudformation",
             "dependsOn": [
                 {
                     "category": "function",
-                    "resourceName": "blogamplifiedc9ee2ce6PostConfirmation",
+                    "resourceName": "jamstackcmsc9ee2ce6PostConfirmation",
                     "triggerProvider": "Cognito",
                     "attributes": [
                         "Arn",
@@ -17,7 +17,7 @@
         }
     },
     "api": {
-        "blogamplified": {
+        "jamstackcms": {
             "service": "AppSync",
             "providerPlugin": "awscloudformation",
             "output": {
@@ -34,7 +34,7 @@
                     "defaultAuthentication": {
                         "authenticationType": "AMAZON_COGNITO_USER_POOLS",
                         "userPoolConfig": {
-                            "userPoolId": "authblogamplifiedc9ee2ce6"
+                            "userPoolId": "authjamstackcmsc9ee2ce6"
                         }
                     }
                 }
@@ -42,7 +42,7 @@
         }
     },
     "function": {
-        "blogamplifiedc9ee2ce6PostConfirmation": {
+        "jamstackcmsc9ee2ce6PostConfirmation": {
             "service": "Lambda",
             "providerPlugin": "awscloudformation",
             "build": true
@@ -54,7 +54,7 @@
         }
     },
     "storage": {
-        "blogassets": {
+        "jamstackcms": {
             "service": "S3",
             "providerPlugin": "awscloudformation",
             "dependsOn": [

@@ -11,13 +11,13 @@ Parameters:
   
   
   
-  functionblogamplifiedc9ee2ce6PostConfirmationArn: 
+  functionjamstackcmsc9ee2ce6PostConfirmationArn: 
     Type: String
-    Default: functionblogamplifiedc9ee2ce6PostConfirmationArn
+    Default: functionjamstackcmsc9ee2ce6PostConfirmationArn
   
-  functionblogamplifiedc9ee2ce6PostConfirmationName: 
+  functionjamstackcmsc9ee2ce6PostConfirmationName: 
     Type: String
-    Default: functionblogamplifiedc9ee2ce6PostConfirmationName
+    Default: functionjamstackcmsc9ee2ce6PostConfirmationName
   
   
   
@@ -124,7 +124,7 @@ Resources:
   # Created to allow the UserPool SMS Config to publish via the Simple Notification Service during MFA Process
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'blogamc9ee2ce6_sns-role', !Join ['',['blogamc9ee2ce6_sns-role', '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'jamcmsc9ee2ce6_sns-role', !Join ['',['jamcmsc9ee2ce6_sns-role', '-', !Ref env]]]
       AssumeRolePolicyDocument: 
         Version: "2012-10-17"
         Statement: 
@@ -136,10 +136,10 @@ Resources:
               - "sts:AssumeRole"
             Condition: 
               StringEquals:
-                sts:ExternalId: blogamc9ee2ce6_role_external_id
+                sts:ExternalId: jamcmsc9ee2ce6_role_external_id
       Policies: 
         - 
-          PolicyName: blogamc9ee2ce6-sns-policy
+          PolicyName: jamcmsc9ee2ce6-sns-policy
           PolicyDocument: 
             Version: "2012-10-17"
             Statement: 
@@ -172,7 +172,7 @@ Resources:
         
         
         
-          PostConfirmation: !Ref functionblogamplifiedc9ee2ce6PostConfirmationArn
+          PostConfirmation: !Ref functionjamstackcmsc9ee2ce6PostConfirmationArn
         
         
         
@@ -198,7 +198,7 @@ Resources:
       SmsVerificationMessage: !Ref smsVerificationMessage
       SmsConfiguration: 
         SnsCallerArn: !GetAtt SNSRole.Arn
-        ExternalId: blogamc9ee2ce6_role_external_id
+        ExternalId: jamcmsc9ee2ce6_role_external_id
     
   
     
@@ -212,7 +212,7 @@ Resources:
     Properties: 
       Action: "lambda:invokeFunction"
       Principal: "cognito-idp.amazonaws.com"
-      FunctionName: !Ref functionblogamplifiedc9ee2ce6PostConfirmationName
+      FunctionName: !Ref functionjamstackcmsc9ee2ce6PostConfirmationName
       SourceArn: !GetAtt UserPool.Arn
     
   
@@ -222,10 +222,10 @@ Resources:
   # Updating lambda role with permissions to Cognito
   
   
-  blogamplifiedc9ee2ce6PostConfirmationAddToGroupCognito:
+  jamstackcmsc9ee2ce6PostConfirmationAddToGroupCognito:
     Type: AWS::IAM::Policy
     Properties:
-      PolicyName: blogamplifiedc9ee2ce6PostConfirmationAddToGroupCognito
+      PolicyName: jamstackcmsc9ee2ce6PostConfirmationAddToGroupCognito
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -250,7 +250,7 @@ Resources:
             
 
       Roles:
-        - !Join ['',["blogamplifiedc9ee2ce6PostConfirmation", '-', !Ref env]]
+        - !Join ['',["jamstackcmsc9ee2ce6PostConfirmation", '-', !Ref env]]
   
   
   
@@ -259,7 +259,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: blogamc9ee2ce6_app_clientWeb
+      ClientName: jamcmsc9ee2ce6_app_clientWeb
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -269,7 +269,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: blogamc9ee2ce6_app_client
+      ClientName: jamcmsc9ee2ce6_app_client
       
       GenerateSecret: !Ref userpoolClientGenerateSecret
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
@@ -334,7 +334,7 @@ Resources:
   # Marked as depending on UserPoolClientRole for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: blogamc9ee2ce6_userpoolclient_lambda_iam_policy
+      PolicyName: jamcmsc9ee2ce6_userpoolclient_lambda_iam_policy
       Roles: 
         - !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',[!Ref userpoolClientLambdaRole, '-', !Ref env]]]
       PolicyDocument:
@@ -351,7 +351,7 @@ Resources:
   # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: blogamc9ee2ce6_userpoolclient_lambda_log_policy
+      PolicyName: jamcmsc9ee2ce6_userpoolclient_lambda_log_policy
       Roles: 
         - !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',[!Ref userpoolClientLambdaRole, '-', !Ref env]]]
       PolicyDocument:
@@ -391,7 +391,7 @@ Resources:
   # Always created
     Type: AWS::Cognito::IdentityPool
     Properties: 
-      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'blogamplifiedc9ee2ce6_identitypool_c9ee2ce6', !Join ['',['blogamplifiedc9ee2ce6_identitypool_c9ee2ce6', '__', !Ref env]]]
+      IdentityPoolName: !If [ShouldNotCreateEnvResources, 'jamstackcmsc9ee2ce6_identitypool_c9ee2ce6', !Join ['',['jamstackcmsc9ee2ce6_identitypool_c9ee2ce6', '__', !Ref env]]]
       
       CognitoIdentityProviders:
         - ClientId:  !Ref UserPoolClient
