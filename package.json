@@ -82,6 +82,8 @@
     "url": "git+https://github.com/gatsbyjs/gatsby-starter-blog.git"
   },
   "scripts": {
+    "jamstack-init": "node updateS3config.js && amplify init",
+    "jamstack-push": "amplify push",
     "jamstack-develop": "node createConfig.js && gatsby develop",
     "jamstack-build-local": "node createLocalConfig.js && gatsby build",
     "jamstack-build": "gatsby build",

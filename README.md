@@ -73,10 +73,8 @@ Open *amplify/backend/function/jamstackcmsc9ee2ce6PostConfirmation/src/add-to-gr
 4. Initialize the Amplify project
 
 ```sh
-$ amplify init
+$ npm run jamstack-init
 ```
-
-> When prompted for an environment name, please choose a globally unique name.
 
 During the initialization, you'll be prompted for the following
 
@@ -88,7 +86,7 @@ During the initialization, you'll be prompted for the following
 ❯◉ Create your own module
 ? Enter the name of the group to which users will be added. Admin
 
-$ amplify push
+$ npm run jamstack-push
 ```
 
 5. Run the project
