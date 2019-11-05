@@ -1,2 +1,2 @@
-const webhookUrl = "https://webhooks.amplify.eu-central-1.amazonaws.com/prod/webhooks?id=c2c6833f-2c79-4977-aea2-ee51191296cd&token=N90FODxSk2XM8l9OZGfQU17GSl6J960442KSlCSvQ"
+const webhookUrl = "https://webhooks.amplify.eu-central-1.amazonaws.com/prod/webhooks?id=8c65bb94-9309-43c6-8507-64122b2d248e&token=igtJxixwFb3hNDTe9x2MffEPiB1UDOSFltnCX4H9KRk"
 module.exports = webhookUrl
