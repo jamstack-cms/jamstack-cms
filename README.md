@@ -107,6 +107,16 @@ $ npm run jamstack-develop
 
 8. Once you've created a post, run `npm run jamstack-develop` to create a new build and see the new live post.
 
+9. To enable dynamic image resizing on the server, follow these steps:
+
+```sh
+$ cd amplify/backend/function/S3Trigger56ef6c3f/src
+$ npm install --arch=x64 --platform=linux --target=10.15.0 sharp
+$ cd ../../../../../
+
+$ npm run jamstack-push
+```
+
 ### Deploying to Amplify Console or Netlify
 
 To deploy to Amplify Console or Netlify, you'll need to set the environment variable for `APPSYNC_KEY`. This value can be found in `jamstack-api-key.js`.
