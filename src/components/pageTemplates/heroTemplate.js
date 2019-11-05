@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { BlogContext } from '../../context/mainContext'
 import { css } from '@emotion/core'
 import { useDrag, useDrop } from 'react-dnd'
@@ -18,7 +18,6 @@ import { slugify, getImageSource } from '../../utils/helpers'
 import getKeyWithFullPath from '../../utils/getKeyWithFullPath'
 import saveFile from '../../utils/saveFile'
 import getKeyWithPath from '../../utils/getKeyWithPath'
-import { toast } from 'react-toastify'
 
 import config from '../../../jamstack-config'
 

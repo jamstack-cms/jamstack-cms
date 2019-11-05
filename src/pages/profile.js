@@ -88,6 +88,7 @@ class Profile extends React.Component {
                   <img
                     src={avatarUrl}
                     css={avatarStyle(theme)}
+                    alt="Profile avatar"
                   />
                 )
               }

@@ -11,6 +11,7 @@ function SubHeading({ content, updateContent, index, deleteComponent, context: {
 
   useEffect(() => {
     updateAndSave(false)
+    // eslint-disable-next-line
   }, [])
 
   function updateAndSave() {

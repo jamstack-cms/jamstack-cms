@@ -265,10 +265,6 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
     const finalHtml = html.serialize(value)
     return finalHtml
   }
-  function getDeSerialized() {
-    const finalHtml = html.deserialize(value)
-    return finalHtml
-  }
 
   function deserialize(baseHtml) {
     const finalHtml = html.deserialize(baseHtml)
@@ -334,22 +330,6 @@ const paragraphTemplateStyle = css`
     font-weight: 600;
     margin: 25px auto 18px;
   }
-`
-
-const paragraphStyle = ({ fontFamily, primaryFontColor }) => css`
-  font-family: ${fontFamily}, serif;
-  font-size: 18px;
-  margin: 0px 0px 35px;
-  line-height: 1.756;
-  color: ${primaryFontColor};
-  outline: none;
-  border: none;
-  padding: 5px 10px;
-  border: 1px solid transparent;
-`
-
-const editingStyle = () => css`
-  border: 1px solid #ddd;
 `
 
 export default ParagraphWithContext
@@ -434,44 +414,6 @@ const initialValue = {
           }
         ]
       }
-    ]
-  }
-}
-
-const initialLinkValue = {
-  "object": "value",
-  "document": {
-    "object": "document",
-    "nodes": [
-      {
-        "object": "block",
-        "type": "paragraph",
-        "nodes": [
-          {
-            "object": "text",
-            "text":
-              "In addition to block nodes, you can create inline nodes, like "
-          },
-          {
-            "object": "inline",
-            "type": "link",
-            "data": {
-              "href": "https://en.wikipedia.org/wiki/Hypertext"
-            },
-            "nodes": [
-              {
-                "object": "text",
-                "text": "hyperlinks"
-              }
-            ]
-          },
-          {
-            "object": "text",
-            "text": "!"
-          }
-        ]
-      },
-      
     ]
   }
 }

@@ -11,6 +11,7 @@ function Header({ content, updateContent, deleteComponent, index, context: { the
 
   useEffect(() => {
     updateAndSave()
+    // eslint-disable-next-line
   }, [])
 
   function updateAndSave() {

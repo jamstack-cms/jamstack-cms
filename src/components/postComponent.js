@@ -31,7 +31,7 @@ function PostComponent({
     <div css={postContainer}>
       <h1 css={[titleStyle(theme)]}>{title}</h1>
       <div css={authorContainerStyle}>
-        { authorAvatar && <img css={authorAvatarStyle} src={authorAvatar} />}
+        { authorAvatar && <img alt="author" css={authorAvatarStyle} src={authorAvatar} />}
         <p css={authorNameStyle(theme)}>{authorName}</p>
         { createdAt && <p css={[dateStyle(theme)]}>{date}</p>}
       </div>

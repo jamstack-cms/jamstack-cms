@@ -9,6 +9,7 @@ import { BlogContext } from '../context/mainContext'
 function PageList({ publishPage, toggleViewState, unpublishPage, fetchPages, deletePage, pages, context: { theme } }) {
   useEffect(() => {
     fetchPages()
+    // eslint-disable-next-line
   }, [])
 
   if (!pages.length) {

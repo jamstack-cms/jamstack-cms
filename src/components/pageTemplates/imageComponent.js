@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import ProgressiveImage from 'react-progressive-image'
 import placeholder from '../../images/placeholder.jpg'
 import Input from '../input'
@@ -14,7 +14,7 @@ function ImageComponent({
     const file = URL.createObjectURL(event.target.files[0])
     const imageHtml = `
       <img
-        src="${file}" alt="page-image"
+        src="${file}" alt="page"
       />
     `
     updateContent({
@@ -33,7 +33,7 @@ function ImageComponent({
         return (
           <img
             css={[imageStyle]}
-            src={src} alt="page-image"
+            src={src} alt="page"
             onClick={onClick}
           />
         )

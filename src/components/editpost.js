@@ -1,5 +1,5 @@
 import React from 'react'
-import { Storage, API, Auth, graphqlOperation } from 'aws-amplify'
+import { Storage, API, graphqlOperation } from 'aws-amplify'
 import { css } from "@emotion/core"
 
 import MainLayout from '../layouts/mainLayout'
@@ -9,7 +9,7 @@ import FormComponent from './formComponent'
 import ImageLinkOverlay from './imageLinkOverlay'
 import FileInput from './input'
 import { updatePost } from '../graphql/mutations'
-import { getPost, getUser } from '../graphql/queries'
+import { getPost } from '../graphql/queries'
 import { BlogContext } from '../context/mainContext'
 import getSignedUrls from '../utils/getSignedUrls'
 import getUnsignedUrls from '../utils/getUnsignedUrls'

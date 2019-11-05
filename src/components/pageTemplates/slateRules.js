@@ -1,7 +1,7 @@
+/* eslint-disable */
 import React from 'react'
 
 const BLOCK_TAGS = {
-  blockquote: 'quote',
   blockquote: 'block-quote',
   p: 'paragraph',
   pre: 'code',
@@ -15,8 +15,6 @@ const MARK_TAGS = {
   strong: 'bold',
   u: 'underline',
 }
-
-const regex = /<(\w+)\b(?:\s+[\w\-.:]+(?:\s*=\s*(?:"[^"]*"|"[^"]*"|[\w\-.:]+))?)*\s*\/?>\s*<\/\1\s*>/gim
 
 // possible to add read-only flag on editor.
 
@@ -93,7 +91,7 @@ const rules = [
             return <strong>{children}</strong>
         }
       }
-      if (obj.object == 'block') {
+      if (obj.object === 'block') {
         switch (obj.type) {
           case 'em':
               return <em>{children}</em>
@@ -180,7 +178,7 @@ const rules = [
       }
     },
     serialize(obj, children) {
-      if (obj.object == 'inline') {
+      if (obj.object === 'inline') {
         switch (obj.type) {
           case 'bold':
             return <strong>{children}</strong>
@@ -188,7 +186,7 @@ const rules = [
             return <em>{children}</em>
         }
       }
-      if (obj.object == 'mark') {
+      if (obj.object === 'mark') {
         switch (obj.type) {
           case 'bold':
             return <strong>{children}</strong>

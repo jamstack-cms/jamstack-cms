@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { css } from '@emotion/core'
 
 function EditOptions({ updateIsEditable, editable, deleteComponent, theme, hideEdit, hideDelete }) {

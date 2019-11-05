@@ -103,12 +103,14 @@ class BaseLayout extends React.Component {
                 <a
                 css={footerLink(theme)}
                 target="_blank"
+                rel="noopener noreferrer"
                 href="https://twitter.com/jamstackcms">Twitter</a>
               </div>
               <div>
                 <a
                 css={footerLink(theme)}
                 target="_blank"
+                rel="noopener noreferrer"
                 href="https://github.com/jamstack-cms">GitHub</a>
               </div>
               <Link to="/profile" css={footerLink(theme)}>

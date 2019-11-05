@@ -17,6 +17,7 @@ class About extends React.Component {
         <img
           src={nader}
           css={imageStyle(theme)}
+          alt="Nader Dabit"
         />
         <h2 css={subheaderStyle(theme)}>Learn More</h2>
         <p css={paragraphStyle(theme)}>This page was created using a custom component. If you'd like to learn more about me, follow me <a href="https://twitter.com/dabit3">on Twitter</a>. If you're interested in the causes that I support, check out the following:</p>

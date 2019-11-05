@@ -107,7 +107,7 @@ class Settings extends React.Component {
     const { theme, themeBorderWidth } = this.props.context
     console.log('context: ', this.props.context)
     const {
-      highlight, baseFontWeight, primaryFontColor, inverseButtonFontColor
+      highlight, baseFontWeight, primaryFontColor
     } = theme
     const { isDeploying } = this.state
 
@@ -200,13 +200,6 @@ const blogDescriptionStyle = css`
   border: 1px solid #ededed;
   padding: 20px;
   width: 100%;
-`
-
-const widthInput = ({ primaryFontColor }) => css`
-  outline: none;
-  border: none;
-  color: ${primaryFontColor};
-  border-bottom: 2px solid ${primaryFontColor};
 `
 
 const settingContainer = css`
