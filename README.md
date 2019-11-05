@@ -68,7 +68,7 @@ $ npm install
 
 3. Configure admin emails
 
-Open *amplify/backend/function/jamstackcmsc9ee2ce6PostConfirmation/src/add-to-group.js* and update the admin emails for the users you'd like to add by adding them to the array of emails on line 7.
+Open __amplify/backend/function/jamstackcmsc9ee2ce6PostConfirmation/src/add-to-group.js__ and update the admin emails for the users you'd like to add by adding them to the array of emails on line 7.
 
 ```javascript
 const adminEmails = ["youremail1@domain.com", /* ... other email addresses */]
