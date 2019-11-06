@@ -55,7 +55,7 @@ If you are interested in contributing to this project, please let me know!
 1. Update the [Amplify CLI](https://aws-amplify.github.io/docs/) to the latest version
 
 ```sh
-$ npm install -g @aws-amplify/cli
+$ yarn global add @aws-amplify/cli
 ```
 
 2. Clone the repository
@@ -63,7 +63,9 @@ $ npm install -g @aws-amplify/cli
 ```sh
 $ git clone https://github.com/jamstack-cms/jamstack-cms.git
 
-$ npm install
+$ cd jamstack-cms
+
+$ yarn
 ```
 
 3. Configure admin emails
@@ -77,7 +79,7 @@ const adminEmails = ["youremail1@domain.com", /* ... other email addresses */]
 4. Initialize the Amplify project
 
 ```sh
-$ npm run jamstack-init
+$ yarn run jamstack-init
 ```
 
 During the initialization, you'll be prompted for the following
@@ -89,33 +91,37 @@ During the initialization, you'll be prompted for the following
 ? What functionality do you want to use for Post Confirmation
 ❯◉ Create your own module
 ? Enter the name of the group to which users will be added. Admin
+```
 
-$ npm run jamstack-push
+5. To enable dynamic image resizing on the server, follow these steps to properly install the `sharp` library:
+
+```sh
+$ cd amplify/backend/function/S3Trigger56ef6c3f/src
+$ yarn add --arch=x64 --platform=linux --target=10.15.0 sharp
+$ cd ../../../../../
+
+$ yarn run jamstack-push
+```
+
+6. Deploy the back end
+
+```sh
+$ yarn run jamstack-push
 
 ? Do you want to update code for your updated GraphQL API? No
 ```
 
-5. Run the project
+7. Run the project
 
 ```sh
-$ npm run jamstack-develop
+$ yarn run jamstack-develop
 ```
 
-6. Sign up and then sign in with an Admin email address by clicking on the __Profile__ link in the footer.
+8. Sign up and then sign in with an Admin email address by clicking on the __Profile__ link in the footer.
 
-7. Once signed in as an Admin, you will see the Admin link in the navigation. Click on the Admin link to begin creating posts and pages.
+9. Once signed in as an Admin, you will see the Admin link in the navigation. Click on the Admin link to begin creating posts and pages.
 
-8. Once you've created a post, run `npm run jamstack-develop` to create a new build and see the new live post.
-
-9. To enable dynamic image resizing on the server, follow these steps:
-
-```sh
-$ cd amplify/backend/function/S3Trigger56ef6c3f/src
-$ npm install --arch=x64 --platform=linux --target=10.15.0 sharp
-$ cd ../../../../../
-
-$ npm run jamstack-push
-```
+10. Once you've created a post, run `npm run jamstack-develop` to create a new build and see the new live post.
 
 ### Deploying to Amplify Console or Netlify
 
