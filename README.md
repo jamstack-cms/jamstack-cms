@@ -99,8 +99,6 @@ During the initialization, you'll be prompted for the following
 $ cd amplify/backend/function/S3Trigger56ef6c3f/src
 $ yarn add --arch=x64 --platform=linux --target=10.15.0 sharp
 $ cd ../../../../../
-
-$ yarn run jamstack-push
 ```
 
 6. Deploy the back end
