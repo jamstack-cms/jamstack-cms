@@ -93,7 +93,7 @@ During the initialization, you'll be prompted for the following
 ? Enter the name of the group to which users will be added. Admin
 ```
 
-5. To enable dynamic image resizing on the server, follow these steps to properly install the `sharp` library:
+5. To enable dynamic image resizing, follow these steps to properly install the `sharp` library in the Lambda function:
 
 ```sh
 $ cd amplify/backend/function/S3Trigger56ef6c3f/src
