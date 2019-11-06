@@ -4,7 +4,7 @@ RUN npm install -g @aws-amplify/cli@3.17.0
 
 WORKDIR /jamstack
 
-COPY package.json package-lock.json ./
+COPY package.json yarn.lock ./
 
 RUN yarn
 
