@@ -63,7 +63,7 @@ $ npm install -g @aws-amplify/cli
 ```sh
 $ git clone https://github.com/jamstack-cms/jamstack-cms.git
 
-$ npm install
+$ yarn 
 ```
 
 3. Configure admin emails
