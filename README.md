@@ -93,17 +93,7 @@ During the initialization, you'll be prompted for the following
 ? Enter the name of the group to which users will be added. Admin
 ```
 
-5. To enable dynamic image resizing, follow these steps to properly install the `sharp` library in the Lambda function:
-
-```sh
-$ cd amplify/backend/function/S3Trigger56ef6c3f/src
-$ npm install
-$ rm -rf node_modules/sharp
-$ npm install --arch=x64 --platform=linux --target=10.15.0 sharp
-$ cd ../../../../../
-```
-
-6. Deploy the back end
+5. Deploy the back end
 
 ```sh
 $ yarn run jamstack-push
@@ -111,15 +101,15 @@ $ yarn run jamstack-push
 ? Do you want to update code for your updated GraphQL API? No
 ```
 
-7. Run the project
+6. Run the project
 
 ```sh
 $ yarn run jamstack-develop
 ```
 
-8. Sign up and then sign in with an Admin email address by clicking on the __Profile__ link in the footer.
+7. Sign up and then sign in with an Admin email address by clicking on the __Profile__ link in the footer.
 
-9. Once signed in as an Admin, you will see the Admin link in the navigation. Click on the Admin link to begin creating posts and pages.
+8. Once signed in as an Admin, you will see the Admin link in the navigation. Click on the Admin link to begin creating posts and pages.
 
 10. Once you've created a post, run `npm run jamstack-develop` to create a new build and see the new live post.
 
