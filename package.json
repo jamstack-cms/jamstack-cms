@@ -1,11 +1,11 @@
 {
-  "name": "gatsby-starter-blog",
+  "name": "jamstack-cms",
   "private": true,
-  "description": "A starter for a blog powered by Gatsby and Markdown",
+  "description": "Modern full stack CMS. Built with GraphQL and Serverless technologies.",
   "version": "0.1.0",
-  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "author": "Nader Dabit <dabit3@gmail.com>",
   "bugs": {
-    "url": "https://github.com/gatsbyjs/gatsby/issues"
+    "url": "https://github.com/jamstack-cms/jamstack-cms/issues"
   },
   "dependencies": {
     "@emotion/core": "^10.0.17",
@@ -83,7 +83,7 @@
   },
   "scripts": {
     "jamstack-init": "node updateS3config.js && amplify init",
-    "jamstack-push": "amplify push",
+    "jamstack-push": "amplify push --y",
     "jamstack-develop": "node createConfig.js && gatsby develop",
     "jamstack-build-local": "node createLocalConfig.js && gatsby build",
     "jamstack-build": "gatsby build",
