@@ -1,0 +1,12 @@
+name: Node 10 -- install packages with NPM
+
+on: [push]
+
+jobs:
+  github:
+    runs-on: ubuntu-latest    
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Build :lastest
+        run: docker build -f tests/build-on-docker/node10WithNpm.Dockerfile .
