@@ -10,5 +10,5 @@ RUN yarn
 
 COPY . .
 
-RUN cp tests/build-on-docker/fixtures/awsExportFixture.js src/
+RUN cp tests/build-on-docker/fixtures/awsExportFixture.js src/aws-exports.js
 RUN npm run jamstack-build-local
