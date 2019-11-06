@@ -97,6 +97,8 @@ During the initialization, you'll be prompted for the following
 
 ```sh
 $ cd amplify/backend/function/S3Trigger56ef6c3f/src
+$ npm install
+$ rm -rf node_modules/sharp
 $ npm install --arch=x64 --platform=linux --target=10.15.0 sharp
 $ cd ../../../../../
 ```
