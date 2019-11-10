@@ -99,6 +99,7 @@ class ContextProviderComponent extends React.Component {
   }
 
   render() {
+    const { window: { height } } = this.state
     return (
       <StaticQuery query={mainQuery}>
         { queryData => {
@@ -132,7 +133,7 @@ class ContextProviderComponent extends React.Component {
             <>
             <Global
               styles={css`
-                ${blogPostStyle(theme)}
+                ${globalStyle(theme, height)}
                 body, html {
                   background-color: ${theme.backgroundColor};
                 }
@@ -181,7 +182,8 @@ export {
   ContextProviderComponent
 }
 
-const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
+const globalStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}, height) => {
+  console.log('height: ', height)
   const isDark = type === ('dark' || 'dank' || 'reactive')
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
@@ -423,6 +425,11 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
 
   .CodeMirror-cursor, .CodeMirror-cursors {
     border-left: 1px solid ${secondaryFontColor} !important;
+  }
+
+  .CodeMirror, .CodeMirror-scroll {
+    overflow: scroll;
+    height: ${height - 470}px;
   }
   
   ::placeholder {

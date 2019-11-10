@@ -449,7 +449,7 @@ const slugStyle = () => css`
 `
 
 const pageContentButtonContainerStyle = () => css`
-  margin: 0px 10px;
+  margin: 20px 3px;
   display: flex;
 `
 
