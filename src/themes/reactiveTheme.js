@@ -10,6 +10,7 @@ const reactiveTheme = {
   highlight: '#64b687',
   borderColor: 'rgba(255, 255, 255, .1)',
   backgroundColor: '#17153b',
+  secondaryBackgroundColor: '#000000',
   codeBackgroundColor: '#48464a',
   toastBackgroundColor: '#121d3a',
   // font families

@@ -10,6 +10,7 @@ const lightTheme = {
   highlight: '#3bbcbd',
   borderColor: 'rgba(8,8,11,0.15)',
   backgroundColor: '#fafafa',
+  secondaryBackgroundColor: '#ffffff',
   codeBackgroundColor: '#ededed',
   toastBackgroundColor: 'white',
   // font families

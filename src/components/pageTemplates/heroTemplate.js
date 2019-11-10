@@ -248,10 +248,10 @@ class HeroTemplate extends React.Component {
             { pageTitle && <p css={slugStyle}>slug: {slug}</p>}
           </div>
           <div css={[componentCreatorContainerStyle()]}>
+            <p onClick={() => this.createComponent('paragraph')} css={componentCreatorStyle(theme)}>Rich Text</p>
             <p onClick={() => this.createComponent('header')} css={componentCreatorStyle(theme)}>Header</p>
             <p onClick={() => this.createComponent('subheading')} css={componentCreatorStyle(theme)}>Subheading</p>
-            <p onClick={() => this.createComponent('image')} css={componentCreatorStyle(theme)}>Image</p>
-            <p onClick={() => this.createComponent('paragraph')} css={componentCreatorStyle(theme)}>Paragraph</p>
+            <p onClick={() => this.createComponent('image')} css={componentCreatorStyle(theme, true)}>Image</p>
             {/* <p onClick={() => this.createComponent('pwithimage')} css={componentCreatorStyle(theme, true)}>Paragraph with Image</p> */}
           </div>
           <div css={[pageContentButtonContainerStyle()]}>
@@ -439,7 +439,7 @@ const loadingStyle = ({ primaryFontColor }) => css`
 `
 
 const inputContainerStyle = () => css`
-  margin: 0px 24px;
+  margin: 0px 20px;
   display: flex;
   align-items: flex-end;
 `
@@ -458,15 +458,17 @@ const componentCreatorContainerStyle = () => css`
   margin: 0px 20px;
 `
 
-const componentCreatorStyle = (theme, lastItem) => {
+const componentCreatorStyle = ({ secondaryBackgroundColor }, lastItem) => {
   return css`
     border: 1px solid #ededed;
     border-right: ${lastItem ? '1px solid #ededed' : 'none' };
-    padding: 10px 40px;
-    trasition: all .3s;
+    padding: 5px 25px;
+    font-size: 14px;
+    margin: 0px;
+    transition: all .3s;
     cursor: pointer;
     &:hover {
-      background: #fefefe;
+      background-color: ${secondaryBackgroundColor};
     }
   `
 }
