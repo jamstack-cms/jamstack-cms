@@ -92,9 +92,11 @@ class Admin extends React.Component {
     })
   }
   setImagesInUse = () => {
+    // set base array of images
     let allImageKeys = []
     let contentImageKeys = this.props.data.allImageKeys.edges[0].node.data
     let authorImages = this.props.data.allAuthorImages.edges[0].node.data
+    // set image keys currently in use to allImageKeys variable (contentImageKeys + authorImages)
     if (contentImageKeys !== 'none') {
       allImageKeys = [...contentImageKeys]
     }
