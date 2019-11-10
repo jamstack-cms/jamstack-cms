@@ -208,6 +208,19 @@
                                     {
                                         "Ref": "bucketName"
                                     },
+                                    {
+                                       "Fn::Select": [
+                                          3,
+                                          {
+                                              "Fn::Split": [
+                                                  "-",
+                                                  {
+                                                      "Ref": "AWS::StackId"
+                                                  }
+                                              ]
+                                          }
+                                        ]
+                                    },
                                     "-",
                                     {
                                         "Ref": "env"
@@ -761,6 +774,19 @@
                                             [
                                                 {
                                                     "Ref": "bucketName"
+                                                },
+                                                {
+                                                   "Fn::Select": [
+                                                      3,
+                                                      {
+                                                          "Fn::Split": [
+                                                              "-",
+                                                              {
+                                                                  "Ref": "AWS::StackId"
+                                                              }
+                                                          ]
+                                                      }
+                                                    ]
                                                 },
                                                 "-",
                                                 {
