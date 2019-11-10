@@ -363,6 +363,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
   `)
 
   try {
+    // create page slugs for page creation
     const listPagesData = await axios({
       url: config.aws_appsync_graphqlEndpoint,
       method: 'post',
