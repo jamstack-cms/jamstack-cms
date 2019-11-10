@@ -36,6 +36,7 @@ class MediaView extends React.Component {
     const { target: { files } } = event
     const fileForUpload = files[0]
     this.setState({
+      isUploadingImage: true,
       image: URL.createObjectURL(event.target.files[0]),
       file: fileForUpload
     }, async () => {
@@ -44,12 +45,13 @@ class MediaView extends React.Component {
       const uploadedImage = await Storage.get(keyWithPath)
       const images = [uploadedImage, ...this.props.images]
       this.props.addImageToState(images)
+      this.setState({ isUploadingImage: false })
       toast("Successfully uploaded new image.")
     })
   }
   
   render() {
-    const { listType, dataType } = this.state
+    const { listType, dataType, isUploadingImage } = this.state
     const { context: { theme, theme: { baseFontWeight, primaryFontColor, highlight } }} = this.props
     const isList = listType === 'list';
     let imageListType = css``
@@ -84,11 +86,13 @@ class MediaView extends React.Component {
               onClick={() => this.updateListType('list')}>List View</button>
           </div>
           <FileInput
+            isLoading={isUploadingImage}
             placeholder="Upload"
+            customLoadingCss={[loader]}
             labelStyle={[toggleViewButton(theme), uploadButton]}
             onChange={this.uploadImage}
           />
-          <select css={[selectMenu(theme)]} value={this.state.dataType} onChange={this.updateDataType}>
+          <select css={[selectMenu(theme)]} value={dataType} onChange={this.updateDataType}>
             <option value="all">All Images</option>
             <option value="in-use">Images in use</option>
             <option value="not-in-use">Images not in use</option>
@@ -134,6 +138,10 @@ export default function MediaViewWithContext(props) {
     </BlogContext.Consumer>
   )
 }
+
+const loader = css`
+  margin-right: 5px;
+`
 
 const deleteButton = ({ fontFamily }) => css`
   font-family: ${fontFamily};
