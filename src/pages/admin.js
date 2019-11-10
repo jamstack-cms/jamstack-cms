@@ -92,15 +92,28 @@ class Admin extends React.Component {
     })
   }
   setImagesInUse = () => {
-    let imageKeys = this.props.data.allImageKeys.edges[0].node.data
-    if (imageKeys === 'none') return
+    let allImageKeys = []
+    let contentImageKeys = this.props.data.allImageKeys.edges[0].node.data
+    let authorImages = this.props.data.allAuthorImages.edges[0].node.data
+    if (contentImageKeys !== 'none') {
+      allImageKeys = [...contentImageKeys]
+    }
+    if (authorImages !== 'none') {
+      authorImages = authorImages.map(image => {
+        image = image.split('/')
+        image = `images/${image[image.length - 1]}`
+        return image
+      })
+      allImageKeys = [...allImageKeys, ...authorImages]
+    }
+    if (!allImageKeys.length) return
     const signedImages = this.state.images
     const imagesInUse = []
     const imagesNotInUse = []
     signedImages.forEach(image => {
       const key = getImageKey(image)
       const keyWithPath = `images/${key}`
-      imageKeys.forEach(k => {
+      allImageKeys.forEach(k => {
         if (k === keyWithPath) {
           imagesInUse.push(image)
         }
@@ -398,13 +411,10 @@ export const adminQuery = graphql`
         }
       }
     },
-    allThemeInfo {
+    allAuthorImages {
       edges {
         node {
-          data {
-            theme
-            categories
-          }
+          data
         }
       }
     }
