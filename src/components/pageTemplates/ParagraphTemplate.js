@@ -287,19 +287,21 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
           {renderBlockButton('numbered-list', 'NL')}
           {renderBlockButton('bulleted-list', 'UL')}
         </Toolbar>
-        <Editor
-          spellCheck
-          autoFocus
-          placeholder="Enter some rich text..."
-          ref={editorRef}
-          value={value}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-          renderBlock={renderBlock}
-          renderMark={renderMark}
-          onPaste={onPaste}
-          renderInline={renderInline}
-        />
+        <div className="hero-page-content">
+          <Editor
+            spellCheck
+            autoFocus
+            placeholder="Enter some rich text..."
+            ref={editorRef}
+            value={value}
+            onChange={onChange}
+            onKeyDown={onKeyDown}
+            renderBlock={renderBlock}
+            renderMark={renderMark}
+            onPaste={onPaste}
+            renderInline={renderInline}
+          />
+        </div>
       </div>
       <EditOptions
         editable={editable}
