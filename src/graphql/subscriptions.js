@@ -64,8 +64,8 @@ export const onDeletePost = `subscription OnDeletePost {
   }
 }
 `;
-export const onCreateComment = `subscription OnCreateComment {
-  onCreateComment {
+export const onCreateComment = `subscription OnCreateComment($createdBy: String) {
+  onCreateComment(createdBy: $createdBy) {
     id
     message
     createdBy
@@ -73,8 +73,8 @@ export const onCreateComment = `subscription OnCreateComment {
   }
 }
 `;
-export const onUpdateComment = `subscription OnUpdateComment {
-  onUpdateComment {
+export const onUpdateComment = `subscription OnUpdateComment($createdBy: String) {
+  onUpdateComment(createdBy: $createdBy) {
     id
     message
     createdBy
@@ -82,8 +82,8 @@ export const onUpdateComment = `subscription OnUpdateComment {
   }
 }
 `;
-export const onDeleteComment = `subscription OnDeleteComment {
-  onDeleteComment {
+export const onDeleteComment = `subscription OnDeleteComment($createdBy: String) {
+  onDeleteComment(createdBy: $createdBy) {
     id
     message
     createdBy

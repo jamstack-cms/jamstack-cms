@@ -59,8 +59,8 @@
 				"Runtime": "nodejs10.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-jamstack-cms-dev-11051-deployment",
-					"S3Key": "amplify-builds/S3Trigger56ef6c3f-705256696d3938453378-build.zip"
+					"S3Bucket": "amplify-jamstack-cms-dev-45351-deployment",
+					"S3Key": "amplify-builds/S3Trigger56ef6c3f-306f383441656a67724c-build.zip"
 				}
 			}
 		},
