@@ -291,13 +291,12 @@ const globalStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColo
     font-weight: 400;
     font-family: 'Courier New', Courier, monospace;
     overflow-x: scroll;
-    margin: 15px auto 50px;
+    margin: 40px 0px;
   }
 
   .hero-page-content p code {
     background-color: ${codeBackgroundColor};
     font-family: 'Courier New', Courier, monospace;
-    padding: 2px 5px;
     color: ${primaryFontColor};
   }
 

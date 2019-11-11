@@ -15,7 +15,7 @@ const DEFAULT_NODE = 'paragraph'
 
 const isBoldHotkey = isKeyHotkey('mod+b')
 const isItalicHotkey = isKeyHotkey('mod+i')
-const isCodeHotkey = isKeyHotkey('mod+`')
+// const isCodeHotkey = isKeyHotkey('mod+`')
 
 function wrapLink(editor, href) {
   editor.wrapInline({
@@ -157,12 +157,12 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
     switch (node.type) {
       case 'block-quote':
         return <blockquote {...attributes}>{children}</blockquote>
-      case "code":
-          return (
-            <pre>
-              <code {...attributes}>{children}</code>
-            </pre>
-          );
+      // case "code":
+      //     return (
+      //       <pre>
+      //         <code {...attributes}>{children}</code>
+      //       </pre>
+      //     );
       case 'bulleted-list':
         return <ul {...attributes}>{children}</ul>
       case 'heading-one':
@@ -188,8 +188,6 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
       mark = 'bold'
     } else if (isItalicHotkey(event)) {
       mark = 'italic'
-    } else if (isCodeHotkey(event)) {
-      mark = 'code'
     } else {
       return next()
     }
@@ -252,10 +250,10 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
     switch (mark.type) {
       case 'bold':
         return <strong {...attributes}>{children}</strong>
-      case 'code':
-        return <pre>
-          <code {...attributes}>{children}</code>
-        </pre>
+      // case 'code':
+      //   return <pre>
+      //     <code {...attributes}>{children}</code>
+      //   </pre>
       case 'italic':
         return <em {...attributes}>{children}</em>
       default:
@@ -279,7 +277,6 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
         <Toolbar>
           {renderMarkButton('bold', 'B')}
           {renderMarkButton('italic', 'I')}
-          {renderMarkButton('code', 'code')}
           <Button active={hasLinks()} onMouseDown={onClickLink}>
             <Icon>link</Icon>
           </Button>

@@ -9,6 +9,7 @@ import HeroPage from './heroPage'
 import Button from '../button'
 
 import Header from './HeaderTemplate'
+import Code from './CodeTemplate'
 import Paragraph from './ParagraphTemplate'
 import SubHeading from './SubHeading'
 import ImageComponent from './imageComponent'
@@ -252,6 +253,7 @@ class HeroTemplate extends React.Component {
             <p onClick={() => this.createComponent('header')} css={componentCreatorStyle(theme)}>Header</p>
             <p onClick={() => this.createComponent('subheading')} css={componentCreatorStyle(theme)}>Subheading</p>
             <p onClick={() => this.createComponent('image')} css={componentCreatorStyle(theme, true)}>Image</p>
+            <p onClick={() => this.createComponent('code')} css={componentCreatorStyle(theme, true)}>Code</p>
             {/* <p onClick={() => this.createComponent('pwithimage')} css={componentCreatorStyle(theme, true)}>Paragraph with Image</p> */}
           </div>
           <div css={[pageContentButtonContainerStyle()]}>
@@ -356,6 +358,14 @@ function createComponent(type, content) {
         component: ImageComponent,
         content: content ? content : '',
         type: 'image'
+      }
+      break
+    case 'code':
+        component = {
+        ...component,
+        component: Code,
+        content: content ? content : '',
+        type: 'code'
       }
       break
     default:
