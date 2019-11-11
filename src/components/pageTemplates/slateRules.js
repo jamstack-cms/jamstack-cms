@@ -188,8 +188,6 @@ const rules = [
       }
       if (obj.object === 'mark') {
         switch (obj.type) {
-          case 'bold':
-            return <strong>{children}</strong>
           case 'link':
             return <>{children}</>
           case 'italic':

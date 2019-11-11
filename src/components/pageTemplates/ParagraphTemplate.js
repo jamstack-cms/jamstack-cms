@@ -55,7 +55,6 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
   }
   function renderInline(props, editor, next) {
     const { attributes, children, node } = props
-
     switch (node.type) {
       case 'link': {
         const { data } = node
@@ -249,11 +248,14 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
   }
   function renderMark (props, editor, next) {
     const { children, mark, attributes } = props
+
     switch (mark.type) {
       case 'bold':
         return <strong {...attributes}>{children}</strong>
       case 'code':
-        return <code {...attributes}>{children}</code>
+        return <pre>
+          <code {...attributes}>{children}</code>
+        </pre>
       case 'italic':
         return <em {...attributes}>{children}</em>
       default:
