@@ -429,6 +429,7 @@ const globalStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColo
   .CodeMirror, .CodeMirror-scroll {
     overflow: scroll;
     height: ${height - 470}px;
+    min-height: 300px;
   }
   
   ::placeholder {

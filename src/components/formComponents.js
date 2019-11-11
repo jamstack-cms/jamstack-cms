@@ -35,18 +35,19 @@ function DescriptionComponent({
 function MarkdownEditor({
   content, setPost
 }) {
-  const dynamicTextArea = css`
-    margin-top: 30px;
-    max-height: 300px;
-  `
   return (
     <SimpleMDE
       value={content}
       onChange={value => setPost('content', value)}
-      css={[dynamicTextArea]}
+      css={[editorStyle]}
     />
   )
 }
+
+const editorStyle = css`
+  margin-top: 30px;
+  max-height: 300px;
+`
 
 const titleInputStyle = ({ primaryFontColor }) => css`
   color: ${primaryFontColor};
