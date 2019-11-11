@@ -97,8 +97,6 @@ During the initialization, you'll be prompted for the following
 
 ```sh
 $ yarn run jamstack-push
-
-? Do you want to update code for your updated GraphQL API? No
 ```
 
 6. Run the project
