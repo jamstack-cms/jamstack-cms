@@ -160,6 +160,9 @@ JAMstack CMS fills in this gap by giving you a customizable end to end solution 
 - Providers for non AWS specific services
 - Custom authentication flow
 - Offline / caching of posts
+- Pagination of posts
+- Dynamic dropdown menu of pages
+- More articles from <site name>
 
 ### Tools
 
