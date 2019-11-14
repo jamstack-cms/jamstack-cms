@@ -78,6 +78,7 @@ class NewPost extends React.Component {
     const user = await Auth.currentAuthenticatedUser()
     const { payload: { sub } } = user.signInUserSession.idToken
     post['postAuthorId'] = sub
+    post['contentType'] = 'Post'
     if (isPublished) {
       this.setState({ isPublishing: true })
     } else (

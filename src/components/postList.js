@@ -10,7 +10,6 @@ function PostList ({
   posts, isAdmin, deletePost, publishPost, unPublishPost, context, toggleViewState, fixedWidthImages, isLoading
 }) {
   const { theme } = context
-
   const widthIndexes = posts.reduce((acc, next, index) => {
     if (!acc.length) {
       acc.push('wide')

@@ -1,4 +1,5 @@
 type Post @model
+  @key(fields: ["contentType", "createdAt"], name: "content-type-index", queryField: "itemsByContentType")
   @auth (
       rules: [
           { allow: groups, groups: ["Admin"], operations: [create, update, delete] },
@@ -16,6 +17,7 @@ type Post @model
   previewEnabled: Boolean
   categories: [String]
   author: User @connection
+  contentType: String
 }
 
 type Comment @model @auth(

@@ -12,6 +12,7 @@ export const onCreatePost = `subscription OnCreatePost {
     published
     previewEnabled
     categories
+    contentType
     author {
       id
       name
@@ -33,6 +34,7 @@ export const onUpdatePost = `subscription OnUpdatePost {
     published
     previewEnabled
     categories
+    contentType
     author {
       id
       name
@@ -54,6 +56,7 @@ export const onDeletePost = `subscription OnDeletePost {
     published
     previewEnabled
     categories
+    contentType
     author {
       id
       name

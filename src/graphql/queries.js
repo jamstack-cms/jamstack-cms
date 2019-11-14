@@ -68,6 +68,7 @@ export const getPost = `query GetPost($id: ID!) {
     published
     previewEnabled
     categories
+    contentType
     author {
       id
       name
@@ -94,6 +95,46 @@ export const listPosts = `query ListPosts(
       published
       previewEnabled
       categories
+      contentType
+      author {
+        id
+        name
+        username
+        avatarUrl
+        owner
+      }
+    }
+    nextToken
+  }
+}
+`;
+export const itemsByContentType = `query ItemsByContentType(
+  $contentType: String
+  $createdAt: ModelStringKeyConditionInput
+  $sortDirection: ModelSortDirection
+  $filter: ModelPostFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  itemsByContentType(
+    contentType: $contentType
+    createdAt: $createdAt
+    sortDirection: $sortDirection
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+  ) {
+    items {
+      id
+      title
+      description
+      content
+      cover_image
+      createdAt
+      published
+      previewEnabled
+      categories
+      contentType
       author {
         id
         name

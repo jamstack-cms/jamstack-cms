@@ -4,7 +4,7 @@ import styledAuthenticator from '../components/styledAuthenticator'
 import NewPost from '../components/newPost'
 import NewPage from '../components/newPage'
 import Layout from '../layouts/mainLayout'
-import { listPosts, listPages } from '../graphql/queries'
+import { itemsByContentType, listPages } from '../graphql/queries'
 import { deletePost, updatePost, deletePage, updatePage } from '../graphql/mutations'
 import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
@@ -70,8 +70,8 @@ class Admin extends React.Component {
   }
   fetchPosts = async () => {
     try {
-      const postData = await API.graphql(graphqlOperation(listPosts))
-      const { items: posts } = postData.data.listPosts
+      const postData = await API.graphql(graphqlOperation(itemsByContentType, { limit: 500, contentType: "Post" }))
+      const { items: posts } = postData.data.itemsByContentType
       const postsWithSignedImages = await Promise.all(posts.map(async post => {
         if (!post.cover_image) return post
         const signedImage = await getSignedImage(post.cover_image)
