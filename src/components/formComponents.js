@@ -46,7 +46,6 @@ function MarkdownEditor({
 
 const editorStyle = css`
   margin-top: 30px;
-  max-height: 300px;
 `
 
 const titleInputStyle = ({ primaryFontColor }) => css`
