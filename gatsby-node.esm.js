@@ -33,7 +33,7 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const postData = await graphql(` {
     appsync {
-      listPosts(limit: 500) {
+      itemsByContentType(limit: 500, contentType: "Post") {
         items {
           content
           createdAt
@@ -66,7 +66,7 @@ exports.createPages = async ({ graphql, actions }) => {
     }
   }`)
   const webPages = pageData.data.appsync.listPages.items.filter(page => page.published)
-  const blogPosts = postData.data.appsync.listPosts.items.filter(post => post.published)
+  const blogPosts = postData.data.appsync.itemsByContentType.items.filter(post => post.published)
   const images = await Storage.list('images/')
   const imageKeys = images.map(i => i.key)
 
@@ -329,8 +329,8 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
   createNode(node)
 
   const listPostsQuery = graphqltag(`
-    query listPosts {
-      listPosts(limit: 500) {
+    query itemsByContentType {
+      itemsByContentType(limit: 500, contentType: "Post") {
         items {
           content
           createdAt
@@ -411,7 +411,7 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
         query: print(listPostsQuery)
       }
     })
-    const blogPosts = listPostsData.data.data.listPosts.items
+    const blogPosts = listPostsData.data.data.itemsByContentType.items
     blogPosts.map(post => {
       const content = post.content
       const contentUrls = content.match(urlRegex());
