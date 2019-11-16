@@ -57,10 +57,11 @@
 					]
 				},
 				"Runtime": "nodejs10.x",
-				"Timeout": "25",
+				"Timeout": "300",
+				"MemorySize": 1024,
 				"Code": {
-					"S3Bucket": "amplify-jamstack-cms-dev-11051-deployment",
-					"S3Key": "amplify-builds/S3Trigger56ef6c3f-705256696d3938453378-build.zip"
+					"S3Bucket": "amplify-jamstack-cms-dev-160039-deployment",
+					"S3Key": "amplify-builds/S3Trigger56ef6c3f-574d6f657a30715a5162-build.zip"
 				}
 			}
 		},

@@ -7,12 +7,13 @@ function configureBucket() {
     if (err) {
       throw err
     }
-    const fileInfo = JSON.stringify(data)
+    const fileInfo = JSON.stringify(data)    
     const id = uuid()
     const bucketName = `jamstack-cms-${id}`
-    const updatedInfo = fileInfo.replace("jamstack-cms", bucketName)
+    const infoSplit = fileInfo.split(',')
+    infoSplit[0] = `"{\\n    \\"bucketName\\": \\"${bucketName}\\"`
+    const updatedInfo = infoSplit.join(',')
     const newJson = JSON.parse(updatedInfo)
-
     fs.writeFile('./amplify/backend/storage/jamstackcms/parameters.json', newJson, 'utf8', function(err) {
       if (err) {
         throw err

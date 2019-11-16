@@ -12,6 +12,7 @@ export const createPost = `mutation CreatePost($input: CreatePostInput!) {
     published
     previewEnabled
     categories
+    contentType
     author {
       id
       name
@@ -33,6 +34,7 @@ export const updatePost = `mutation UpdatePost($input: UpdatePostInput!) {
     published
     previewEnabled
     categories
+    contentType
     author {
       id
       name
@@ -54,6 +56,7 @@ export const deletePost = `mutation DeletePost($input: DeletePostInput!) {
     published
     previewEnabled
     categories
+    contentType
     author {
       id
       name

@@ -29,7 +29,8 @@ class BlogIndex extends React.Component {
       .catch(err => console.log(err));
   }
   render() {
-    const posts = this.props.data.appsync.listPosts.items.filter(post => post.published)
+    let posts = this.props.data.appsync.itemsByContentType.items.filter(post => post.published)
+    posts = posts.reverse()
     let authorImages = checkNodeData(this.props.data.allAuthorImages)
     if (authorImages) {
       authorImages = this.props.data.allAuthorImages.edges[0].node.data
@@ -128,7 +129,7 @@ const heading = ({ fontFamily }) => css`
 export const pageQuery = graphql`
   query {
     appsync {
-      listPosts(limit: 500) {
+      itemsByContentType(limit: 500, contentType: "Post") {
         items {
           content
           createdAt

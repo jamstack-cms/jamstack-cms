@@ -8,9 +8,14 @@ export const Button = React.forwardRef(
       ref={ref}
       css={css`
         cursor: pointer;
+        padding: 8px;
         color: ${reversed
           ? active ? 'white' : '#aaa'
           : active ? 'black' : '#ccc'};
+        opacity: .7;
+        &:hover {
+          opacity: 1;
+        }
       `}
     />
   )
@@ -23,9 +28,6 @@ export const Menu = React.forwardRef(({ className, ...props }, ref) => (
     css={css`
     & > * {
       display: inline-block;
-    }
-    & > * + * {
-      margin-left: 15px;
     }
   `}
   />

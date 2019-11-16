@@ -55,7 +55,7 @@ If you are interested in contributing to this project, please let me know!
 1. Update the [Amplify CLI](https://aws-amplify.github.io/docs/) to the latest version
 
 ```sh
-$ npm install -g @aws-amplify/cli
+$ yarn global add @aws-amplify/cli
 ```
 
 2. Clone the repository
@@ -63,7 +63,9 @@ $ npm install -g @aws-amplify/cli
 ```sh
 $ git clone https://github.com/jamstack-cms/jamstack-cms.git
 
-$ yarn 
+$ cd jamstack-cms
+$ yarn --frozen-lockfile
+
 ```
 
 3. Configure admin emails
@@ -77,7 +79,7 @@ const adminEmails = ["youremail1@domain.com", /* ... other email addresses */]
 4. Initialize the Amplify project
 
 ```sh
-$ npm run jamstack-init
+$ yarn jamstack-init
 ```
 
 During the initialization, you'll be prompted for the following
@@ -89,33 +91,25 @@ During the initialization, you'll be prompted for the following
 ? What functionality do you want to use for Post Confirmation
 ❯◉ Create your own module
 ? Enter the name of the group to which users will be added. Admin
-
-$ npm run jamstack-push
-
-? Do you want to update code for your updated GraphQL API? No
 ```
 
-5. Run the project
+5. Deploy the back end
 
 ```sh
-$ npm run jamstack-develop
+$ yarn jamstack-push
 ```
 
-6. Sign up and then sign in with an Admin email address by clicking on the __Profile__ link in the footer.
-
-7. Once signed in as an Admin, you will see the Admin link in the navigation. Click on the Admin link to begin creating posts and pages.
-
-8. Once you've created a post, run `npm run jamstack-develop` to create a new build and see the new live post.
-
-9. To enable dynamic image resizing on the server, follow these steps:
+6. Run the project
 
 ```sh
-$ cd amplify/backend/function/S3Trigger56ef6c3f/src
-$ npm install --arch=x64 --platform=linux --target=10.15.0 sharp
-$ cd ../../../../../
-
-$ npm run jamstack-push
+$ yarn jamstack-develop
 ```
+
+7. Sign up and then sign in with an Admin email address by clicking on the __Profile__ link in the footer.
+
+8. Once signed in as an Admin, you will see the Admin link in the navigation. Click on the Admin link to begin creating posts and pages.
+
+10. Once you've created a post, run `npm run jamstack-develop` to create a new build and see the new live post.
 
 ### Deploying to Amplify Console or Netlify
 
@@ -166,6 +160,9 @@ JAMstack CMS fills in this gap by giving you a customizable end to end solution 
 - Providers for non AWS specific services
 - Custom authentication flow
 - Offline / caching of posts
+- Pagination of posts
+- Dynamic dropdown menu of pages
+- More articles from <site name>
 
 ### Tools
 

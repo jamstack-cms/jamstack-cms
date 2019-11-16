@@ -4,7 +4,7 @@ import React from 'react'
 const BLOCK_TAGS = {
   blockquote: 'block-quote',
   p: 'paragraph',
-  pre: 'code',
+  // pre: 'code',
   h1: 'heading-one',
   h2: 'heading-two',
 }
@@ -95,12 +95,12 @@ const rules = [
         switch (obj.type) {
           case 'em':
               return <em>{children}</em>
-          case 'code':
-            return (
-              <pre>
-                <code>{children}</code>
-              </pre>
-            )
+          // case 'code':
+          //   return (
+          //     <pre>
+          //       <code>{children}</code>
+          //     </pre>
+          //   )
           case "heading-one":
             return <h1>{children}</h1>;
           case "heading-two":
@@ -188,18 +188,16 @@ const rules = [
       }
       if (obj.object === 'mark') {
         switch (obj.type) {
-          case 'bold':
-            return <strong>{children}</strong>
           case 'link':
             return <>{children}</>
           case 'italic':
             return <em>{children}</em>
-          case 'code':
-            return (
-              <pre>
-                <code>{children}</code>
-              </pre>
-            )
+          // case 'code':
+          //   return (
+          //     <pre>
+          //       <code>{children}</code>
+          //     </pre>
+          //   )
         }
       }
       if (obj.type === 'link') {

@@ -10,6 +10,7 @@ const darkTheme = {
   highlight: '#3bbcbd',
   borderColor: 'rgba(255, 255, 255, .1)',
   backgroundColor: '#111215',
+  secondaryBackgroundColor: '#000000',
   codeBackgroundColor: '#48464a',
   toastBackgroundColor: '#111111',
   // font families

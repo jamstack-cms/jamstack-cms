@@ -4,7 +4,7 @@ import styledAuthenticator from '../components/styledAuthenticator'
 import NewPost from '../components/newPost'
 import NewPage from '../components/newPage'
 import Layout from '../layouts/mainLayout'
-import { listPosts, listPages } from '../graphql/queries'
+import { itemsByContentType, listPages } from '../graphql/queries'
 import { deletePost, updatePost, deletePage, updatePage } from '../graphql/mutations'
 import { css } from "@emotion/core"
 import TitleComponent from '../components/titleComponent'
@@ -70,8 +70,8 @@ class Admin extends React.Component {
   }
   fetchPosts = async () => {
     try {
-      const postData = await API.graphql(graphqlOperation(listPosts))
-      const { items: posts } = postData.data.listPosts
+      const postData = await API.graphql(graphqlOperation(itemsByContentType, { limit: 500, contentType: "Post" }))
+      const { items: posts } = postData.data.itemsByContentType
       const postsWithSignedImages = await Promise.all(posts.map(async post => {
         if (!post.cover_image) return post
         const signedImage = await getSignedImage(post.cover_image)
@@ -92,15 +92,30 @@ class Admin extends React.Component {
     })
   }
   setImagesInUse = () => {
-    let imageKeys = this.props.data.allImageKeys.edges[0].node.data
-    if (imageKeys === 'none') return
+    // set base array of images
+    let allImageKeys = []
+    let contentImageKeys = this.props.data.allImageKeys.edges[0].node.data
+    let authorImages = this.props.data.allAuthorImages.edges[0].node.data
+    // set image keys currently in use to allImageKeys variable (contentImageKeys + authorImages)
+    if (contentImageKeys !== 'none') {
+      allImageKeys = [...contentImageKeys]
+    }
+    if (authorImages !== 'none') {
+      authorImages = authorImages.map(image => {
+        image = image.split('/')
+        image = `images/${image[image.length - 1]}`
+        return image
+      })
+      allImageKeys = [...allImageKeys, ...authorImages]
+    }
+    if (!allImageKeys.length) return
     const signedImages = this.state.images
     const imagesInUse = []
     const imagesNotInUse = []
     signedImages.forEach(image => {
       const key = getImageKey(image)
       const keyWithPath = `images/${key}`
-      imageKeys.forEach(k => {
+      allImageKeys.forEach(k => {
         if (k === keyWithPath) {
           imagesInUse.push(image)
         }
@@ -398,13 +413,10 @@ export const adminQuery = graphql`
         }
       }
     },
-    allThemeInfo {
+    allAuthorImages {
       edges {
         node {
-          data {
-            theme
-            categories
-          }
+          data
         }
       }
     }

@@ -5,6 +5,7 @@ const dankTheme = {
   scriptFamily: 'EB Garamond',
   baseFontWeight: '400',
   backgroundColor: '#141315',
+  secondaryBackgroundColor: '#000000',
   codeBackgroundColor: '#141315',
   toastBackgroundColor: '#040c20',
   toastFontColor: '#ff004f',

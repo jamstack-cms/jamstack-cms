@@ -99,6 +99,7 @@ class ContextProviderComponent extends React.Component {
   }
 
   render() {
+    const { window: { height } } = this.state
     return (
       <StaticQuery query={mainQuery}>
         { queryData => {
@@ -132,7 +133,7 @@ class ContextProviderComponent extends React.Component {
             <>
             <Global
               styles={css`
-                ${blogPostStyle(theme)}
+                ${globalStyle(theme, height)}
                 body, html {
                   background-color: ${theme.backgroundColor};
                 }
@@ -181,7 +182,8 @@ export {
   ContextProviderComponent
 }
 
-const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}) => {
+const globalStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}, height) => {
+  console.log('height: ', height)
   const isDark = type === ('dark' || 'dank' || 'reactive')
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
@@ -216,8 +218,8 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
 
   .hero-page-content p {
     font-family: ${fontFamily}, serif;
-    font-size: 18px;
-    font-weight: ${isDark ? 200 : 300};
+    font-size: 16px;
+    margin-bottom: 15px;
     color: ${primaryFontColor};
   }
 
@@ -289,13 +291,12 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
     font-weight: 400;
     font-family: 'Courier New', Courier, monospace;
     overflow-x: scroll;
-    margin: 15px auto 50px;
+    margin: 40px 0px;
   }
 
   .hero-page-content p code {
     background-color: ${codeBackgroundColor};
     font-family: 'Courier New', Courier, monospace;
-    padding: 2px 5px;
     color: ${primaryFontColor};
   }
 
@@ -392,6 +393,8 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
   blockquote {
     margin-left: -50px;
     border-color: ${primaryFontColor};
+    margin-top: 20px;
+    margin-bottom: 20px;
     @media (max-width: 700px) {
       margin-left: 0px;
     }
@@ -421,6 +424,12 @@ const blogPostStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontCo
 
   .CodeMirror-cursor, .CodeMirror-cursors {
     border-left: 1px solid ${secondaryFontColor} !important;
+  }
+
+  .CodeMirror, .CodeMirror-scroll {
+    overflow: scroll;
+    height: ${height - 470}px;
+    min-height: 300px;
   }
   
   ::placeholder {

@@ -14,9 +14,12 @@ exports.handler = async function (event, context) { //eslint-disable-line
     image = await sharp(image.Body)
 
     const metadata = await image.metadata()
+    console.log('metadata: ', metadata)
     if (metadata.width > 1000) {
+      console.log('resizing image...')
       const resizedImage = await image.resize({ width: 1000 }).toBuffer()
       await s3.putObject({ Bucket: BUCKET, Body: resizedImage, Key: `public/images/${FILE}` }).promise()
+      console.log('image successfully resized...')
       return
     } else {
       return
