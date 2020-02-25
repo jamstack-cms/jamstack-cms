@@ -13,6 +13,7 @@ JAMstack CMS is built to give you the ability to deploy a full stack serverless 
 - Server-rendered front end for builds
 - Dynamic front-end for admins (enables admins to create, update, and delete content)
 - Configurable settings
+- Admin dashboard
 
 ![](screens.jpg)
 
