@@ -313,15 +313,12 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
     key: 'theme-info',
     data: themeInfo
   }
-  const nodeContent = JSON.stringify(data)
   const nodeMeta = {
     id: createNodeId(`my-data-${data.key}`),
     parent: null,
     children: [],
     internal: {
       type: `ThemeInfo`,
-      mediaType: `json`,
-      content: nodeContent,
       contentDigest: createContentDigest(data)
     }
   }
@@ -382,15 +379,12 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       key: 'page-slugs',
       data: slugs.length ? slugs : 'none'
     }
-    const slugNodeContent = JSON.stringify(slugData)
     const slugNodeMeta = {
       id: createNodeId(`my-data-${slugData.key}`),
       parent: null,
       children: [],
       internal: {
         type: `Slugs`,
-        mediaType: `text/html`,
-        content: slugNodeContent,
         contentDigest: createContentDigest(slugData)
       }
     }
@@ -446,15 +440,12 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       key: 'image-keys',
       data: imageKeys.length ? imageKeys : 'none'
     }
-    const imageNodeContent = JSON.stringify(imageData)
     const imageNodeMeta = {
       id: createNodeId(`my-data-${imageData.key}`),
       parent: null,
       children: [],
       internal: {
         type: `ImageKeys`,
-        mediaType: `text/html`,
-        content: imageNodeContent,
         contentDigest: createContentDigest(imageData)
       }
     }
@@ -466,15 +457,12 @@ exports.sourceNodes = async ({ actions, createNodeId, createContentDigest }) => 
       key: 'author-images',
       data: authorImages.length ? authorImages : 'none'
     }
-    const authorImageNodeContent = JSON.stringify(authorImageData)
     const authorImageNodeMeta = {
       id: createNodeId(`my-data-${authorImageData.key}`),
       parent: null,
       children: [],
       internal: {
         type: `AuthorImages`,
-        mediaType: `text/html`,
-        content: authorImageNodeContent,
         contentDigest: createContentDigest(authorImageData)
       }
     }

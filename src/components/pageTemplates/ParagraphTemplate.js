@@ -15,7 +15,6 @@ const DEFAULT_NODE = 'paragraph'
 
 const isBoldHotkey = isKeyHotkey('mod+b')
 const isItalicHotkey = isKeyHotkey('mod+i')
-// const isCodeHotkey = isKeyHotkey('mod+`')
 
 function wrapLink(editor, href) {
   editor.wrapInline({
@@ -250,10 +249,6 @@ function Paragraph({ content, updateContent, index, deleteComponent, context: { 
     switch (mark.type) {
       case 'bold':
         return <strong {...attributes}>{children}</strong>
-      // case 'code':
-      //   return <pre>
-      //     <code {...attributes}>{children}</code>
-      //   </pre>
       case 'italic':
         return <em {...attributes}>{children}</em>
       default:

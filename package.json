@@ -84,7 +84,7 @@
   "scripts": {
     "jamstack-init": "node updateS3config.js && amplify init",
     "jamstack-push": "amplify push --y",
-    "jamstack-develop": "node createConfig.js && gatsby develop",
+    "jamstack-develop": "node createLocalConfig.js && gatsby develop",
     "jamstack-build-local": "node createLocalConfig.js && gatsby build",
     "jamstack-build": "gatsby build",
     "build": "gatsby build",

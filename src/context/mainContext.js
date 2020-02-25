@@ -132,26 +132,7 @@ class ContextProviderComponent extends React.Component {
           return (
             <>
             <Global
-              styles={css`
-                ${globalStyle(theme, height)}
-                body, html {
-                  background-color: ${theme.backgroundColor};
-                }
-                body {
-                  border: ${showBorder ? themeBorderWidth + 'px solid ' + theme.highlight : 'none'};
-                  background: url(${theme.type === 'dank' ? dankbg : null}) no-repeat center center fixed;
-                  -webkit-background-size: cover;
-                  -moz-background-size: cover;
-                  -o-background-size: cover;
-                  background-size: cover;
-                }
-                p, h1, h2, h3, h4, h5, span {
-                  color: ${theme.primaryFontColor};
-                }
-                .rangeslider-horizontal .rangeslider__fill {
-                  background-color: ${theme.highlight};
-                }
-              `}
+              styles={css`${globalStyle(theme, height, showBorder, themeBorderWidth)}`}
             />
             <BlogContext.Provider value={{
               ...this.state,
@@ -182,12 +163,41 @@ export {
   ContextProviderComponent
 }
 
-const globalStyle = ({ primaryLightFontColor, codeBackgroundColor, toastFontColor, primaryFontColor, fontFamily, scriptFamily, type, highlight, secondaryFontColor, toastBackgroundColor}, height) => {
+const globalStyle = ({
+  primaryFontColor,
+  secondaryFontColor,
+  primaryLightFontColor,
+  toastFontColor,
+  codeBackgroundColor,
+  fontFamily,
+  scriptFamily,
+  highlight,
+  toastBackgroundColor,
+  backgroundColor,
+  type
+}, height, showBorder, themeBorderWidth) => {
   console.log('height: ', height)
   const isDark = type === ('dark' || 'dank' || 'reactive')
   // const isDank = type === 'dank'
   // const isLight = type === 'light'
   return css`
+  body, html {
+    background-color: ${backgroundColor};
+  }
+  body {
+    border: ${showBorder ? themeBorderWidth + 'px solid ' + highlight : 'none'};
+    background: url(${type === 'dank' ? dankbg : null}) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
+  p, h1, h2, h3, h4, h5, span {
+    color: ${primaryFontColor};
+  }
+  .rangeslider-horizontal .rangeslider__fill {
+    background-color: ${highlight};
+  }
   body {
     margin: 0;
     padding: 35px 0px 0px;

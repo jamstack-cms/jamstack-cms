@@ -44,7 +44,7 @@ class BlogIndex extends React.Component {
             <div css={authorInfoStyle(theme, authorImages)}>
               {
                 authorImages && authorImages.map((image, index) => (
-                  <img alt="Author" src={image} css={authorImageStyle(theme)} />
+                  <img key={index} alt="Author" src={image} css={authorImageStyle(theme)} />
                 ))
               }
               <p css={siteDescriptionStyle(theme)}>{siteDescription}</p>
