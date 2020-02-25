@@ -15,7 +15,7 @@ function PageList({ publishPage, toggleViewState, unpublishPage, fetchPages, del
   if (!pages.length) {
     return (
       <div>
-        No pages yet! Create your first page <span css={underline(theme)} onClick={() => toggleViewState('createPage')}>here</span>.
+        <span css={primary(theme)}>No pages yet! Create your first page</span> <span css={underline(theme)} onClick={() => toggleViewState('createPage')}>here</span>.
       </div>
     )
   }
@@ -77,6 +77,10 @@ function PageListWithContext(props) {
 }
 
 export default PageListWithContext
+
+const primary = ({ primaryFontColor }) => css`
+  color: ${primaryFontColor};
+`
 
 const underline = ({ highlight }) => css`
   color: ${highlight};
