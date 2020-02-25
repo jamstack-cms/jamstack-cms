@@ -2,6 +2,12 @@ const fs = require('fs')
 const stripJsonComments = require('strip-json-comments')
 const config = './src/aws-exports.js'
 
+/*
+* This function will take the base Amplify config, remove the API key reference, write the base
+* config to jamstack-config.js, create a local reference to the API key for local development, 
+* and write that configuration to jamstack-api-key.js
+*/
+
 fs.readFile(config, 'utf8', function (err, data) {
   if (err) {
     throw err

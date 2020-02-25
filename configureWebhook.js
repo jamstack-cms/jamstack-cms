@@ -1,5 +1,9 @@
 const fs = require('fs')
 
+/*
+* This function will prompt the user for a webhook URL and write to webhook-config.js
+*/
+
 function configureWebhook() {
   var webhookURL = process.stdin;
   webhookURL.setEncoding('utf-8');
