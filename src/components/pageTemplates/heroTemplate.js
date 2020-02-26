@@ -248,14 +248,18 @@ class HeroTemplate extends React.Component {
             />
             { pageTitle && <p css={slugStyle}>slug: {slug}</p>}
           </div>
-          <div css={[componentCreatorContainerStyle()]}>
-            <p onClick={() => this.createComponent('paragraph')} css={componentCreatorStyle(theme)}>Rich Text</p>
-            <p onClick={() => this.createComponent('header')} css={componentCreatorStyle(theme)}>Header</p>
-            <p onClick={() => this.createComponent('subheading')} css={componentCreatorStyle(theme)}>Subheading</p>
-            <p onClick={() => this.createComponent('image')} css={componentCreatorStyle(theme, true)}>Image</p>
-            <p onClick={() => this.createComponent('code')} css={componentCreatorStyle(theme, true)}>Code</p>
-            {/* <p onClick={() => this.createComponent('pwithimage')} css={componentCreatorStyle(theme, true)}>Paragraph with Image</p> */}
-          </div>
+          {
+            currentView !== 'preview' && (
+              <div css={[componentCreatorContainerStyle()]}>
+                <p onClick={() => this.createComponent('paragraph')} css={componentCreatorStyle(theme)}>Rich Text</p>
+                <p onClick={() => this.createComponent('header')} css={componentCreatorStyle(theme)}>Header</p>
+                <p onClick={() => this.createComponent('subheading')} css={componentCreatorStyle(theme)}>Subheading</p>
+                <p onClick={() => this.createComponent('image')} css={componentCreatorStyle(theme, true)}>Image</p>
+                <p onClick={() => this.createComponent('code')} css={componentCreatorStyle(theme, true)}>Code</p>
+                {/* <p onClick={() => this.createComponent('pwithimage')} css={componentCreatorStyle(theme, true)}>Paragraph with Image</p> */}
+              </div>
+            )
+          }
           <div css={[pageContentButtonContainerStyle()]}>
             {
               pageHtml && (
