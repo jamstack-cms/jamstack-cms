@@ -98,7 +98,7 @@
 						"Arn"
 					]
 				},
-				"Runtime": "nodejs8.10",
+				"Runtime": "nodejs12.x",
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-jamstack-cms-dev-160039-deployment",
