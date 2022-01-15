@@ -44,7 +44,7 @@
     "graphql-tag": "^2.10.1",
     "is-hotkey": "^0.1.6",
     "is-url": "^1.2.4",
-    "marked": "^0.7.0",
+    "marked": "^4.0.10",
     "prismjs": "^1.17.1",
     "react": "^16.9.0",
     "react-dnd": "^9.4.0",
