@@ -39,7 +39,7 @@
     "gatsby-remark-smartypants": "^2.1.7",
     "gatsby-source-filesystem": "^2.1.21",
     "gatsby-source-graphql": "^2.1.14",
-    "gatsby-transformer-remark": "^2.6.33",
+    "gatsby-transformer-remark": "^5.25.1",
     "gatsby-transformer-sharp": "^2.2.14",
     "graphql-tag": "^2.10.1",
     "is-hotkey": "^0.1.6",
